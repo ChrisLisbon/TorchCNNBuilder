@@ -14,7 +14,7 @@ def single_output_tensor(data: Sequence[Any],
     :param data: N-dimensional arrays, lists, numpy arrays, tensors etc.
     :param forecast_len: length of prediction for each y-train future tensor (target)
     :param additional_x: extra x-train data. Default: None
-    :param additional_is_array: if additional x-train is a list/array of x_i data like other time series. Default: False
+    :param additional_is_array: if additional x-train is a array of x_i data like other time series. Default: False
     :param additional_x_stack: if True stack each additional_x_i to x-train. Default: True
     :param threshold: binarization threshold for each y-tensor. Default: False
     :param x_binarize: binarization with threshold for each x-tensor. Default: False
@@ -73,7 +73,7 @@ def multi_output_tensor(data: Sequence[Any],
    :param forecast_len: length of prediction for each y-train future tensor (target)
    :param pre_history_len: length of pre-history for each x-train future tensor
    :param additional_x: extra x-train data. Default: None
-   :param additional_is_array: if additional x-train is a list/array of x_i data like other time series. Default: False
+   :param additional_is_array: if additional x-train is a array of x_i data like other time series. Default: False
    :param additional_x_stack: if True stack each additional_x_i to x-train. Default: True
    :param threshold: binarization threshold for each y-tensor. Default: False
    :param x_binarize: binarization with threshold for each x-tensor. Default: False

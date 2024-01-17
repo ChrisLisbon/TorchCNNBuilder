@@ -190,6 +190,7 @@ class EncoderBuilder:
         self.initial_max_channels = max_channels
 
         self.min_channels = min_channels
+        self.initial_min_channels = min_channels
 
         self.default_convolve_params = {'kernel_size': 3,
                                         'stride': 1,
@@ -322,8 +323,8 @@ class EncoderBuilder:
 
         modules = []
         input_layer_size_list = [self.input_size]
-        input_channels_count_list = self._calc_out_channels(input_size=self.input_size,
-                                                            input_channels=in_channels,
+        input_channels_count_list = self._calc_out_channels(in_size=self.input_size,
+                                                            in_channels=in_channels,
                                                             n_layers=n_layers,
                                                             ratio=ratio,
                                                             start=start,
@@ -334,12 +335,11 @@ class EncoderBuilder:
 
             if (input_layer_size[0] < self.minimum_feature_map_size[0]
                     and input_layer_size[1] < self.minimum_feature_map_size[1]):
-
                 raise ValueError(f'Input size and parameters can not provide more than {layer + 1} layers')
-
             elif input_channels_count_list[layer] > self.max_channels:
-                raise ValueError(f'There is too many channels. Max channels {self.max_channels}')
-
+                raise ValueError(f'There is too many channels. Max channels {self.max_channels} [layer {layer}]')
+            elif input_channels_count_list[layer] < self.min_channels and layer != 0 and not ascending:
+                raise ValueError(f'There is too few channels. Min channels {self.min_channels} [layer {layer}]')
             else:
 
                 in_channels = input_channels_count_list[layer]
@@ -448,19 +448,18 @@ class EncoderBuilder:
 
     def build_transpose_convolve_sequence(self,
                                           n_layers: int,
-                                          in_channels: int = 1,
+                                          in_channels: Optional[int] = None,
                                           out_channels: int = 1,
                                           out_size: Optional[tuple] = None,
                                           params: Optional[dict] = None,
                                           normalization: Optional[str] = None,
                                           sub_blocks: int = 1,
                                           ratio: float = 2.0,
-                                          start: int = 32,
                                           ascending: bool = False) -> nn.Sequential:
         """
-        :param n_layers: number of the convolution layers in the encoder part
-        :param in_channels: number of channels in the first input tensor. Default: 1
-        :param out_channels: number of channels after the transpose convolution sequence
+        :param n_layers: number of the convolution layers in the encoder part.
+        :param in_channels: number of channels in the first input tensor. Default: None
+        :param out_channels: number of channels after the transpose convolution sequence. Default: 1
         :param out_size: output size after the transpose convolution sequence. Default: None (input size)
         :param params: transpose convolutional layer parameters (nn.ConvTranspose2d). Default: None
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
@@ -482,23 +481,25 @@ class EncoderBuilder:
 
         modules = []
 
+        if in_channels is None and self.conv_channels:
+            in_channels = self.conv_channels[-1]
+        elif in_channels is None and not self.conv_channels:
+            raise ValueError(f'You should specify in_channels or use build_convolve_sequence before transpose one')
+
         if self.conv_layer_sizes:
             input_layer_size_list = [self.conv_layer_sizes[-1]]
 
-        input_channels_count_list = self._calc_out_channels(input_size=self.input_size,
-                                                            input_channels=in_channels,
-                                                            n_layers=n_layers,
-                                                            ratio=ratio,
-                                                            start=start,
-                                                            ascending=ascending)[::-1]
-        input_channels_count_list[-1] = out_channels
-
+        input_channels_count_list = self._calc_out_transpose_channels(in_channels=in_channels,
+                                                                      out_channels=out_channels,
+                                                                      n_layers=n_layers,
+                                                                      ratio=ratio,
+                                                                      ascending=ascending)
         for layer in range(n_layers):
 
-
             if input_channels_count_list[layer] > self.max_channels:
-                raise ValueError(f'There is too many channels. Max channels {self.max_channels}')
-
+                raise ValueError(f'There is too many channels. Max channels {self.max_channels} [layer {layer}]')
+            elif input_channels_count_list[layer] < 1:
+                raise ValueError(f'There is too few channels. You can not provide less then 1 channel [layer {layer}]')
             else:
 
                 in_channels = input_channels_count_list[layer]
@@ -533,20 +534,36 @@ class EncoderBuilder:
         return nn.Sequential(OrderedDict(modules))
 
     def _calc_out_channels(self,
-                           input_size: Sequence[int],
-                           input_channels: int,
+                           in_size: Sequence[int],
+                           in_channels: int,
                            n_layers: int,
                            ratio: float = 2.0,
                            start: int = 32,
                            ascending: bool = False) -> List[int]:
 
         if ascending:
-            range_start = input_channels
-            range_stop = int(((input_size[0] + input_size[1]) * 0.5) // 2 + input_channels)
-            range_step = (range_stop - input_channels) // n_layers
+            range_start = in_channels
+            range_stop = int(((in_size[0] + in_size[1]) * 0.5) // 2 + in_channels)
+            range_step = (range_stop - in_channels) // n_layers
             channels = list(range(range_start, range_stop + 1, range_step))
             self.max_channels = range_stop
             return channels
 
         self.max_channels = self.initial_max_channels
-        return [input_channels] + [int(start * ratio ** i) for i in range(n_layers)]
+        return [in_channels] + [int(start * ratio ** i) for i in range(n_layers)]
+
+    @staticmethod
+    def _calc_out_transpose_channels(in_channels: int,
+                                     out_channels: int,
+                                     n_layers: int,
+                                     ratio: float = 2.0,
+                                     ascending: bool = False) -> List[int]:
+        if ascending:
+            channels = list(range(out_channels,
+                                  in_channels,
+                                  (in_channels - out_channels) // n_layers))[::-1]
+            channels = channels[:n_layers]
+            channels[-1] = out_channels
+            return [in_channels] + channels
+
+        return [int(in_channels / ratio ** i) for i in range(n_layers)] + [out_channels]
