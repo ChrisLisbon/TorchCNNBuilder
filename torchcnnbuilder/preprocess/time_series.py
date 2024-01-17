@@ -11,6 +11,8 @@ def single_output_tensor(data: Sequence[Any],
                          threshold: Union[bool, float] = False,
                          x_binarize: bool = False) -> TensorDataset:
     """
+    The function to preprocess an n-dimensional time series into a tensor with only the X and Y parts
+
     :param data: N-dimensional arrays, lists, numpy arrays, tensors etc.
     :param forecast_len: length of prediction for each y-train future tensor (target)
     :param additional_x: extra x-train data. Default: None
@@ -69,6 +71,8 @@ def multi_output_tensor(data: Sequence[Any],
                         threshold: Union[bool, float] = False,
                         x_binarize: bool = False) -> TensorDataset:
     """
+    The function to preprocess an n-dimensional time series into a tensor with a moving window for the X and Y parts
+
    :param data: N-dimensional arrays, lists, numpy arrays, tensors etc.
    :param forecast_len: length of prediction for each y-train future tensor (target)
    :param pre_history_len: length of pre-history for each x-train future tensor
