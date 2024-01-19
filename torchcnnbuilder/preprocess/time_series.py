@@ -16,7 +16,7 @@ def single_output_tensor(data: Sequence[Any],
     :param data: N-dimensional arrays, lists, numpy arrays, tensors etc.
     :param forecast_len: length of prediction for each y-train future tensor (target)
     :param additional_x: extra x-train data. Default: None
-    :param additional_is_array: if additional x-train is a array of x_i data like other time series. Default: False
+    :param additional_is_array: if additional x-train is an array of x_i data like other time series. Default: False
     :param additional_x_stack: if True stack each additional_x_i to x-train. Default: True
     :param threshold: binarization threshold for each y-tensor. Default: False
     :param x_binarize: binarization with threshold for each x-tensor. Default: False
@@ -24,22 +24,22 @@ def single_output_tensor(data: Sequence[Any],
     """
     tensors = torch.Tensor(data)
 
-    y_train_tensor = tensors[-forecast_len + 1:]
-    x_train_tensor = tensors[:-forecast_len + 1]
+    y_train_tensor = tensors[-forecast_len:]
+    x_train_tensor = tensors[:-forecast_len]
 
     if additional_x is not None:
         additional_x = torch.Tensor(additional_x)
 
         if not additional_is_array:
 
-            extra_x_train_tensor = additional_x[:-forecast_len + 1]
+            extra_x_train_tensor = additional_x[:-forecast_len]
             if additional_x_stack:
                 x_train_tensor = torch.stack([x_train_tensor, extra_x_train_tensor], dim=1)
 
         else:
             channels = [x_train_tensor]
             for array in additional_x:
-                x_array = array[:-forecast_len + 1]
+                x_array = array[:-forecast_len]
                 channels.append(x_array)
 
             x_train_tensor = torch.stack(channels, dim=1)
@@ -71,7 +71,7 @@ def multi_output_tensor(data: Sequence[Any],
                         threshold: Union[bool, float] = False,
                         x_binarize: bool = False) -> TensorDataset:
     """
-    The function to preprocess an n-dimensional time series into a tensor with a moving window for the X and Y parts
+    The function to preprocess an n-dimensional time series into a tensor with a sliding window for the X and Y parts
 
    :param data: N-dimensional arrays, lists, numpy arrays, tensors etc.
    :param forecast_len: length of prediction for each y-train future tensor (target)

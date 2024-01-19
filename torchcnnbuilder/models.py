@@ -9,7 +9,7 @@ import torch.nn as nn
 # ------------------------------------
 class ForecasterBase(nn.Module):
     """
-      The template class of the time series prediction CNN-architecture. The source of the original `article
+      The template class of the time series prediction CNN-architecture. The source of the original `article code
     <https://github.com/ITMO-NSS-team/ice-concentration-prediction-paper?ysclid=lrhxbvsk8s328492826>`_.
 
       Attributes:
@@ -37,7 +37,7 @@ class ForecasterBase(nn.Module):
         :param n_transpose_layers: number of the transpose convolution layers in the encoder part. Default: None (same as n_layers)
         :param convolve_params: parameters of convolutional layers (by default same as in torch). Default: None
         :param transpose_convolve_params: parameters of transpose convolutional layers (by default same as in torch). Default: None
-        :param activation_function: activation function. Default: nn.ReLU(inplace=True
+        :param activation_function: activation function. Default: nn.ReLU(inplace=True)
         :param finish_activation_function: last activation function, can be same as activation_function (str 'same'). Default: None
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
         """

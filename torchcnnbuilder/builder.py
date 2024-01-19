@@ -217,7 +217,7 @@ class EncoderBuilder:
         :param minimum_feature_map_size: minimum feature map size. Default: 5
         :param max_channels: maximum number of layers after any convolution. Default: 512
         :param min_channels: minimum number of layers after any convolution. Default: 32
-        :param activation_function: activation function. Default: nn.ReLU(inplace=True
+        :param activation_function: activation function. Default: nn.ReLU(inplace=True)
         :param finish_activation_function: last activation function, can be same as activation_function (str 'same'). Default: None
         """
 
