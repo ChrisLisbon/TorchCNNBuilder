@@ -49,6 +49,26 @@ def synthetic_time_series(num_frames: int = 210,
     return ani, matrices
 
 
+def save_gif(matrices: List[np.array],
+             name: str,
+             writer: str = 'pillow',
+             fps: int = 30,
+             interval: int = 10) -> None:
+    """
+    Saving matrices lika a .gif file
+
+    :param matrices: array of frames
+    :param name: filename
+    :param writer: writer of frames. Default: pillow
+    :param fps: fps. Default: 30
+    :param interval: interval between frames in milliseconds. Default: 10
+    """
+    fig, ax = plt.subplots()
+    frames = list(map(lambda x: (ax.imshow(1-x, cmap='gray'),), matrices))
+    ani = animation.ArtistAnimation(fig=fig, artists=frames, interval=interval)
+    ani.save(filename=f'{name}.gif', writer=writer, fps=fps)
+
+
 if __name__ == '__main__':
     ani, frames = synthetic_time_series()
     ani.save('time_series_animation.gif', writer='pillow', fps=30)
