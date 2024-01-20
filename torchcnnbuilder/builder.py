@@ -100,7 +100,7 @@ def conv3d_out(input_size: Union[Sequence[int], int],
 
 
 # ------------------------------------
-# calculation of transpose convolution functions
+# calculation of transposed convolution functions
 # ------------------------------------
 def conv_transpose1d_out(input_size: int,
                          kernel_size: int,
@@ -194,14 +194,14 @@ class EncoderBuilder:
        minimum_feature_map_size (Union[Sequence[int], int]): minimum feature map size. Default: 5
        max_channels (int): maximum number of layers after any convolution. Default: 512
        min_channels (int): minimum number of layers after any convolution. Default: 32
-       activation_function (nn.Module): activation function. Default: nn.ReLU(inplace=True
+       activation_function (nn.Module): activation function. Default: nn.ReLU(inplace=True) 
        finish_activation_function (Union[str, Optional[nn.Module]): last activation function, can be same as activation_function (str 'same'). Default: None
        default_convolve_params (dict[str, Union[int, tuple]]): parameters of convolutional layers (by default same as in torch)
-       default_transpose_params (dict[str, Union[int, tuple]]): parameters of transpose convolutional layers (by default same as in torch)
+       default_transpose_params (dict[str, Union[int, tuple]]): parameters of transposed convolutional layers (by default same as in torch)
        conv_channels (List[int]): list of output channels after each convolutional layer
-       transpose_conv_channels (List[int]): list of output channels after each transpose convolutional layer
+       transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
        conv_layer_sizes (List[tuple]): list of output tensor sizes after each convolutional layer
-       transpose_conv_layer_sizes (List[tuple]): list of output tensor sizes after each transpose convolutional layer
+       transpose_conv_layer_sizes (List[tuple]): list of output tensor sizes after each transposed convolutional layer
     """
     def __init__(self,
                  input_size: Sequence[int],
@@ -419,7 +419,7 @@ class EncoderBuilder:
                                        affine: bool = True,
                                        last_block: bool = False) -> nn.Sequential:
         """
-        The function to build a single block of transpose convolution layers
+        The function to build a single block of transposed convolution layers
 
         :param in_channels: number of channels in the input image
         :param out_channels: number of channels produced by the convolution
@@ -431,7 +431,7 @@ class EncoderBuilder:
         :param eps: a value added to the denominator for numerical stability. Default: 1e-5
         :param momentum: used for the running_mean -_var computation. Can be None for cumulative moving average. Default: 0.1
         :param affine: a boolean value that when set to True, this module has learnable affine parameters. Default: True
-        :param last_block: if True there is no activation function after the transpose convolution. Default: False
+        :param last_block: if True there is no activation function after the transposed convolution. Default: False
         :return nn.Sequential: one convolution block with an activation function
         """
 
@@ -505,18 +505,18 @@ class EncoderBuilder:
                                           ratio: float = 2.0,
                                           ascending: bool = False) -> nn.Sequential:
         """
-        The function to build a sequence of transpose convolution blocks
+        The function to build a sequence of transposed convolution blocks
 
         :param n_layers: number of the convolution layers in the encoder part
         :param in_channels: number of channels in the first input tensor. Default: None
-        :param out_channels: number of channels after the transpose convolution sequence. Default: 1
-        :param out_size: output size after the transpose convolution sequence. Default: None (input size)
-        :param params: transpose convolutional layer parameters (nn.ConvTranspose2d). Default: None
+        :param out_channels: number of channels after the transposed convolution sequence. Default: 1
+        :param out_size: output size after the transposed convolution sequence. Default: None (input size)
+        :param params: transposed convolutional layer parameters (nn.ConvTranspose2d). Default: None
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
-        :param sub_blocks: number of transpose convolutions in one layer. Default: 1
+        :param sub_blocks: number of transposed convolutions in one layer. Default: 1
         :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
         :param ascending: the way of calculating the number of feature maps (with using 'ratio' if False). Default: False
-        :return nn.Sequential: transpose convolutional sequence
+        :return nn.Sequential: transposed convolutional sequence
         """
 
         default_convolve_params = self.default_convolve_params.copy()
@@ -533,7 +533,7 @@ class EncoderBuilder:
         if in_channels is None and self.conv_channels:
             in_channels = self.conv_channels[-1]
         elif in_channels is None and not self.conv_channels:
-            raise ValueError(f'You should specify in_channels or use build_convolve_sequence before transpose one')
+            raise ValueError(f'You should specify in_channels or use build_convolve_sequence before transposed one')
 
         if self.conv_layer_sizes:
             input_layer_size_list = [self.conv_layer_sizes[-1]]
@@ -619,14 +619,14 @@ class EncoderBuilder:
                                      ratio: float = 2.0,
                                      ascending: bool = False) -> List[int]:
         """
-        The function to calculate output channels after each transpose convolutional layer
+        The function to calculate output channels after each transposed convolutional layer
 
         :param in_channels: number of channels in the first input tensor
         :param out_channels: number of channels in the last tensor
         :param n_layers: number of the convolution layers in the encoder part
         :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
         :param ascending: the way of calculating the number of feature maps (with using 'ratio' if False). Default: False
-        :return: output channels after each transpose convolutional layer
+        :return: output channels after each transposed convolutional layer
         """
         if ascending:
             channels = list(range(out_channels,
