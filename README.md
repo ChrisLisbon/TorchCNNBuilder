@@ -55,6 +55,5 @@ Initially, the library was created to help predict n-dimensional time series *(g
 
 ### Sources
 ---
-- 
-[Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
+- [Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
 
