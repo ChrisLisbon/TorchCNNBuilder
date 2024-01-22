@@ -1,6 +1,7 @@
 from torchcnnbuilder.version import __version__
 from setuptools import setup, find_packages
 from typing import List
+from pathlib import Path
 
 
 def readme() -> str:
@@ -9,7 +10,8 @@ def readme() -> str:
 
 
 def _get_requirements(file_name: str) -> List[str]:
-    with open(file_name, 'r') as f:
+    root = Path(__file__).parent.resolve()
+    with open(f'{root}/{file_name}', 'r') as f:
         file = f.readlines()
     return [line for line in file if line and not line.startswith('#')]
 
