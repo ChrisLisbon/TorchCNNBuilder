@@ -22,6 +22,7 @@ pip install torchcnnbuilder
 ```
 
 ### Usage examples
+
 ---
 The basic structure of the framework is presented below. Each subdirectory has its own example of using the appropriate available functionality. You can check `<directory>_examples.ipynb` files in order to see the ways to use the proposed toolkit. In short, there is the following functionality:
 
@@ -46,14 +47,8 @@ The structure of the main part of the package:
 ```
 Initially, the library was created to help predict n-dimensional time series *(geodata)*, so there is a corresponding functionality and templates of predictive models *(like `ForecasterBase`)*
 
-### To Do
----
-- [ ] add support for pulling and sampling layers
-- [ ] add more templates for different CNN-models
-- [ ] add more usage examples
-- [ ] add auto tests
-
 ### Sources
+
 ---
 - [Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
 
