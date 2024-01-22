@@ -36,7 +36,6 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
@@ -46,6 +45,3 @@ setup(
     keywords='python torch cnn',
     python_requires=PYTHON_REQUIRES
 )
-
-
-print(find_packages())
