@@ -45,5 +45,3 @@ setup(
     keywords='python torch cnn',
     python_requires=PYTHON_REQUIRES
 )
-
-print(_get_requirements(REQUIREMENTS_PATH))
