@@ -1,7 +1,6 @@
 from torchcnnbuilder.version import __version__
 from setuptools import setup, find_packages
 from typing import List
-from pathlib import Path
 
 
 def readme() -> str:
@@ -10,8 +9,7 @@ def readme() -> str:
 
 
 def _get_requirements(file_name: str) -> List[str]:
-    root = Path(__file__).parent.resolve()
-    with open(f'{root}/{file_name}', 'r') as f:
+    with open(f'./{file_name}', 'r') as f:
         file = f.readlines()
     return [line for line in file if line and not line.startswith('#')]
 
@@ -47,3 +45,5 @@ setup(
     keywords='python torch cnn',
     python_requires=PYTHON_REQUIRES
 )
+
+print(_get_requirements(REQUIREMENTS_PATH))
