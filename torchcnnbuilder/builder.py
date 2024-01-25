@@ -112,8 +112,8 @@ def conv_transpose1d_out(input_size: int,
     Calculating the size of the tensor after nn.ConvTranspose1d
 
     :param input_size: size of the input tensor/vector [h]
-    :param kernel_size: size of the convolution kernel
-    :param stride: stride of the convolution. Default: 1
+    :param kernel_size: size of the transposed convolution kernel
+    :param stride: stride of the transposed convolution. Default: 1
     :param padding: padding added to all four sides of the input. Default: 0
     :param output_padding: controls the additional size added to one side of the output shape. Default: 0
     :param dilation: spacing between kernel elements. Default: 1
@@ -133,8 +133,8 @@ def conv_transpose2d_out(input_size: Union[Sequence[int], int],
     Calculating the size of the tensor after nn.ConvTranspose2d
 
     :param input_size: size of the input tensor [h, w]
-    :param kernel_size: size of the convolution kernel
-    :param stride: stride of the convolution. Default: 1
+    :param kernel_size: size of the transposed convolution kernel
+    :param stride: stride of the transposed convolution. Default: 1
     :param padding: padding added to all four sides of the input. Default: 0
     :param output_padding: controls the additional size added to one side of the output shape. Default: 0
     :param dilation: spacing between kernel elements. Default: 1
@@ -162,8 +162,8 @@ def conv_transpose3d_out(input_size: Union[Sequence[int], int],
     Calculating the size of the tensor after nn.ConvTranspose3d
 
     :param input_size: size of the input tensor [d, h, w]
-    :param kernel_size: size of the convolution kernel
-    :param stride: stride of the convolution. Default: 1
+    :param kernel_size: size of the transposed convolution kernel
+    :param stride: stride of the transposed convolution. Default: 1
     :param padding: padding added to all four sides of the input. Default: 0
     :param output_padding: controls the additional size added to one side of the output shape. Default: 0
     :param dilation: spacing between kernel elements. Default: 1
@@ -185,7 +185,7 @@ def conv_transpose3d_out(input_size: Union[Sequence[int], int],
 # ------------------------------------
 # CNN Builder class
 # ------------------------------------
-class EncoderBuilder:
+class Builder:
     """
    A class for creating СNN architectures
 
@@ -200,8 +200,8 @@ class EncoderBuilder:
        default_transpose_params (dict[str, Union[int, tuple]]): parameters of transposed convolutional layers (by default same as in torch)
        conv_channels (List[int]): list of output channels after each convolutional layer
        transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
-       conv_layer_sizes (List[tuple]): list of output tensor sizes after each convolutional layer
-       transpose_conv_layer_sizes (List[tuple]): list of output tensor sizes after each transposed convolutional layer
+       conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
+       transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
     """
     def __init__(self,
                  input_size: Sequence[int],
@@ -211,7 +211,7 @@ class EncoderBuilder:
                  activation_function: nn.Module = nn.ReLU(inplace=True),
                  finish_activation_function: Union[str, Optional[nn.Module]] = None) -> None:
         """
-        The constructor for EncoderBuilder
+        The constructor for Builder
 
         :param input_size: input size of the input tensor
         :param minimum_feature_map_size: minimum feature map size. Default: 5
@@ -253,8 +253,8 @@ class EncoderBuilder:
         self.conv_channels = None
         self.transpose_conv_channels = None
 
-        self.conv_layer_sizes = None
-        self.transpose_conv_layer_sizes = None
+        self.conv_layers = None
+        self.transpose_conv_layers = None
 
     def build_convolve_block(self,
                              in_channels: int,
@@ -275,11 +275,11 @@ class EncoderBuilder:
         :param params: convolutional layer parameters (nn.Conv2d). Default: None
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
         :param sub_blocks: number of convolutions in one layer. Default: 1
-        :param p: probability of an element to be zero-ed. Default: 0.5
-        :param inplace: if set to True, will do this operation in-place. Default: False
-        :param eps: a value added to the denominator for numerical stability. Default: 1e-5
-        :param momentum: used for the running_mean -_var computation. Can be None for cumulative moving average. Default: 0.1
-        :param affine: a boolean value that when set to True, this module has learnable affine parameters. Default: True
+        :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
+        :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
+        :param eps: a value added to the denominator for numerical stability (for batchnorm). Default: 1e-5
+        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
+        :param affine: a boolean value that when set to True, this module has learnable affine parameters (for batchnorm). Default: True
         :return nn.Sequential: one convolution block with an activation function
         """
 
@@ -341,6 +341,11 @@ class EncoderBuilder:
                                 params: Optional[dict] = None,
                                 normalization: Optional[str] = None,
                                 sub_blocks: int = 1,
+                                p: float = 0.5,
+                                inplace: bool = False,
+                                eps: float = 1e-5,
+                                momentum: Optional[float] = 0.1,
+                                affine: bool = True,
                                 ratio: float = 2.0,
                                 start: int = 32,
                                 ascending: bool = False) -> nn.Sequential:
@@ -352,6 +357,11 @@ class EncoderBuilder:
         :param params: convolutional layer parameters (nn.Conv2d). Default: None
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
         :param sub_blocks: number of convolutions in one layer. Default: 1
+        :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
+        :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
+        :param eps: a value added to the denominator for numerical stability (for batchnorm). Default: 1e-5
+        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
+        :param affine: a boolean value that when set to True, this module has learnable affine parameters (for batchnorm). Default: True
         :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
         :param start: start position of a geometric progression in the case of ascending=False. Default: 32
         :param ascending: the way of calculating the number of feature maps (with using 'ratio' if False). Default: False
@@ -398,12 +408,17 @@ class EncoderBuilder:
                                                            out_channels=out_channels,
                                                            normalization=normalization,
                                                            sub_blocks=sub_blocks,
+                                                           p=p,
+                                                           inplace=inplace,
+                                                           eps=eps,
+                                                           momentum=momentum,
+                                                           affine=affine,
                                                            params=params)
 
                 modules.append((f'conv {layer + 1}', convolve_block))
 
         self.conv_channels = input_channels_count_list
-        self.conv_layer_sizes = input_layer_size_list
+        self.conv_layers = input_layer_size_list
         return nn.Sequential(OrderedDict(modules))
 
     def build_transpose_convolve_block(self,
@@ -426,11 +441,11 @@ class EncoderBuilder:
         :param params: convolutional layer parameters (nn.Conv2d). Default: None
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
         :param sub_blocks: number of convolutions in one layer. Default: 1
-        :param p: probability of an element to be zero-ed. Default: 0.5
-        :param inplace: if set to True, will do this operation in-place. Default: False
-        :param eps: a value added to the denominator for numerical stability. Default: 1e-5
-        :param momentum: used for the running_mean -_var computation. Can be None for cumulative moving average. Default: 0.1
-        :param affine: a boolean value that when set to True, this module has learnable affine parameters. Default: True
+        :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
+        :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
+        :param eps: a value added to the denominator for numerical stability (for batchnorm). Default: 1e-5
+        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
+        :param affine: a boolean value that when set to True, this module has learnable affine parameters (for batchnorm). Default: True
         :param last_block: if True there is no activation function after the transposed convolution. Default: False
         :return nn.Sequential: one convolution block with an activation function
         """
@@ -502,6 +517,11 @@ class EncoderBuilder:
                                           params: Optional[dict] = None,
                                           normalization: Optional[str] = None,
                                           sub_blocks: int = 1,
+                                          p: float = 0.5,
+                                          inplace: bool = False,
+                                          eps: float = 1e-5,
+                                          momentum: Optional[float] = 0.1,
+                                          affine: bool = True,
                                           ratio: float = 2.0,
                                           ascending: bool = False) -> nn.Sequential:
         """
@@ -514,6 +534,11 @@ class EncoderBuilder:
         :param params: transposed convolutional layer parameters (nn.ConvTranspose2d). Default: None
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
         :param sub_blocks: number of transposed convolutions in one layer. Default: 1
+        :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
+        :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
+        :param eps: a value added to the denominator for numerical stability (for batchnorm). Default: 1e-5
+        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
+        :param affine: a boolean value that when set to True, this module has learnable affine parameters (for batchnorm). Default: True
         :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
         :param ascending: the way of calculating the number of feature maps (with using 'ratio' if False). Default: False
         :return nn.Sequential: transposed convolutional sequence
@@ -535,8 +560,8 @@ class EncoderBuilder:
         elif in_channels is None and not self.conv_channels:
             raise ValueError(f'You should specify in_channels or use build_convolve_sequence before transposed one')
 
-        if self.conv_layer_sizes:
-            input_layer_size_list = [self.conv_layer_sizes[-1]]
+        if self.conv_layers:
+            input_layer_size_list = [self.conv_layers[-1]]
 
         input_channels_count_list = self._calc_out_transpose_channels(in_channels=in_channels,
                                                                       out_channels=out_channels,
@@ -554,7 +579,7 @@ class EncoderBuilder:
                 in_channels = input_channels_count_list[layer]
                 out_channels = input_channels_count_list[layer + 1]
 
-                if self.conv_layer_sizes:
+                if self.conv_layers:
                     input_layer_size = input_layer_size_list[-1]
                     out_layer_size = conv_transpose2d_out(input_layer_size, **params)
                     input_layer_size_list.append(out_layer_size)
@@ -564,6 +589,11 @@ class EncoderBuilder:
                                                                      out_channels=out_channels,
                                                                      normalization=normalization,
                                                                      sub_blocks=sub_blocks,
+                                                                     p=p,
+                                                                     inplace=inplace,
+                                                                     eps=eps,
+                                                                     momentum=momentum,
+                                                                     affine=affine,
                                                                      params=params,
                                                                      last_block=last_block)
 
@@ -571,8 +601,8 @@ class EncoderBuilder:
 
         self.transpose_conv_channels = input_channels_count_list
 
-        if self.conv_layer_sizes:
-            self.transpose_conv_layer_sizes = input_layer_size_list
+        if self.conv_layers:
+            self.transpose_conv_layers = input_layer_size_list
 
         if out_size is None:
             out_size = self.input_size
@@ -623,7 +653,7 @@ class EncoderBuilder:
 
         :param in_channels: number of channels in the first input tensor
         :param out_channels: number of channels in the last tensor
-        :param n_layers: number of the convolution layers in the encoder part
+        :param n_layers: number of the transposed convolution layers in the encoder part
         :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
         :param ascending: the way of calculating the number of feature maps (with using 'ratio' if False). Default: False
         :return: output channels after each transposed convolutional layer

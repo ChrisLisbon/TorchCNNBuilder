@@ -1,6 +1,6 @@
 from typing import Union, Sequence, Optional
 
-from torchcnnbuilder.builder import EncoderBuilder
+from torchcnnbuilder.builder import Builder
 import torch.nn as nn
 
 
@@ -15,7 +15,12 @@ class ForecasterBase(nn.Module):
       Attributes:
           convolve (nn.Sequential): convolutional sequence - encoder part
           transpose (nn.Sequential): transpose convolutional sequence - decoder part
+          conv_channels (List[int]): list of output channels after each convolutional layer
+          transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
+          conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
+          transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
        """
+
     def __init__(self,
                  input_size: Sequence[int],
                  n_layers: int,
@@ -42,9 +47,9 @@ class ForecasterBase(nn.Module):
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
         """
         super(ForecasterBase, self).__init__()
-        builder = EncoderBuilder(input_size=input_size,
-                                 activation_function=activation_function,
-                                 finish_activation_function=finish_activation_function)
+        builder = Builder(input_size=input_size,
+                          activation_function=activation_function,
+                          finish_activation_function=finish_activation_function)
 
         if n_transpose_layers is None:
             n_transpose_layers = n_layers
@@ -67,6 +72,11 @@ class ForecasterBase(nn.Module):
                                                                    params=transpose_convolve_params,
                                                                    normalization=normalization,
                                                                    ascending=True)
+
+        self.conv_channels = builder.conv_channels
+        self.transpose_conv_channels = builder.transpose_conv_channels
+        self.conv_layers = builder.conv_layers
+        self.transpose_conv_layers = builder.transpose_conv_layers
 
     def forward(self, x):
         """

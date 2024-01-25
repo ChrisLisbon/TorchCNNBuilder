@@ -6,7 +6,7 @@ import torch
 def single_output_tensor(data: Sequence[Any],
                          forecast_len: int,
                          additional_x: Union[Sequence[Any], None] = None,
-                         additional_is_array: Sequence[Any] = False,
+                         additional_is_array: bool = False,
                          additional_x_stack: bool = True,
                          threshold: Union[bool, float] = False,
                          x_binarize: bool = False) -> TensorDataset:
@@ -66,7 +66,7 @@ def multi_output_tensor(data: Sequence[Any],
                         forecast_len: int,
                         pre_history_len: int,
                         additional_x: Union[Sequence[Any], None] = None,
-                        additional_is_array: Sequence[Any] = False,
+                        additional_is_array: bool = False,
                         additional_x_stack: bool = True,
                         threshold: Union[bool, float] = False,
                         x_binarize: bool = False) -> TensorDataset:
@@ -77,7 +77,7 @@ def multi_output_tensor(data: Sequence[Any],
    :param forecast_len: length of prediction for each y-train future tensor (target)
    :param pre_history_len: length of pre-history for each x-train future tensor
    :param additional_x: extra x-train data. Default: None
-   :param additional_is_array: if additional x-train is a array of x_i data like other time series. Default: False
+   :param additional_is_array: if additional x-train is an array of x_i data like other time series. Default: False
    :param additional_x_stack: if True stack each additional_x_i to x-train. Default: True
    :param threshold: binarization threshold for each y-tensor. Default: False
    :param x_binarize: binarization with threshold for each x-tensor. Default: False

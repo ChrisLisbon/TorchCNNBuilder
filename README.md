@@ -50,5 +50,6 @@ Initially, the library was created to help predict n-dimensional time series *(g
 ### Sources
 
 ---
+- [Forecasting of Sea Ice Concentration using CNN, PDE discovery and Bayesian Networks](https://www.sciencedirect.com/science/article/pii/S1877050923020094)
 - [Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
 
