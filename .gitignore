@@ -1,1 +1,5 @@
-.idea/
+.idea
+build
+dist
+.ipynb_checkpoints
+torchcnnbuilder.egg-info
