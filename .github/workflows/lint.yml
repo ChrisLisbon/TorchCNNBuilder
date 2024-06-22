@@ -21,11 +21,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install isort black flake8
 
-    - name: Copy flake8 configuration
-      run: |
-          ls -a
-          cp .github/workflows/.flake8 $HOME/.flake8
-
     - name: Check code style with flake8
       run: |
-        flake8 .
+        flake8 --config .github/workflows/.flake8 .

@@ -13,6 +13,7 @@ gitignore = true
 
 [isort]
 profile = black
+line_length = 88
 
 [tool.black]
-line-length = 88
+line_length = 88
