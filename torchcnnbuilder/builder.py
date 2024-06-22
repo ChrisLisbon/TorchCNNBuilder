@@ -1,28 +1,11 @@
-from typing import Union, Sequence, Tuple, Optional, List, Type
+from typing import Union, Sequence, Tuple, Optional, List
 from collections import OrderedDict
 
+from torchcnnbuilder.utils import _double_params, _triple_params, _set_conv_params, _select_conv_dimension, _select_conv_calc, _select_norm_dimension, _select_adaptive_pooling_dimension
+from torchcnnbuilder.constants import DEFAULT_CONV_PARAMS, DEFAULT_TRANSPOSE_CONV_PARAMS
+from torchcnnbuilder.validation import _validate_difference_in_dimensions, _validate_available_layers, _validate_max_channels_number, _validate_min_channels_number, _validate_build_transpose_convolve_init
+
 import torch.nn as nn
-import torch
-
-
-def _double_params(param: int) -> Tuple[int, int]:
-    """
-    Creating two parameters instead of one
-
-    :param param: int param of some function
-    :return Tuple[int, int]: doubled param
-    """
-    return param, param
-
-
-def _triple_params(param: int) -> Tuple[int, int, int]:
-    """
-    Creating three parameters instead of one
-
-    :param param: int param of some function
-    :return Tuple[int, int, int]: tripled param
-    """
-    return param, param, param
 
 
 # ------------------------------------
@@ -232,7 +215,7 @@ class Builder:
        minimum_feature_map_size (Union[Tuple, int]): minimum feature map size. Default: 5
        max_channels (int): maximum number of layers after any convolution. Default: 512
        min_channels (int): minimum number of layers after any convolution. Default: 32
-       activation_function (nn.Module): activation function. Default: nn.ReLU(inplace=True) 
+       activation_function (nn.Module): activation function. Default: nn.ReLU(inplace=True)
        finish_activation_function (Union[str, Optional[nn.Module]): last activation function, can be same as activation_function (str 'same'). Default: None
        default_convolve_params (dict[str, Union[int, tuple]]): parameters of convolutional layers (by default same as in torch)
        default_transpose_params (dict[str, Union[int, tuple]]): parameters of transposed convolutional layers (by default same as in torch)
@@ -278,18 +261,9 @@ class Builder:
         self.min_channels = min_channels
         self.initial_min_channels = min_channels
 
-        self.default_convolve_params = {'kernel_size': 3,
-                                        'stride': 1,
-                                        'padding': 0,
-                                        'dilation': 1
-                                        }
+        self.default_convolve_params = DEFAULT_CONV_PARAMS
+        self.default_transpose_params = DEFAULT_TRANSPOSE_CONV_PARAMS
 
-        self.default_transpose_params = {'kernel_size': 3,
-                                         'stride': 1,
-                                         'padding': 0,
-                                         'output_padding': 0,
-                                         'dilation': 1
-                                         }
 
         # finish_activation_function can be str 'same' which equals to activation_function
         self.activation_function = activation_function
@@ -330,13 +304,8 @@ class Builder:
         :return nn.Sequential: one convolution block with an activation function
         """
 
-        default_params = self.default_convolve_params.copy()
-        if params:
-            for key, value in params.items():
-                default_params[key] = value
-        params = default_params
-
-        convolution = self._select_conv_dimension(conv_dim=conv_dim)
+        params = _set_conv_params(default_params=self.default_convolve_params, params=params)
+        convolution = _select_conv_dimension(conv_dim=conv_dim)
 
         if sub_blocks > 1:
             kernel_size = params['kernel_size']
@@ -354,20 +323,19 @@ class Builder:
             in_channels = out_channels
             block.append(conv)
 
-            if normalization == 'batchnorm':
-                norm = self._select_norm_dimension(conv_dim=conv_dim,
-                                                   normalization=normalization)
-                norm = norm(num_features=out_channels,
-                            eps=eps,
-                            momentum=momentum,
-                            affine=affine)
-                block.append(norm)
+            if normalization:
+                norm = _select_norm_dimension(conv_dim=conv_dim,
+                                              normalization=normalization)
 
-            if normalization == 'dropout':
-                norm = self._select_norm_dimension(conv_dim=conv_dim,
-                                                   normalization=normalization)
-                norm = norm(p=p,
-                            inplace=inplace)
+                if normalization in ('batchnorm', 'instancenorm'):
+                    norm = norm(num_features=out_channels,
+                                eps=eps,
+                                momentum=momentum,
+                                affine=affine)
+
+                if normalization == 'dropout':
+                    norm = norm(p=p, inplace=inplace)
+
                 block.append(norm)
 
             activation_function = self.activation_function
@@ -418,14 +386,8 @@ class Builder:
         :param conv_dim: the dimension of the convolutional operation. Default: 2
         :return nn.Sequential: convolutional sequence
         """
-
-        default_convolve_params = self.default_convolve_params.copy()
-        if params:
-            for key, value in params.items():
-                default_convolve_params[key] = value
-        params = default_convolve_params
-
-        conv_out = self._select_conv_calc(conv_dim=conv_dim)
+        params = _set_conv_params(default_params=self.default_convolve_params, params=params)
+        conv_out = _select_conv_calc(conv_dim=conv_dim)
 
         modules = []
         input_layer_size_list = [self.input_size]
@@ -438,20 +400,12 @@ class Builder:
         for layer in range(n_layers):
 
             input_layer_size = input_layer_size_list[-1]
-            if len(self.input_size) - conv_dim not in (0, 1):
-                raise ValueError(
-                    f'The difference in dimensions between input_size (input_size.shape={self.input_size}) '
-                    f'and convolution (conv_dim={conv_dim}) should not be more than 1 '
-                    f'(input_size.shape - conv_dim should be equal to 1 or 0)')
 
-            elif all(torch.tensor(input_layer_size) < torch.tensor(self.minimum_feature_map_size)[
-                                                      :len(input_layer_size)]):
-                raise ValueError(f'Input size and parameters can not provide more than {layer + 1} layers')
+            _validate_difference_in_dimensions(input_size=self.input_size, conv_dim=conv_dim)
+            _validate_available_layers(layer=layer, input_layer_size=input_layer_size, minimum_feature_map_size=self.minimum_feature_map_size)
+            _validate_max_channels_number(input_channels_count_list=input_channels_count_list, layer=layer, max_channels=self.max_channels)
 
-            elif input_channels_count_list[layer] > self.max_channels:
-                raise ValueError(f'There is too many channels. Max channels {self.max_channels} [layer {layer}]')
-
-            elif input_channels_count_list[layer] < self.min_channels and layer != 0 and not ascending:
+            if input_channels_count_list[layer] < self.min_channels and layer != 0 and not ascending:
                 raise ValueError(f'There is too few channels. Min channels {self.min_channels} [layer {layer}]')
 
             else:
@@ -510,21 +464,14 @@ class Builder:
         :param conv_dim: the dimension of the convolutional operation. Default: 2
         :return nn.Sequential: one convolution block with an activation function
         """
-
-        default_transpose_params = self.default_transpose_params.copy()
-        if params:
-            for key, value in params.items():
-                default_transpose_params[key] = value
-        params = default_transpose_params
-
-        convolution = self._select_conv_dimension(conv_dim=conv_dim,
-                                                  transpose=True)
+        params = _set_conv_params(default_params=self.default_transpose_params, params=params)
+        convolution = _select_conv_dimension(conv_dim=conv_dim, transpose=True)
 
         if sub_blocks > 1:
-            kernel_size = default_transpose_params['kernel_size']
+            kernel_size = params['kernel_size']
             kernel_size = kernel_size if isinstance(kernel_size, int) else kernel_size[0]
-            default_transpose_params['padding'] = kernel_size // 2
-            default_transpose_params['stride'] = 1
+            params['padding'] = kernel_size // 2
+            params['stride'] = 1
 
         blocks = []
         last_out_channels = out_channels
@@ -537,20 +484,19 @@ class Builder:
                                **params)
             block.append(conv)
 
-            if normalization == 'batchnorm':
-                norm = self._select_norm_dimension(conv_dim=conv_dim,
-                                                   normalization=normalization)
-                norm = norm(num_features=out_channels,
-                            eps=eps,
-                            momentum=momentum,
-                            affine=affine)
-                block.append(norm)
+            if normalization:
+                norm = _select_norm_dimension(conv_dim=conv_dim,
+                                              normalization=normalization)
 
-            if normalization == 'dropout':
-                norm = self._select_norm_dimension(conv_dim=conv_dim,
-                                                   normalization=normalization)
-                norm = norm(p=p,
-                            inplace=inplace)
+                if normalization in ('batchnorm', 'instancenorm'):
+                    norm = norm(num_features=out_channels,
+                                eps=eps,
+                                momentum=momentum,
+                                affine=affine)
+
+                if normalization == 'dropout':
+                    norm = norm(p=p, inplace=inplace)
+
                 block.append(norm)
 
             activation_function = self.activation_function
@@ -588,7 +534,9 @@ class Builder:
                                           affine: bool = True,
                                           ratio: float = 2.0,
                                           ascending: bool = False,
-                                          conv_dim: int = 2) -> nn.Sequential:
+                                          conv_dim: int = 2,
+                                          adaptive_pool: str = 'avgpool') -> nn.Sequential:
+
         """
         The function to build a sequence of transposed convolution blocks
 
@@ -607,23 +555,18 @@ class Builder:
         :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
         :param ascending: the way of calculating the number of feature maps (with using 'ratio' if False). Default: False
         :param conv_dim: the dimension of the convolutional operation. Default: 2
+        :param adaptive_pool: choice of a last layer as an adaptive pooling between str 'avgpool' or 'maxpool'. Default: 'avgpool'
         :return nn.Sequential: transposed convolutional sequence
         """
+        params = _set_conv_params(default_params=self.default_transpose_params, params=params)
+        conv_out = _select_conv_calc(conv_dim=conv_dim, transpose=True)
 
-        default_convolve_params = self.default_convolve_params.copy()
-        if params:
-            for key, value in params.items():
-                default_convolve_params[key] = value
-        params = default_convolve_params
-
-        conv_out = self._select_conv_calc(conv_dim=conv_dim,
-                                          transpose=True)
         modules = []
 
         if in_channels is None and self.conv_channels:
             in_channels = self.conv_channels[-1]
-        elif in_channels is None and not self.conv_channels:
-            raise ValueError(f'You should specify in_channels or use build_convolve_sequence before transposed one')
+
+        _validate_build_transpose_convolve_init(in_channels=in_channels, conv_channels=self.conv_channels)
 
         if self.conv_layers:
             input_layer_size_list = [self.conv_layers[-1]]
@@ -634,38 +577,33 @@ class Builder:
                                                                       ratio=ratio,
                                                                       ascending=ascending)
         for layer in range(n_layers):
+            _validate_max_channels_number(input_channels_count_list=input_channels_count_list, layer=layer, max_channels=self.max_channels)
+            _validate_min_channels_number(input_channels_count_list=input_channels_count_list, layer=layer, transpose=True)
 
-            if input_channels_count_list[layer] > self.max_channels:
-                raise ValueError(f'There is too many channels. Max channels {self.max_channels} [layer {layer}]')
+            in_channels = input_channels_count_list[layer]
+            out_channels = input_channels_count_list[layer + 1]
 
-            elif input_channels_count_list[layer] < 1:
-                raise ValueError(f'There is too few channels. You can not provide less then 1 channel [layer {layer}]')
+            if self.conv_layers:
+                input_layer_size = input_layer_size_list[-1]
+                out_layer_size = conv_out(input_size=input_layer_size,
+                                          **params)
+                input_layer_size_list.append(out_layer_size)
 
-            else:
-                in_channels = input_channels_count_list[layer]
-                out_channels = input_channels_count_list[layer + 1]
+            last_block = layer == n_layers - 1
+            convolve_block = self.build_transpose_convolve_block(in_channels=in_channels,
+                                                                 out_channels=out_channels,
+                                                                 normalization=normalization,
+                                                                 sub_blocks=sub_blocks,
+                                                                 p=p,
+                                                                 inplace=inplace,
+                                                                 eps=eps,
+                                                                 momentum=momentum,
+                                                                 affine=affine,
+                                                                 params=params,
+                                                                 last_block=last_block,
+                                                                 conv_dim=conv_dim)
 
-                if self.conv_layers:
-                    input_layer_size = input_layer_size_list[-1]
-                    out_layer_size = conv_out(input_size=input_layer_size,
-                                              **params)
-                    input_layer_size_list.append(out_layer_size)
-
-                last_block = layer == n_layers - 1
-                convolve_block = self.build_transpose_convolve_block(in_channels=in_channels,
-                                                                     out_channels=out_channels,
-                                                                     normalization=normalization,
-                                                                     sub_blocks=sub_blocks,
-                                                                     p=p,
-                                                                     inplace=inplace,
-                                                                     eps=eps,
-                                                                     momentum=momentum,
-                                                                     affine=affine,
-                                                                     params=params,
-                                                                     last_block=last_block,
-                                                                     conv_dim=conv_dim)
-
-                modules.append((f'deconv {layer + 1}', convolve_block))
+            modules.append((f'deconv {layer + 1}', convolve_block))
 
         self.transpose_conv_channels = input_channels_count_list
 
@@ -675,8 +613,8 @@ class Builder:
         if out_size is None:
             out_size = self.input_size
 
-        adaptive_average_pooling = self._select_adaptive_pooling_dimension(conv_dim=conv_dim)
-        resize_block = adaptive_average_pooling(output_size=tuple(out_size))
+        adaptive_pooling = _select_adaptive_pooling_dimension(conv_dim=conv_dim, pooling=adaptive_pool)
+        resize_block = adaptive_pooling(output_size=tuple(out_size))
         modules.append((f'resize', resize_block))
 
         return nn.Sequential(OrderedDict(modules))
@@ -741,83 +679,3 @@ class Builder:
             return [in_channels] + channels
 
         return [int(in_channels / ratio ** i) for i in range(n_layers)] + [out_channels]
-
-    @staticmethod
-    def _select_conv_dimension(conv_dim: int,
-                               transpose: bool = False) -> Type[nn.Module]:
-        """
-        The function to select nn.ConvNd
-
-        :param conv_dim: the dimension of the convolutional operation
-        :param transpose: choice of conv types between transposed and ordinary one. Default: False
-        :return: nn.Module object
-        """
-        if conv_dim == 1:
-            if transpose:
-                return nn.ConvTranspose1d
-            return nn.Conv1d
-        elif conv_dim == 3:
-            if transpose:
-                return nn.ConvTranspose3d
-            return nn.Conv3d
-        if transpose:
-            return nn.ConvTranspose2d
-        return nn.Conv2d
-
-    @staticmethod
-    def _select_conv_calc(conv_dim: int,
-                          transpose: bool = False):
-        """
-        The function to select a way of calculating conv output
-
-        :param conv_dim: the dimension of the convolutional operation
-        :param transpose: choice of conv types between transposed and ordinary one. Default: False
-        :return: one of functions to calculate conv or transposed conv output
-        """
-        if conv_dim == 1:
-            if transpose:
-                return conv_transpose1d_out
-            return conv1d_out
-        elif conv_dim == 3:
-            if transpose:
-                return conv_transpose3d_out
-            return conv3d_out
-        if transpose:
-            return conv_transpose2d_out
-        return conv2d_out
-
-    @staticmethod
-    def _select_norm_dimension(conv_dim: int,
-                               normalization: str = 'batchorm') -> Type[nn.Module]:
-        """
-        The function to select nn.BatchNormNd or nn.DropoutNd
-
-        :param conv_dim: the dimension of the convolutional operation
-        :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: 'batchnorm'
-        :return: nn.Module object
-        """
-        if normalization == 'dropout':
-            if conv_dim == 1:
-                return nn.Dropout1d
-            elif conv_dim == 3:
-                return nn.Dropout3d
-            return nn.Dropout2d
-        if conv_dim == 1:
-            return nn.BatchNorm1d
-        elif conv_dim == 3:
-            return nn.BatchNorm3d
-        return nn.BatchNorm2d
-
-    @staticmethod
-    def _select_adaptive_pooling_dimension(conv_dim: int) -> Type[nn.Module]:
-        """
-        The function to select nn.AdaptiveAvgPoolNd
-
-        :param conv_dim: the dimension of the convolutional operation
-        :return: nn.Module object
-        """
-        if conv_dim == 1:
-            return nn.AdaptiveAvgPool1d
-        elif conv_dim == 3:
-            return nn.AdaptiveAvgPool3d
-        return nn.AdaptiveAvgPool2d
