@@ -1,9 +1,6 @@
 [flake8]
 max-line-length = 88
-extend-ignore = ["E203", # whitespace before ':'
-                 "E266", # too many leading '#' for block comment
-                 "W503", # line break before binary operator
-                 "W504"  # line break occurred after operator]
+extend-ignore = ["E203", "E266", "W503", "W504"]
 show-source = true
 statistics = true
 plugins = ["flake-isort", "flake-black", "flake-gitignore"]
