@@ -5,6 +5,7 @@ show-source = true
 statistics = true
 plugins = flake-isort, flake-black, flake-gitignore
 gitignore = true
+ignore = D1
 
 [isort]
 profile = black
