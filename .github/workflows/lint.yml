@@ -19,9 +19,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install isort black==24.4.0
+        pip install isort black flake8
 
-    - name: Check code style with isort and black
+    - name: Copy flake8 configuration
       run: |
-        isort --profile black --diff $(git ls-files '*.py')
-        black --diff $(git ls-files '*.py')
+          cp .flake8 $HOME/workflows/.flake8
+
+    - name: Check code style with flake8
+      run: |
+        flake8 .
