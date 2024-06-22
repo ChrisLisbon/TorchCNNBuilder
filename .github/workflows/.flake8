@@ -1,9 +1,9 @@
 [flake8]
 max-line-length = 88
-extend-ignore = ["E203", "E266", "W503", "W504"]
+extend-ignore = E203, E266, W503, W504
 show-source = true
 statistics = true
-plugins = ["flake-isort", "flake-black", "flake-gitignore"]
+plugins = flake-isort, flake-black, flake-gitignore
 gitignore = true
 
 [isort]
