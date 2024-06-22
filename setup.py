@@ -18,13 +18,13 @@ NAME = 'torchcnnbuilder'
 VERSION = __version__
 AUTHOR = 'Andrew Kuznetsov, Julia Borisova, Nikolay O. Nikitin'
 URL = 'https://github.com/ChrisLisbon/TorchCNNBuilder'
-PYTHON_REQUIRES = '>=3.8'
+PYTHON_REQUIRES = '>=3.9'
 REQUIREMENTS_PATH = 'requirements.txt'
 
 setup(
     name=NAME,
     version=VERSION,
-    author='Andrew Kuznetsov, Julia Borisova, Nikolay O. Nikitin',
+    author=AUTHOR,
     author_email='just.andrew.kd@gmail.com',
     description='Framework for the automatic creation of CNN architectures',
     long_description=readme(),
