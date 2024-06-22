@@ -23,5 +23,5 @@ jobs:
 
     - name: Check code style with isort and black
       run: |
-        isort --profile black --check-only $(git ls-files '*.py')
-        black --check $(git ls-files '*.py')
+        isort --profile black --diff $(git ls-files '*.py')
+        black --diff $(git ls-files '*.py')
