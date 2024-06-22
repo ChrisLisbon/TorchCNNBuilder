@@ -1,7 +1,8 @@
-from typing import Union, Sequence, Optional
+from typing import Optional, Sequence, Union
+
+import torch.nn as nn
 
 from torchcnnbuilder.builder import Builder
-import torch.nn as nn
 
 
 # ------------------------------------
@@ -19,19 +20,22 @@ class ForecasterBase(nn.Module):
           transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
           conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
           transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
-       """
+    # noqa
+    """
 
-    def __init__(self,
-                 input_size: Sequence[int],
-                 n_layers: int,
-                 in_channels: int,
-                 out_channels: int,
-                 n_transpose_layers: Optional[int] = None,
-                 convolve_params: Optional[dict] = None,
-                 transpose_convolve_params: Optional[dict] = None,
-                 activation_function: nn.Module = nn.ReLU(inplace=True),
-                 finish_activation_function: Union[str, Optional[nn.Module]] = None,
-                 normalization: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        input_size: Sequence[int],
+        n_layers: int,
+        in_channels: int,
+        out_channels: int,
+        n_transpose_layers: Optional[int] = None,
+        convolve_params: Optional[dict] = None,
+        transpose_convolve_params: Optional[dict] = None,
+        activation_function: nn.Module = nn.ReLU(inplace=True),
+        finish_activation_function: Union[str, Optional[nn.Module]] = None,
+        normalization: Optional[str] = None,
+    ) -> None:
         """
         The constructor for ForecasterBase
 
@@ -45,11 +49,14 @@ class ForecasterBase(nn.Module):
         :param activation_function: activation function. Default: nn.ReLU(inplace=True)
         :param finish_activation_function: last activation function, can be same as activation_function (str 'same'). Default: None
         :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
+        # noqa
         """
         super(ForecasterBase, self).__init__()
-        builder = Builder(input_size=input_size,
-                          activation_function=activation_function,
-                          finish_activation_function=finish_activation_function)
+        builder = Builder(
+            input_size=input_size,
+            activation_function=activation_function,
+            finish_activation_function=finish_activation_function,
+        )
 
         if n_transpose_layers is None:
             n_transpose_layers = n_layers
@@ -60,18 +67,22 @@ class ForecasterBase(nn.Module):
         if transpose_convolve_params is None:
             transpose_convolve_params = builder.default_transpose_params
 
-        self.convolve = builder.build_convolve_sequence(n_layers=n_layers,
-                                                        in_channels=in_channels,
-                                                        params=convolve_params,
-                                                        normalization=normalization,
-                                                        ascending=True)
+        self.convolve = builder.build_convolve_sequence(
+            n_layers=n_layers,
+            in_channels=in_channels,
+            params=convolve_params,
+            normalization=normalization,
+            ascending=True,
+        )
 
-        self.transpose = builder.build_transpose_convolve_sequence(n_layers=n_transpose_layers,
-                                                                   in_channels=builder.conv_channels[-1],
-                                                                   out_channels=out_channels,
-                                                                   params=transpose_convolve_params,
-                                                                   normalization=normalization,
-                                                                   ascending=True)
+        self.transpose = builder.build_transpose_convolve_sequence(
+            n_layers=n_transpose_layers,
+            in_channels=builder.conv_channels[-1],
+            out_channels=out_channels,
+            params=transpose_convolve_params,
+            normalization=normalization,
+            ascending=True,
+        )
 
         self.conv_channels = builder.conv_channels
         self.transpose_conv_channels = builder.transpose_conv_channels
@@ -84,6 +95,7 @@ class ForecasterBase(nn.Module):
 
         :param x: tensor before forward pass
         :return: tensor after forward pass
+        # noqa
         """
         x = self.convolve(x)
         x = self.transpose(x)

@@ -1,5 +1,5 @@
 [flake8]
-max-line-length = 88
+max-line-length = 120
 extend-ignore = E203, E266, W503, W504
 show-source = true
 statistics = true
@@ -9,7 +9,7 @@ ignore = D1
 
 [isort]
 profile = black
-line_length = 88
+line_length = 120
 
 [tool.black]
-line_length = 88
+line_length = 120

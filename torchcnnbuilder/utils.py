@@ -1,7 +1,15 @@
-from typing import Type, Tuple, Dict
+from typing import Dict, Tuple, Type
 
-from torchcnnbuilder.builder import conv1d_out, conv2d_out, conv3d_out, conv_transpose1d_out, conv_transpose2d_out, conv_transpose3d_out
 import torch.nn as nn
+
+from torchcnnbuilder.builder import (
+    conv1d_out,
+    conv2d_out,
+    conv3d_out,
+    conv_transpose1d_out,
+    conv_transpose2d_out,
+    conv_transpose3d_out,
+)
 
 
 def _double_params(param: int) -> Tuple[int, int]:
@@ -10,6 +18,7 @@ def _double_params(param: int) -> Tuple[int, int]:
 
     :param param: int param of some function
     :return Tuple[int, int]: doubled param
+    # noqa
     """
     return param, param
 
@@ -20,6 +29,7 @@ def _triple_params(param: int) -> Tuple[int, int, int]:
 
     :param param: int param of some function
     :return Tuple[int, int, int]: tripled param
+    # noqa
     """
     return param, param, param
 
@@ -31,6 +41,7 @@ def _set_conv_params(default_params: Dict[str, int], params: Dict[str, int]) -> 
     :param default_params: default convolution or transpose convolution params
     :param params: new users convolution params
     :return Dict[str, int]: set convolution params
+    # noqa
     """
 
     default_params = default_params.copy()
@@ -40,14 +51,14 @@ def _set_conv_params(default_params: Dict[str, int], params: Dict[str, int]) -> 
     return default_params
 
 
-def _select_conv_dimension(conv_dim: int,
-                           transpose: bool = False) -> Type[nn.Module]:
+def _select_conv_dimension(conv_dim: int, transpose: bool = False) -> Type[nn.Module]:
     """
     The function to select nn.ConvNd
 
     :param conv_dim: the dimension of the convolutional operation
     :param transpose: choice of conv types between transposed and ordinary one. Default: False
     :return: nn.Module object
+    # noqa
     """
     if conv_dim == 1:
         if transpose:
@@ -64,14 +75,14 @@ def _select_conv_dimension(conv_dim: int,
     return nn.Conv2d
 
 
-def _select_conv_calc(conv_dim: int,
-                      transpose: bool = False):
+def _select_conv_calc(conv_dim: int, transpose: bool = False):
     """
     The function to select a way of calculating conv output
 
     :param conv_dim: the dimension of the convolutional operation
     :param transpose: choice of conv types between transposed and ordinary one. Default: False
     :return: one of functions to calculate conv or transposed conv output
+    # noqa
     """
     if conv_dim == 1:
         if transpose:
@@ -88,30 +99,30 @@ def _select_conv_calc(conv_dim: int,
     return conv2d_out
 
 
-def _select_norm_dimension(conv_dim: int,
-                           normalization: str = 'batchnorm') -> Type[nn.Module]:
+def _select_norm_dimension(conv_dim: int, normalization: str = "batchnorm") -> Type[nn.Module]:
     """
     The function to select nn.BatchNormNd or nn.DropoutNd
 
     :param conv_dim: the dimension of the convolutional operation
     :param normalization: choice of normalization between str 'dropout', 'batchnorm' and 'instancenorm'. Default: 'batchnorm'
     :return: nn.Module object
+    # noqa
     """
-    if normalization == 'dropout':
+    if normalization == "dropout":
         if conv_dim == 1:
             return nn.Dropout1d
         elif conv_dim == 3:
             return nn.Dropout3d
         return nn.Dropout2d
 
-    if normalization == 'batchnorm':
+    if normalization == "batchnorm":
         if conv_dim == 1:
             return nn.BatchNorm1d
         elif conv_dim == 3:
             return nn.BatchNorm3d
         return nn.BatchNorm2d
 
-    if normalization == 'instancenorm':
+    if normalization == "instancenorm":
         if conv_dim == 1:
             return nn.InstanceNorm1d
         elif conv_dim == 3:
@@ -122,23 +133,23 @@ def _select_norm_dimension(conv_dim: int,
     return nn.BatchNorm2d
 
 
-def _select_adaptive_pooling_dimension(conv_dim: int,
-                                       pooling: str = 'avgpool') -> Type[nn.Module]:
+def _select_adaptive_pooling_dimension(conv_dim: int, pooling: str = "avgpool") -> Type[nn.Module]:
     """
     The function to select nn.AdaptiveAvgPoolNd
 
     :param conv_dim: the dimension of the convolutional operation
     :param pooling: choice of adaptive pooling between str 'avgpool' and 'maxpool'. Default: 'avgpool'
     :return: nn.Module object
+    # noqa
     """
-    if pooling == 'avgpool':
+    if pooling == "avgpool":
         if conv_dim == 1:
             return nn.AdaptiveAvgPool1d
         elif conv_dim == 3:
             return nn.AdaptiveAvgPool3d
         return nn.AdaptiveAvgPool2d
 
-    if pooling == 'maxpool':
+    if pooling == "maxpool":
         if conv_dim == 1:
             return nn.AdaptiveMaxPool1d
         elif conv_dim == 3:
