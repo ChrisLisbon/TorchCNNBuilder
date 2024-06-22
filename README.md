@@ -58,9 +58,10 @@ Initially, the library was created to help predict n-dimensional time series *(g
 ---
 We try to maintain good practices of readable open source code. Therefore, if you want to participate in the development and open your pool request, pay attention to the following points:
 - Every push is checked by the flake8 job. It will show you PEP8 errors or possible code improvements.
-- Use a linter script for the framework dir after your code:
+- Use this linter script after your code:
 ```bash
 bash lint_and_check.sh
 ````
+*You can mark function docstrings using `#noqa`, in order for flake8 not to pay attention to them.*
 
 
