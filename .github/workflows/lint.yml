@@ -23,7 +23,8 @@ jobs:
 
     - name: Copy flake8 configuration
       run: |
-          cp .flake8 .github/workflows/.flake8
+          ls -a
+          cp .flake8 $HOME/.github/workflows/.flake8
 
     - name: Check code style with flake8
       run: |
