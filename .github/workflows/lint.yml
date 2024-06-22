@@ -23,4 +23,4 @@ jobs:
 
     - name: Check code style with flake8
       run: |
-        flake8 --config .github/workflows/.flake8 .
+        flake8 --config .github/workflows/.flake8 torchcnnbuilder

@@ -3,8 +3,7 @@ max-line-length = 120
 extend-ignore = E203, E266, W503, W504
 show-source = true
 statistics = true
-plugins = flake-isort, flake-black, flake-gitignore
-gitignore = true
+plugins = flake-isort, flake-black
 ignore = D1
 
 [isort]
