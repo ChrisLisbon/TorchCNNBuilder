@@ -2,15 +2,6 @@ from typing import Dict, Tuple, Type
 
 import torch.nn as nn
 
-from torchcnnbuilder.builder import (
-    conv1d_out,
-    conv2d_out,
-    conv3d_out,
-    conv_transpose1d_out,
-    conv_transpose2d_out,
-    conv_transpose3d_out,
-)
-
 
 def _double_params(param: int) -> Tuple[int, int]:
     """
@@ -73,30 +64,6 @@ def _select_conv_dimension(conv_dim: int, transpose: bool = False) -> Type[nn.Mo
 
     # by default in all other cases
     return nn.Conv2d
-
-
-def _select_conv_calc(conv_dim: int, transpose: bool = False):
-    """
-    The function to select a way of calculating conv output
-
-    :param conv_dim: the dimension of the convolutional operation
-    :param transpose: choice of conv types between transposed and ordinary one. Default: False
-    :return: one of functions to calculate conv or transposed conv output
-    # noqa
-    """
-    if conv_dim == 1:
-        if transpose:
-            return conv_transpose1d_out
-        return conv1d_out
-    elif conv_dim == 3:
-        if transpose:
-            return conv_transpose3d_out
-        return conv3d_out
-    if transpose:
-        return conv_transpose2d_out
-
-    # by default in all other cases
-    return conv2d_out
 
 
 def _select_norm_dimension(conv_dim: int, normalization: str = "batchnorm") -> Type[nn.Module]:

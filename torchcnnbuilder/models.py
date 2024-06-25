@@ -29,6 +29,7 @@ class ForecasterBase(nn.Module):
         n_layers: int,
         in_channels: int,
         out_channels: int,
+        conv_dim: int = 2,
         n_transpose_layers: Optional[int] = None,
         convolve_params: Optional[dict] = None,
         transpose_convolve_params: Optional[dict] = None,
@@ -43,6 +44,7 @@ class ForecasterBase(nn.Module):
         :param n_layers: number of the convolution layers in the encoder part
         :param in_channels: number of channels in the first input tensor (prehistory size)
         :param out_channels: number of channels in the last output tensor (forecasting size)
+        :param conv_dim: the dimension of the convolutional operation 2 or 3. Default: 2
         :param n_transpose_layers: number of the transpose convolution layers in the encoder part. Default: None (same as n_layers)
         :param convolve_params: parameters of convolutional layers (by default same as in torch). Default: None
         :param transpose_convolve_params: parameters of transpose convolutional layers (by default same as in torch). Default: None
@@ -67,12 +69,15 @@ class ForecasterBase(nn.Module):
         if transpose_convolve_params is None:
             transpose_convolve_params = builder.default_transpose_params
 
+        channel_growth_rate = "linear" if conv_dim == 3 else "uniform"
+
         self.convolve = builder.build_convolve_sequence(
             n_layers=n_layers,
             in_channels=in_channels,
             params=convolve_params,
+            conv_dim=conv_dim,
             normalization=normalization,
-            ascending=True,
+            channel_growth_rate=channel_growth_rate,
         )
 
         self.transpose = builder.build_transpose_convolve_sequence(
@@ -80,8 +85,9 @@ class ForecasterBase(nn.Module):
             in_channels=builder.conv_channels[-1],
             out_channels=out_channels,
             params=transpose_convolve_params,
+            conv_dim=conv_dim,
             normalization=normalization,
-            ascending=True,
+            channel_growth_rate=channel_growth_rate,
         )
 
         self.conv_channels = builder.conv_channels
