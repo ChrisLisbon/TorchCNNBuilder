@@ -48,6 +48,23 @@ def _validate_range_step(range_step: int, n_layers: int) -> None:
 
 
 def _validate_calc_channels_param(channel_growth_rate: str) -> None:
-    growth_rates = ("ratio", "proportion", "linear", "constant")
-    if channel_growth_rate not in growth_rates:
-        raise ValueError(f"There is no param {channel_growth_rate=}. Choose something from {growth_rates=}")
+    available_growth_rate = ("ratio", "proportion", "linear", "constant")
+    if channel_growth_rate not in available_growth_rate:
+        raise ValueError(f"There is no param {channel_growth_rate=}. Choose something from {available_growth_rate=}")
+
+
+def _validate_normalization_param(normalization: str) -> None:
+    available_normalization = ("batchnorm", "instancenorm", "dropout")
+    if normalization not in available_normalization:
+        raise ValueError(f"There is no param {normalization=}. Choose something from {available_normalization=}")
+
+
+def _validate_pooling_param(pooling: str) -> None:
+    available_pooling = ("avgpool", "maxpool")
+    if pooling not in available_pooling:
+        raise ValueError(f"There is no param {pooling=}. Choose something from {available_pooling=}")
+
+
+def _validate_conv_dim(conv_dim: int) -> None:
+    if not 1 <= conv_dim <= 3:
+        raise ValueError(f"You should choose convolution dimension between 1 and 3. You have {conv_dim}=")

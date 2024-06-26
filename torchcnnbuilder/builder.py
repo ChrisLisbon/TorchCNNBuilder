@@ -16,6 +16,7 @@ from torchcnnbuilder.validation import (
     _validate_available_layers,
     _validate_build_transpose_convolve_init,
     _validate_calc_channels_param,
+    _validate_conv_dim,
     _validate_difference_in_dimensions,
     _validate_max_channels_number,
     _validate_min_channels_number,
@@ -394,7 +395,6 @@ class Builder:
         :return nn.Sequential: one convolution block with an activation function
         # noqa
         """
-
         params = _set_conv_params(default_params=self.default_convolve_params, params=params)
         convolution = _select_conv_dimension(conv_dim=conv_dim)
 
@@ -813,16 +813,19 @@ def _select_conv_calc(conv_dim: int, transpose: bool = False):
     :return: one of functions to calculate conv or transposed conv output
     # noqa
     """
+    _validate_conv_dim(conv_dim)
+
     if conv_dim == 1:
         if transpose:
             return conv_transpose1d_out
         return conv1d_out
-    elif conv_dim == 3:
+
+    if conv_dim == 2:
+        if transpose:
+            return conv_transpose2d_out
+        return conv2d_out
+
+    if conv_dim == 3:
         if transpose:
             return conv_transpose3d_out
         return conv3d_out
-    if transpose:
-        return conv_transpose2d_out
-
-    # by default in all other cases
-    return conv2d_out
