@@ -69,7 +69,7 @@ class ForecasterBase(nn.Module):
         if transpose_convolve_params is None:
             transpose_convolve_params = builder.default_transpose_params
 
-        channel_growth_rate = "linear" if conv_dim == 3 else "uniform"
+        channel_growth_rate = "linear" if conv_dim == 3 else "proportion"
 
         self.convolve = builder.build_convolve_sequence(
             n_layers=n_layers,

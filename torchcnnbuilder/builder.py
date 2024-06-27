@@ -384,11 +384,11 @@ class Builder:
         :param in_channels: number of channels in the input image
         :param out_channels: number of channels produced by the convolution
         :param params: convolutional layer parameters (nn.ConvNd). Default: None
-        :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
+        :param normalization: choice of normalization between str 'dropout', 'instancenorm' and 'batchnorm'. Default: None
         :param sub_blocks: number of convolutions in one layer. Default: 1
-        :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
-        :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
-        :param eps: a value added to the denominator for numerical stability (for batchnorm). Default: 1e-5
+        :param p: probability of an element to be zero-ed (for dropout/instancenorm). Default: 0.5
+        :param inplace: if set to True, will do this operation in-place (for dropout/instancenorm). Default: False
+        :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
         :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
         :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm). Default: True
         :param conv_dim: the dimension of the convolutional operation. Default: 2
@@ -465,15 +465,15 @@ class Builder:
         :param n_layers: number of the convolution layers in the encoder part
         :param in_channels: number of channels in the first input tensor. Default: 1
         :param params: convolutional layer parameters (nn.ConvNd). Default: None
-        :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
+        :param normalization: choice of normalization between str 'dropout', 'instancenorm' and 'batchnorm'. Default: None
         :param sub_blocks: number of convolutions in one layer. Default: 1
         :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
         :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
-        :param eps: a value added to the denominator for numerical stability (for batchnorm). Default: 1e-5
-        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
-        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm). Default: True
+        :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
+        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
+        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
         :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
-        :param start: start position of a geometric progression in the case of ascending=False. Default: 32
+        :param start: start position of a geometric progression in the case of 'channel_growth_rate=ratio'. Default: 32
         :param channel_growth_rate: the way of calculating the number of feature maps between 'ratio', 'proportion', 'linear' and 'constant'. Default: 'ratio'
         :param conv_dim: the dimension of the convolutional operation. Default: 2
         :return nn.Sequential: convolutional sequence
@@ -548,13 +548,13 @@ class Builder:
         :param in_channels: number of channels in the input image
         :param out_channels: number of channels produced by the convolution
         :param params: convolutional layer parameters (nn.Conv2d). Default: None
-        :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
+        :param normalization: choice of normalization between str 'dropout', 'instancenorm' and 'batchnorm'. Default: None
         :param sub_blocks: number of convolutions in one layer. Default: 1
         :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
         :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
-        :param eps: a value added to the denominator for numerical stability (for batchnorm). Default: 1e-5
-        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
-        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm). Default: True
+        :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
+        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
+        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
         :param last_block: if True there is no activation function after the transposed convolution. Default: False
         :param conv_dim: the dimension of the convolutional operation. Default: 2
         :return nn.Sequential: one convolution block with an activation function
@@ -641,13 +641,13 @@ class Builder:
         :param out_channels: number of channels after the transposed convolution sequence. Default: 1
         :param out_size: output size after the transposed convolution sequence. Default: None (input size)
         :param params: transposed convolutional layer parameters (nn.ConvTranspose2d). Default: None
-        :param normalization: choice of normalization between str 'dropout' and 'batchnorm'. Default: None
+        :param normalization: choice of normalization between str 'dropout', 'instancenorm' and 'batchnorm'. Default: None
         :param sub_blocks: number of transposed convolutions in one layer. Default: 1
         :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
         :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
-        :param eps: a value added to the denominator for numerical stability (for batchnorm). Default: 1e-5
-        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
-        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm). Default: True
+        :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
+        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
+        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
         :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
         :param channel_growth_rate: the way of calculating the number of feature maps between 'ratio', 'proportion', 'linear' and 'constant'. Default: 'ratio'
         :param conv_dim: the dimension of the convolutional operation. Default: 2
@@ -798,10 +798,10 @@ class Builder:
             return [in_channels] + channels
 
         if channel_growth_rate == "linear":
-            return [in_channels] + [in_channels - i + 1 for i in range(n_layers)]
+            return [in_channels] + [in_channels - i for i in range(1, n_layers)] + [out_channels]
 
         if channel_growth_rate == "constant":
-            return [in_channels] + [constant for _ in range(n_layers)]
+            return [in_channels] + [constant for _ in range(n_layers - 1)] + [out_channels]
 
 
 def _select_conv_calc(conv_dim: int, transpose: bool = False):
