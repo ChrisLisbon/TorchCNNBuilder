@@ -11,7 +11,7 @@
 </div>
 
 ---
-**TorchCNNBuilder** is an open-source framework for the automatic creation of CNN architectures. This framework should first of all help researchers in the applicability of CNN models for a huge range of tasks, taking over most of the writing of the architecture code. This framework is distributed under the 3-Clause BSD license. All the functionality is written only using `pytorch` *(no third-party dependencies)*
+**TorchCNNBuilder** is an open-source framework for the automatic creation of CNN architectures. This framework should first of all help researchers in the applicability of CNN models for a huge range of tasks, taking over most of the writing of the architecture code. This framework is distributed under the 3-Clause BSD license. All the functionality is written only using `pytorch` *(no third-party dependencies)*.
 
 ### Installation
 
@@ -45,11 +45,23 @@ The structure of the main part of the package:
     ├── builder.py
     └── models.py
 ```
-Initially, the library was created to help predict n-dimensional time series *(geodata)*, so there is a corresponding functionality and templates of predictive models *(like `ForecasterBase`)*
+Initially, the library was created to help predict n-dimensional time series *(geodata)*, so there is a corresponding functionality and templates of predictive models *(like `ForecasterBase`)*.
 
 ### Sources
 
 ---
 - [Forecasting of Sea Ice Concentration using CNN, PDE discovery and Bayesian Networks](https://www.sciencedirect.com/science/article/pii/S1877050923020094)
 - [Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
+
+### Development
+
+---
+We try to maintain good practices of readable open source code. Therefore, if you want to participate in the development and open your pool request, pay attention to the following points:
+- Every push is checked by the flake8 job. It will show you PEP8 errors or possible code improvements.
+- Use this linter script after your code:
+```bash
+bash lint_and_check.sh
+````
+*You can mark function docstrings using `#noqa`, in order for flake8 not to pay attention to them.*
+
 

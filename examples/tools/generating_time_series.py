@@ -1,14 +1,16 @@
-import numpy as np
-import matplotlib.pyplot as plt
+from typing import List, Tuple
+
 import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import numpy as np
 
-from typing import Tuple, List
 
-
-def synthetic_time_series(num_frames: int = 210,
-                          matrix_size: int = 100,
-                          square_size: int = 25,
-                          interval: int = 10) -> Tuple[animation.ArtistAnimation, List[np.array]]:
+def synthetic_time_series(
+    num_frames: int = 210,
+    matrix_size: int = 100,
+    square_size: int = 25,
+    interval: int = 10,
+) -> Tuple[animation.ArtistAnimation, List[np.array]]:
     """
     Creating a synthetic 2d time series with a square moving in a circle
 
@@ -29,31 +31,32 @@ def synthetic_time_series(num_frames: int = 210,
     fig, ax = plt.subplots()
 
     # parameterization
-    theta = np.linspace(0, 2*np.pi, num_frames)
+    theta = np.linspace(0, 2 * np.pi, num_frames)
 
     frames = []
     matrices = []
     for i in range(num_frames):
-
         # shifting using parameterization of trigonometric functions
-        x_shift = int(matrix_size/2 + matrix_size/4 * np.cos(theta[i]))
-        y_shift = int(matrix_size/2 + matrix_size/4 * np.sin(theta[i]))
+        x_shift = int(matrix_size / 2 + matrix_size / 4 * np.cos(theta[i]))
+        y_shift = int(matrix_size / 2 + matrix_size / 4 * np.sin(theta[i]))
 
-        shifted_matrix = np.roll(matrix, x_shift - matrix_size//2, axis=1)
-        shifted_matrix = np.roll(shifted_matrix, y_shift - matrix_size//2, axis=0)
+        shifted_matrix = np.roll(matrix, x_shift - matrix_size // 2, axis=1)
+        shifted_matrix = np.roll(shifted_matrix, y_shift - matrix_size // 2, axis=0)
 
-        frames.append((ax.imshow(shifted_matrix, cmap='gray'),))
+        frames.append((ax.imshow(shifted_matrix, cmap="gray"),))
         matrices.append(1 - shifted_matrix)
 
     ani = animation.ArtistAnimation(fig=fig, artists=frames, interval=interval)
     return ani, matrices
 
 
-def save_gif(matrices: List[np.array],
-             name: str,
-             writer: str = 'pillow',
-             fps: int = 30,
-             interval: int = 10) -> None:
+def save_gif(
+    matrices: List[np.array],
+    name: str,
+    writer: str = "pillow",
+    fps: int = 30,
+    interval: int = 10,
+) -> None:
     """
     Saving matrices lika a .gif file
 
@@ -64,11 +67,11 @@ def save_gif(matrices: List[np.array],
     :param interval: interval between frames in milliseconds. Default: 10
     """
     fig, ax = plt.subplots()
-    frames = list(map(lambda x: (ax.imshow(1-x, cmap='gray'),), matrices))
+    frames = list(map(lambda x: (ax.imshow(1 - x, cmap="gray"),), matrices))
     ani = animation.ArtistAnimation(fig=fig, artists=frames, interval=interval)
-    ani.save(filename=f'{name}.gif', writer=writer, fps=fps)
+    ani.save(filename=f"{name}.gif", writer=writer, fps=fps)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ani, frames = synthetic_time_series()
-    ani.save('time_series_animation.gif', writer='pillow', fps=30)
+    ani.save("time_series_animation.gif", writer="pillow", fps=30)

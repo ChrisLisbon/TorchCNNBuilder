@@ -3,3 +3,7 @@ build
 dist
 .ipynb_checkpoints
 torchcnnbuilder.egg-info
+__pycache__/
+**/__pycache__/
+.DS_Store
+**/DS_Store
