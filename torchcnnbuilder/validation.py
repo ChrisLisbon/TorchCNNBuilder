@@ -47,7 +47,7 @@ def _validate_range_step(range_step: int, n_layers: int) -> None:
         raise ValueError(f"Input size and parameters can not provide {n_layers} layers, try other model parameters")
 
 
-def _validate_calc_channels_param(channel_growth_rate: str) -> None:
+def _validate_channel_growth_rate_param(channel_growth_rate: str) -> None:
     available_growth_rate = ("ratio", "proportion", "linear", "constant")
     if channel_growth_rate not in available_growth_rate:
         raise ValueError(f"There is no param {channel_growth_rate=}. Choose something from {available_growth_rate=}")
@@ -68,3 +68,9 @@ def _validate_pooling_param(pooling: str) -> None:
 def _validate_conv_dim(conv_dim: int) -> None:
     if not 1 <= conv_dim <= 3:
         raise ValueError(f"You should choose convolution dimension between 1 and 3. You have {conv_dim}=")
+
+
+def _validate_sequence_length(sequence: Sequence[int], length: int) -> None:
+    input_length = len(sequence)
+    if input_length > length:
+        raise ValueError(f"{input_length=} should be less than {length=}")

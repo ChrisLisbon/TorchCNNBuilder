@@ -15,7 +15,7 @@ from torchcnnbuilder.utils import (
 from torchcnnbuilder.validation import (
     _validate_available_layers,
     _validate_build_transpose_convolve_init,
-    _validate_calc_channels_param,
+    _validate_channel_growth_rate_param,
     _validate_conv_dim,
     _validate_difference_in_dimensions,
     _validate_max_channels_number,
@@ -741,7 +741,7 @@ class Builder:
         :return: output channels after each convolutional layer
         # noqa
         """
-        _validate_calc_channels_param(channel_growth_rate)
+        _validate_channel_growth_rate_param(channel_growth_rate)
 
         if channel_growth_rate == "ratio":
             self.max_channels = self.initial_max_channels
@@ -786,7 +786,7 @@ class Builder:
         :return: output channels after each transposed convolutional layer
         # noqa
         """
-        _validate_calc_channels_param(channel_growth_rate)
+        _validate_channel_growth_rate_param(channel_growth_rate)
 
         if channel_growth_rate == "ratio":
             return [int(in_channels / ratio**i) for i in range(n_layers)] + [out_channels]
