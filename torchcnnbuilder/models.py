@@ -3,7 +3,7 @@ from typing import Optional, Sequence, Union
 import torch.nn as nn
 
 from torchcnnbuilder.builder import Builder
-from torchcnnbuilder.validation import _validate_sequence_length
+from torchcnnbuilder.validation import _validate_conv_dim, _validate_sequence_length
 
 
 # ------------------------------------
@@ -55,22 +55,27 @@ class ForecasterBase(nn.Module):
         # noqa
         """
         super(ForecasterBase, self).__init__()
+        _validate_conv_dim(conv_dim)
 
         if conv_dim == 3:
             _validate_sequence_length(input_size, 2)
 
-            channel_growth_rate = "linear"
+            channel_growth_rate = "power"
             out_size = [out_time_points] + list(input_size)
             input_size = [in_time_points] + list(input_size)
+
             # time_points is a 3d dimension like channels
             in_time_points, out_time_points = 1, 1
-        elif conv_dim == 2:
+
+        if conv_dim == 2:
             _validate_sequence_length(input_size, 2)
+
             channel_growth_rate = "proportion"
             out_size = None
-        else:
-            # TODO
+
+        if conv_dim == 1:
             _validate_sequence_length(input_size, 1)
+
             channel_growth_rate = "proportion"
             out_size = None
 

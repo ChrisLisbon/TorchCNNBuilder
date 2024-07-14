@@ -48,7 +48,7 @@ def _validate_range_step(range_step: int, n_layers: int) -> None:
 
 
 def _validate_channel_growth_rate_param(channel_growth_rate: str) -> None:
-    available_growth_rate = ("ratio", "proportion", "linear", "constant")
+    available_growth_rate = ("exponential", "proportion", "linear", "power", "constant")
     if channel_growth_rate not in available_growth_rate:
         raise ValueError(f"There is no param {channel_growth_rate=}. Choose something from {available_growth_rate=}")
 
