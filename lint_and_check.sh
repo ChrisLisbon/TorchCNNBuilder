@@ -1,7 +1,22 @@
 #!/bin/bash
 
-echo "-- Downloading linter packages..."
-pip install flake8 black isort
+echo "-- Checking for required linter packages..."
+
+check_and_install() {
+    PACKAGE=$1
+    pip show $PACKAGE > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "-- $PACKAGE is not installed. Installing..."
+        pip install $PACKAGE
+    else
+        echo "-- $PACKAGE is already installed."
+    fi
+}
+
+# checking and installing packages
+check_and_install flake8
+check_and_install black
+check_and_install isort
 
 # checking flake8 config
 FLAKE8_CONFIG=".github/workflows/.flake8"

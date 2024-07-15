@@ -1,3 +1,4 @@
+import math
 from collections import OrderedDict
 from typing import List, Optional, Sequence, Tuple, Union
 
@@ -15,7 +16,7 @@ from torchcnnbuilder.utils import (
 from torchcnnbuilder.validation import (
     _validate_available_layers,
     _validate_build_transpose_convolve_init,
-    _validate_calc_channels_param,
+    _validate_channel_growth_rate_param,
     _validate_conv_dim,
     _validate_difference_in_dimensions,
     _validate_max_channels_number,
@@ -389,7 +390,7 @@ class Builder:
         :param p: probability of an element to be zero-ed (for dropout/instancenorm). Default: 0.5
         :param inplace: if set to True, will do this operation in-place (for dropout/instancenorm). Default: False
         :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
-        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
+        :param momentum: used for the running_mean or running_var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
         :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm). Default: True
         :param conv_dim: the dimension of the convolutional operation. Default: 2
         :return nn.Sequential: one convolution block with an activation function
@@ -456,7 +457,7 @@ class Builder:
         affine: bool = True,
         ratio: float = 2.0,
         start: int = 32,
-        channel_growth_rate: str = "ratio",
+        channel_growth_rate: str = "exponential",
         conv_dim: int = 2,
     ) -> nn.Sequential:
         """
@@ -470,11 +471,11 @@ class Builder:
         :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
         :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
         :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
-        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
+        :param momentum: used for the running_mean or running_var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
         :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
-        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
-        :param start: start position of a geometric progression in the case of 'channel_growth_rate=ratio'. Default: 32
-        :param channel_growth_rate: the way of calculating the number of feature maps between 'ratio', 'proportion', 'linear' and 'constant'. Default: 'ratio'
+        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power' . Default: 2 (powers of two)
+        :param start: start position of a geometric progression in the case of 'channel_growth_rate=exponential'. Default: 32
+        :param channel_growth_rate: the way of calculating the number of feature maps between 'exponential', 'proportion', 'linear', 'power' and 'constant'. Default: 'exponential'
         :param conv_dim: the dimension of the convolutional operation. Default: 2
         :return nn.Sequential: convolutional sequence
         # noqa
@@ -553,7 +554,7 @@ class Builder:
         :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
         :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
         :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
-        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
+        :param momentum: used for the running_mean or running_var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
         :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
         :param last_block: if True there is no activation function after the transposed convolution. Default: False
         :param conv_dim: the dimension of the convolutional operation. Default: 2
@@ -629,7 +630,7 @@ class Builder:
         momentum: Optional[float] = 0.1,
         affine: bool = True,
         ratio: float = 2.0,
-        channel_growth_rate: str = "ratio",
+        channel_growth_rate: str = "exponential",
         conv_dim: int = 2,
         adaptive_pool: str = "avgpool",
     ) -> nn.Sequential:
@@ -646,10 +647,10 @@ class Builder:
         :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
         :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
         :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
-        :param momentum: used for the running_mean or var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
+        :param momentum: used for the running_mean or runnIng_var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
         :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
-        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
-        :param channel_growth_rate: the way of calculating the number of feature maps between 'ratio', 'proportion', 'linear' and 'constant'. Default: 'ratio'
+        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power' . Default: 2 (powers of two)
+        :param channel_growth_rate: the way of calculating the number of feature maps between 'exponential', 'proportion', 'linear', 'power' and 'constant'. Default: 'exponential'
         :param conv_dim: the dimension of the convolutional operation. Default: 2
         :param adaptive_pool: choice of a last layer as an adaptive pooling between str 'avgpool' or 'maxpool'. Default: 'avgpool'
         :return nn.Sequential: transposed convolutional sequence
@@ -727,7 +728,7 @@ class Builder:
         ratio: float = 2.0,
         start: int = 32,
         constant: int = 1,
-        channel_growth_rate: str = "ratio",
+        channel_growth_rate: str = "exponential",
     ) -> List[int]:
         """
         The function to calculate output channels after each convolutional layer
@@ -735,15 +736,15 @@ class Builder:
         :param in_size: input size of the first input tensor
         :param in_channels: number of channels in the first input tensor
         :param n_layers: number of the convolution layers in the encoder part
-        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
+        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power' . Default: 2 (powers of two)
         :param start: start position of a geometric progression in the case of ascending=False. Default: 32
-        :param channel_growth_rate: the way of calculating the number of feature maps between 'ratio', 'proportion', 'linear' and 'constant'. Default: 'ratio'
+        :param channel_growth_rate: the way of calculating the number of feature maps between 'exponential', 'proportion', 'linear', 'power' and 'constant'. Default: 'exponential'
         :return: output channels after each convolutional layer
         # noqa
         """
-        _validate_calc_channels_param(channel_growth_rate)
+        _validate_channel_growth_rate_param(channel_growth_rate)
 
-        if channel_growth_rate == "ratio":
+        if channel_growth_rate == "exponential":
             self.max_channels = self.initial_max_channels
             return [in_channels] + [int(start * ratio**i) for i in range(n_layers)]
 
@@ -766,6 +767,10 @@ class Builder:
             self.max_channels = constant + 1
             return [in_channels] + [constant for _ in range(n_layers)]
 
+        if channel_growth_rate == "power":
+            self.max_channels = self.initial_max_channels
+            return [in_channels] + [int((in_channels + i) ** ratio) for i in range(1, n_layers + 1)]
+
     @staticmethod
     def _calc_out_transpose_channels(
         in_channels: int,
@@ -773,7 +778,7 @@ class Builder:
         n_layers: int,
         ratio: float = 2.0,
         constant: int = 1,
-        channel_growth_rate: str = "ratio",
+        channel_growth_rate: str = "exponential",
     ) -> List[int]:
         """
         The function to calculate output channels after each transposed convolutional layer
@@ -781,14 +786,14 @@ class Builder:
         :param in_channels: number of channels in the first input tensor
         :param out_channels: number of channels in the last tensor
         :param n_layers: number of the transposed convolution layers in the encoder part
-        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Default: 2 (powers of two)
-        :param channel_growth_rate: the way of calculating the number of feature maps between 'ratio', 'proportion', 'linear' and 'constant'. Default: 'ratio'
+        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power' . Default: 2 (powers of two)
+        :param channel_growth_rate: the way of calculating the number of feature maps between 'exponential', 'proportion', 'linear', 'power' and 'constant'. Default: 'exponential'
         :return: output channels after each transposed convolutional layer
         # noqa
         """
-        _validate_calc_channels_param(channel_growth_rate)
+        _validate_channel_growth_rate_param(channel_growth_rate)
 
-        if channel_growth_rate == "ratio":
+        if channel_growth_rate == "exponential":
             return [int(in_channels / ratio**i) for i in range(n_layers)] + [out_channels]
 
         if channel_growth_rate == "proportion":
@@ -802,6 +807,11 @@ class Builder:
 
         if channel_growth_rate == "constant":
             return [in_channels] + [constant for _ in range(n_layers - 1)] + [out_channels]
+
+        if channel_growth_rate == "power":
+            return (
+                [in_channels] + [int(math.pow((n_layers - i + 1), ratio)) for i in range(1, n_layers)] + [out_channels]
+            )
 
 
 def _select_conv_calc(conv_dim: int, transpose: bool = False):
