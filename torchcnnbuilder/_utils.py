@@ -2,7 +2,7 @@ from typing import Dict, Tuple, Type
 
 import torch.nn as nn
 
-from torchcnnbuilder.validation import (
+from torchcnnbuilder._validation import (
     _validate_conv_dim,
     _validate_normalization_param,
     _validate_pooling_param,

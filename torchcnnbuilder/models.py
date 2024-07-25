@@ -1,9 +1,9 @@
-from typing import Optional, Sequence, Union
+from typing import Optional, Sequence
 
 import torch.nn as nn
 
+from torchcnnbuilder._validation import _validate_conv_dim, _validate_sequence_length
 from torchcnnbuilder.builder import Builder
-from torchcnnbuilder.validation import _validate_conv_dim, _validate_sequence_length
 
 
 # ------------------------------------
@@ -35,7 +35,7 @@ class ForecasterBase(nn.Module):
         convolve_params: Optional[dict] = None,
         transpose_convolve_params: Optional[dict] = None,
         activation_function: nn.Module = nn.ReLU(inplace=True),
-        finish_activation_function: Union[str, Optional[nn.Module]] = None,
+        finish_activation_function: Optional[nn.Module] | str = None,
         normalization: Optional[str] = None,
     ) -> None:
         """

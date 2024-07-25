@@ -1,4 +1,4 @@
-from typing import List, Optional, Sequence, Tuple, Union
+from typing import List, Optional, Sequence, Tuple
 
 from torch import tensor
 
@@ -15,7 +15,7 @@ def _validate_difference_in_dimensions(input_size: Sequence[int], conv_dim: int)
 def _validate_available_layers(
     layer: int,
     input_layer_size: Tuple[int],
-    minimum_feature_map_size: Union[Sequence[int], int],
+    minimum_feature_map_size: Sequence[int] | int,
 ) -> None:
     if all(tensor(input_layer_size) < tensor(minimum_feature_map_size)[: len(input_layer_size)]):
         raise ValueError(f"Input size and parameters can not provide more than {layer + 1} layers")
@@ -74,3 +74,8 @@ def _validate_sequence_length(sequence: Sequence[int], length: int) -> None:
     input_length = len(sequence)
     if input_length > length:
         raise ValueError(f"{input_length=} should be less than {length=}")
+
+
+def _validate_input_size_is_not_none(input_size: Optional[Sequence[int]]) -> None:
+    if input_size is None:
+        raise ValueError("You need to specify builder input_size in order to use this method")
