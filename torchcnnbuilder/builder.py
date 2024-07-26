@@ -43,12 +43,10 @@ class Builder:
         min_channels (int): minimum number of layers after any convolution. Default: 32
         activation_function (nn.Module): activation function. Default: nn.ReLU(inplace=True)
         finish_activation_function (Union[str, Optional[nn.Module]): last activation function, can be same as activation_function (str 'same'). Default: None
-        _default_convolve_params (dict[str, Union[int, tuple]]): parameters of convolutional layers (by default same as in torch)
-        _default_transpose_params (dict[str, Union[int, tuple]]): parameters of transposed convolutional layers (by default same as in torch)
-        _conv_channels (List[int]): list of output channels after each convolutional layer
-        _transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
-        _conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
-        _transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
+        conv_channels (List[int]): list of output channels after each convolutional layer
+        transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
+        conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
+        transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
         # noqa
     """
 
