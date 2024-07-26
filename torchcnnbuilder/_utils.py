@@ -1,8 +1,8 @@
-from typing import Dict, Tuple, Type
+from typing import Dict, Optional, Tuple, Type
 
 import torch.nn as nn
 
-from torchcnnbuilder.validation import (
+from torchcnnbuilder._validation import (
     _validate_conv_dim,
     _validate_normalization_param,
     _validate_pooling_param,
@@ -31,7 +31,7 @@ def _triple_params(param: int) -> Tuple[int, int, int]:
     return param, param, param
 
 
-def _set_conv_params(default_params: Dict[str, int], params: Dict[str, int]) -> Dict[str, int]:
+def _set_conv_params(default_params: Dict[str, int], params: Optional[Dict[str, int]]) -> Dict[str, int]:
     """
     Set convolution or transpose convolution params by using default one
 
@@ -41,7 +41,7 @@ def _set_conv_params(default_params: Dict[str, int], params: Dict[str, int]) -> 
     # noqa
     """
     default_params = default_params.copy()
-    if params:
+    if params is not None:
         for key, value in params.items():
             default_params[key] = value
     return default_params
@@ -49,7 +49,7 @@ def _set_conv_params(default_params: Dict[str, int], params: Dict[str, int]) -> 
 
 def _select_conv_dimension(conv_dim: int, transpose: bool = False) -> Type[nn.Module]:
     """
-    The function to select nn.ConvNd
+    The function to select nn.ConvNd or nn.ConvTransposeNd
 
     :param conv_dim: the dimension of the convolutional operation
     :param transpose: choice of conv types between transposed and ordinary one. Default: False
@@ -76,7 +76,7 @@ def _select_conv_dimension(conv_dim: int, transpose: bool = False) -> Type[nn.Mo
 
 def _select_norm_dimension(conv_dim: int, normalization: str = "batchnorm") -> Type[nn.Module]:
     """
-    The function to select nn.BatchNormNd or nn.DropoutNd
+    The function to select nn.BatchNormNd, nn.InstanceNormNd or nn.DropoutNd
 
     :param conv_dim: the dimension of the convolutional operation
     :param normalization: choice of normalization between str 'dropout', 'batchnorm' and 'instancenorm'. Default: 'batchnorm'
@@ -112,7 +112,7 @@ def _select_norm_dimension(conv_dim: int, normalization: str = "batchnorm") -> T
 
 def _select_adaptive_pooling_dimension(conv_dim: int, pooling: str = "avgpool") -> Type[nn.Module]:
     """
-    The function to select nn.AdaptiveAvgPoolNd
+    The function to select nn.AdaptivePoolNd
 
     :param conv_dim: the dimension of the convolutional operation
     :param pooling: choice of adaptive pooling between str 'avgpool' and 'maxpool'. Default: 'avgpool'
