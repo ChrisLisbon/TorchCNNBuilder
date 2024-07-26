@@ -1,6 +1,6 @@
 import math
 from collections import OrderedDict
-from typing import List, Optional, Sequence
+from typing import List, Optional, Sequence, Tuple, Union
 
 import torch.nn as nn
 
@@ -43,23 +43,23 @@ class Builder:
         min_channels (int): minimum number of layers after any convolution. Default: 32
         activation_function (nn.Module): activation function. Default: nn.ReLU(inplace=True)
         finish_activation_function (Union[str, Optional[nn.Module]): last activation function, can be same as activation_function (str 'same'). Default: None
-        default_convolve_params (dict[str, Union[int, tuple]]): parameters of convolutional layers (by default same as in torch)
-        default_transpose_params (dict[str, Union[int, tuple]]): parameters of transposed convolutional layers (by default same as in torch)
-        conv_channels (List[int]): list of output channels after each convolutional layer
-        transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
-        conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
-        transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
+        _default_convolve_params (dict[str, Union[int, tuple]]): parameters of convolutional layers (by default same as in torch)
+        _default_transpose_params (dict[str, Union[int, tuple]]): parameters of transposed convolutional layers (by default same as in torch)
+        _conv_channels (List[int]): list of output channels after each convolutional layer
+        _transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
+        _conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
+        _transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
         # noqa
     """
 
     def __init__(
         self,
         input_size: Optional[Sequence[int]] = None,
-        minimum_feature_map_size: Sequence[int] | int = 5,
+        minimum_feature_map_size: Union[Sequence[int], int] = 5,
         max_channels: int = 512,
         min_channels: int = 1,
         activation_function: nn.Module = nn.ReLU(inplace=True),
-        finish_activation_function: Optional[nn.Module] | str = None,
+        finish_activation_function: Union[Optional[nn.Module], str] = None,
     ) -> None:
         """
         The constructor for Builder
@@ -102,23 +102,39 @@ class Builder:
                 )
 
         self.max_channels = max_channels
-        self.initial_max_channels = max_channels
+        self._initial_max_channels = max_channels
 
         self.min_channels = min_channels
-        self.initial_min_channels = min_channels
+        self._initial_min_channels = min_channels
 
-        self.default_convolve_params = DEFAULT_CONV_PARAMS
-        self.default_transpose_params = DEFAULT_TRANSPOSE_CONV_PARAMS
+        self._default_convolve_params = DEFAULT_CONV_PARAMS
+        self._default_transpose_params = DEFAULT_TRANSPOSE_CONV_PARAMS
 
         # finish_activation_function can be str 'same' which equals to activation_function
         self.activation_function = activation_function
         self.finish_activation_function = finish_activation_function
 
-        self.conv_channels = None
-        self.transpose_conv_channels = None
+        self._conv_channels = None
+        self._transpose_conv_channels = None
 
-        self.conv_layers = None
-        self.transpose_conv_layers = None
+        self._conv_layers = None
+        self._transpose_conv_layers = None
+
+    @property
+    def conv_channels(self) -> Optional[List[int]]:
+        return self._conv_channels
+
+    @property
+    def transpose_conv_channels(self) -> Optional[List[int]]:
+        return self._transpose_conv_channels
+
+    @property
+    def conv_layers(self) -> Optional[List[Tuple[int, ...]]]:
+        return self._conv_layers
+
+    @property
+    def transpose_conv_layers(self) -> Optional[List[Tuple[int, ...]]]:
+        return self._transpose_conv_layers
 
     def build_convolve_block(
         self,
@@ -151,7 +167,7 @@ class Builder:
         :return nn.Sequential: one convolution block with an activation function
         # noqa
         """
-        params = _set_conv_params(default_params=self.default_convolve_params, params=params)
+        params = _set_conv_params(default_params=self._default_convolve_params, params=params)
         convolution = _select_conv_dimension(conv_dim=conv_dim)
 
         if sub_blocks > 1:
@@ -236,7 +252,7 @@ class Builder:
         # noqa
         """
         _validate_input_size_is_not_none(self.input_size)
-        params = _set_conv_params(default_params=self.default_convolve_params, params=params)
+        params = _set_conv_params(default_params=self._default_convolve_params, params=params)
         conv_out = _select_conv_calc(conv_dim=conv_dim)
 
         modules = []
@@ -280,8 +296,8 @@ class Builder:
 
             modules.append((f"conv {layer + 1}", convolve_block))
 
-        self.conv_channels = input_channels_count_list
-        self.conv_layers = input_layer_size_list
+        self._conv_channels = input_channels_count_list
+        self._conv_layers = input_layer_size_list
         return nn.Sequential(OrderedDict(modules))
 
     def build_transpose_convolve_block(
@@ -317,7 +333,7 @@ class Builder:
         :return nn.Sequential: one convolution block with an activation function
         # noqa
         """
-        params = _set_conv_params(default_params=self.default_transpose_params, params=params)
+        params = _set_conv_params(default_params=self._default_transpose_params, params=params)
         convolution = _select_conv_dimension(conv_dim=conv_dim, transpose=True)
 
         if sub_blocks > 1:
@@ -413,18 +429,18 @@ class Builder:
         # noqa
         """
         _validate_input_size_is_not_none(self.input_size)
-        params = _set_conv_params(default_params=self.default_transpose_params, params=params)
+        params = _set_conv_params(default_params=self._default_transpose_params, params=params)
         conv_out = _select_conv_calc(conv_dim=conv_dim, transpose=True)
 
         modules = []
 
-        if in_channels is None and self.conv_channels:
-            in_channels = self.conv_channels[-1]
+        if in_channels is None and self._conv_channels:
+            in_channels = self._conv_channels[-1]
 
-        _validate_build_transpose_convolve_init(in_channels, self.conv_channels)
+        _validate_build_transpose_convolve_init(in_channels, self._conv_channels)
 
-        if self.conv_layers:
-            input_layer_size_list = [self.conv_layers[-1]]
+        if self._conv_layers:
+            input_layer_size_list = [self._conv_layers[-1]]
 
         input_channels_count_list = self._calc_out_transpose_channels(
             in_channels=in_channels,
@@ -440,7 +456,7 @@ class Builder:
             in_channels = input_channels_count_list[layer]
             out_channels = input_channels_count_list[layer + 1]
 
-            if self.conv_layers:
+            if self._conv_layers:
                 input_layer_size = input_layer_size_list[-1]
                 out_layer_size = conv_out(input_size=input_layer_size, **params)
                 input_layer_size_list.append(out_layer_size)
@@ -463,10 +479,10 @@ class Builder:
 
             modules.append((f"deconv {layer + 1}", convolve_block))
 
-        self.transpose_conv_channels = input_channels_count_list
+        self._transpose_conv_channels = input_channels_count_list
 
-        if self.conv_layers:
-            self.transpose_conv_layers = input_layer_size_list
+        if self._conv_layers:
+            self._transpose_conv_layers = input_layer_size_list
 
         if out_size is None:
             out_size = self.input_size
@@ -502,7 +518,7 @@ class Builder:
         _validate_channel_growth_rate_param(channel_growth_rate)
 
         if channel_growth_rate == "exponential":
-            self.max_channels = self.initial_max_channels
+            self.max_channels = self._initial_max_channels
             return [in_channels] + [int(start * ratio**i) for i in range(n_layers)]
 
         if channel_growth_rate == "proportion":
@@ -525,7 +541,7 @@ class Builder:
             return [in_channels] + [constant for _ in range(n_layers)]
 
         if channel_growth_rate == "power":
-            self.max_channels = self.initial_max_channels
+            self.max_channels = self._initial_max_channels
             return [in_channels] + [int((in_channels + i) ** ratio) for i in range(1, n_layers + 1)]
 
     @staticmethod

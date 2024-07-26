@@ -1,4 +1,4 @@
-from typing import List, Optional, Sequence, Tuple
+from typing import List, Optional, Sequence, Tuple, Union
 
 from torch import tensor
 
@@ -15,7 +15,7 @@ def _validate_difference_in_dimensions(input_size: Sequence[int], conv_dim: int)
 def _validate_available_layers(
     layer: int,
     input_layer_size: Tuple[int],
-    minimum_feature_map_size: Sequence[int] | int,
+    minimum_feature_map_size: Union[Sequence[int], int],
 ) -> None:
     if all(tensor(input_layer_size) < tensor(minimum_feature_map_size)[: len(input_layer_size)]):
         raise ValueError(f"Input size and parameters can not provide more than {layer + 1} layers")
@@ -37,7 +37,7 @@ def _validate_min_channels_number(layer: int, input_channels_count_list: List[in
         )
 
 
-def _validate_build_transpose_convolve_init(in_channels: Optional[int], conv_channels: List[Tuple[int, ...]]) -> None:
+def _validate_build_transpose_convolve_init(in_channels: Optional[int], conv_channels: List[int]) -> None:
     if in_channels is None and not conv_channels:
         raise ValueError("You should specify in_channels or use build_convolve_sequence before transposed one")
 

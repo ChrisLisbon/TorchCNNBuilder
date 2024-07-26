@@ -1,18 +1,18 @@
-from typing import Tuple
+from typing import Tuple, Union
 
 from torchcnnbuilder._utils import _double_params, _triple_params
 from torchcnnbuilder._validation import _validate_conv_dim
 
 
 # ------------------------------------
-# calculation of convolution functions
+# Calculation of convolution functions
 # ------------------------------------
 def conv1d_out(
-    input_size: Tuple[int] | int,
-    kernel_size: Tuple[int] | int = 3,
-    stride: Tuple[int] | int = 1,
-    padding: Tuple[int] | int = 0,
-    dilation: Tuple[int] | int = 1,
+    input_size: Union[Tuple[int], int],
+    kernel_size: Union[Tuple[int], int] = 3,
+    stride: Union[Tuple[int], int] = 1,
+    padding: Union[Tuple[int], int] = 0,
+    dilation: Union[Tuple[int], int] = 1,
     n_layers: int = 1,
 ) -> Tuple[int]:
     """
@@ -40,11 +40,11 @@ def conv1d_out(
 
 
 def conv2d_out(
-    input_size: Tuple[int] | int,
-    kernel_size: Tuple[int] | int = 3,
-    stride: Tuple[int] | int = 1,
-    padding: Tuple[int] | int = 0,
-    dilation: Tuple[int] | int = 1,
+    input_size: Union[Tuple[int, int], int],
+    kernel_size: Union[Tuple[int, int], int] = 3,
+    stride: Union[Tuple[int, int], int] = 1,
+    padding: Union[Tuple[int, int], int] = 0,
+    dilation: Union[Tuple[int, int], int] = 1,
     n_layers: int = 1,
 ) -> Tuple[int, int]:
     """
@@ -73,11 +73,11 @@ def conv2d_out(
 
 
 def conv3d_out(
-    input_size: Tuple[int] | int,
-    kernel_size: Tuple[int] | int = 3,
-    stride: Tuple[int] | int = 1,
-    padding: Tuple[int] | int = 0,
-    dilation: Tuple[int] | int = 1,
+    input_size: Union[Tuple[int, int, int], int],
+    kernel_size: Union[Tuple[int, int, int], int] = 3,
+    stride: Union[Tuple[int, int, int], int] = 1,
+    padding: Union[Tuple[int, int, int], int] = 0,
+    dilation: Union[Tuple[int, int, int], int] = 1,
     n_layers: int = 1,
 ) -> Tuple[int, int, int]:
     """
@@ -107,15 +107,15 @@ def conv3d_out(
 
 
 # ------------------------------------
-# calculation of transposed convolution functions
+# Calculation of transposed convolution functions
 # ------------------------------------
 def conv_transpose1d_out(
-    input_size: Tuple[int] | int,
-    kernel_size: Tuple[int] | int = 3,
-    stride: Tuple[int] | int = 1,
-    padding: Tuple[int] | int = 0,
-    output_padding: Tuple[int] | int = 0,
-    dilation: Tuple[int] | int = 1,
+    input_size: Union[Tuple[int], int],
+    kernel_size: Union[Tuple[int], int] = 3,
+    stride: Union[Tuple[int], int] = 1,
+    padding: Union[Tuple[int], int] = 0,
+    output_padding: Union[Tuple[int], int] = 0,
+    dilation: Union[Tuple[int], int] = 1,
     n_layers: int = 1,
 ) -> Tuple[int]:
     """
@@ -151,12 +151,12 @@ def conv_transpose1d_out(
 
 
 def conv_transpose2d_out(
-    input_size: Tuple[int] | int,
-    kernel_size: Tuple[int] | int = 3,
-    stride: Tuple[int] | int = 1,
-    padding: Tuple[int] | int = 0,
-    output_padding: Tuple[int] | int = 0,
-    dilation: Tuple[int] | int = 1,
+    input_size: Union[Tuple[int, int], int],
+    kernel_size: Union[Tuple[int, int], int] = 3,
+    stride: Union[Tuple[int, int], int] = 1,
+    padding: Union[Tuple[int, int], int] = 0,
+    output_padding: Union[Tuple[int, int], int] = 0,
+    dilation: Union[Tuple[int, int], int] = 1,
     n_layers: int = 1,
 ) -> Tuple[int, int]:
     """
@@ -201,12 +201,12 @@ def conv_transpose2d_out(
 
 
 def conv_transpose3d_out(
-    input_size: Tuple[int] | int,
-    kernel_size: Tuple[int] | int = 3,
-    stride: Tuple[int] | int = 1,
-    padding: Tuple[int] | int = 0,
-    output_padding: Tuple[int] | int = 0,
-    dilation: Tuple[int] | int = 1,
+    input_size: Union[Tuple[int, int, int], int],
+    kernel_size: Union[Tuple[int, int, int], int] = 3,
+    stride: Union[Tuple[int, int, int], int] = 1,
+    padding: Union[Tuple[int, int, int], int] = 0,
+    output_padding: Union[Tuple[int, int, int], int] = 0,
+    dilation: Union[Tuple[int, int, int], int] = 1,
     n_layers: int = 1,
 ) -> Tuple[int, int, int]:
     """
@@ -258,6 +258,9 @@ def conv_transpose3d_out(
     return input_size
 
 
+# ------------------------------------
+# Select formulas functions
+# ------------------------------------
 def _select_conv_calc(conv_dim: int, transpose: bool = False):
     """
     The function to select a way of calculating conv output

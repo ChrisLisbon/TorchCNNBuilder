@@ -1,7 +1,11 @@
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Union
 
 import torch.nn as nn
 
+from torchcnnbuilder._constants import (
+    DEFAULT_CONV_PARAMS,
+    DEFAULT_TRANSPOSE_CONV_PARAMS,
+)
 from torchcnnbuilder._validation import _validate_conv_dim, _validate_sequence_length
 from torchcnnbuilder.builder import Builder
 
@@ -35,7 +39,7 @@ class ForecasterBase(nn.Module):
         convolve_params: Optional[dict] = None,
         transpose_convolve_params: Optional[dict] = None,
         activation_function: nn.Module = nn.ReLU(inplace=True),
-        finish_activation_function: Optional[nn.Module] | str = None,
+        finish_activation_function: Union[Optional[nn.Module], str] = None,
         normalization: Optional[str] = None,
     ) -> None:
         """
@@ -89,10 +93,10 @@ class ForecasterBase(nn.Module):
             n_transpose_layers = n_layers
 
         if convolve_params is None:
-            convolve_params = builder.default_convolve_params
+            convolve_params = DEFAULT_CONV_PARAMS
 
         if transpose_convolve_params is None:
-            transpose_convolve_params = builder.default_transpose_params
+            transpose_convolve_params = DEFAULT_TRANSPOSE_CONV_PARAMS
 
         self.convolve = builder.build_convolve_sequence(
             n_layers=n_layers,
@@ -105,7 +109,7 @@ class ForecasterBase(nn.Module):
 
         self.transpose = builder.build_transpose_convolve_sequence(
             n_layers=n_transpose_layers,
-            in_channels=builder.conv_channels[-1],
+            in_channels=builder._conv_channels[-1],
             out_channels=out_time_points,
             out_size=out_size,
             params=transpose_convolve_params,
@@ -114,10 +118,10 @@ class ForecasterBase(nn.Module):
             channel_growth_rate=channel_growth_rate,
         )
 
-        self.conv_channels = builder.conv_channels
-        self.transpose_conv_channels = builder.transpose_conv_channels
-        self.conv_layers = builder.conv_layers
-        self.transpose_conv_layers = builder.transpose_conv_layers
+        self.conv_channels = builder._conv_channels
+        self.transpose_conv_channels = builder._transpose_conv_channels
+        self.conv_layers = builder._conv_layers
+        self.transpose_conv_layers = builder._transpose_conv_layers
 
     def forward(self, x):
         """
