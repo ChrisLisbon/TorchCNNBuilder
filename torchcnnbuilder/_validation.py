@@ -37,7 +37,7 @@ def _validate_min_channels_number(layer: int, input_channels_count_list: List[in
         )
 
 
-def _validate_build_transpose_convolve_init(in_channels: Optional[int], conv_channels: List[Tuple[int, ...]]) -> None:
+def _validate_build_transpose_convolve_init(in_channels: Optional[int], conv_channels: List[int]) -> None:
     if in_channels is None and not conv_channels:
         raise ValueError("You should specify in_channels or use build_convolve_sequence before transposed one")
 
@@ -74,3 +74,8 @@ def _validate_sequence_length(sequence: Sequence[int], length: int) -> None:
     input_length = len(sequence)
     if input_length > length:
         raise ValueError(f"{input_length=} should be less than {length=}")
+
+
+def _validate_input_size_is_not_none(input_size: Optional[Sequence[int]]) -> None:
+    if input_size is None:
+        raise ValueError("You need to specify builder input_size in order to use this method")

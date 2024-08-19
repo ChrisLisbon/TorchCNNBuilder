@@ -2,7 +2,7 @@ from typing import List
 
 from setuptools import find_packages, setup
 
-from torchcnnbuilder.version import __version__
+from torchcnnbuilder import __version__
 
 
 def readme() -> str:

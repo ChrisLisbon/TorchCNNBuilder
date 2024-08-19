@@ -24,7 +24,7 @@ pip install torchcnnbuilder
 ### Usage examples
 
 ---
-The basic structure of the framework is presented below. Each subdirectory has its own example of using the appropriate available functionality. You can check [`<directory>_examples.ipynb`](./examples) files in order to see the ways to use the proposed toolkit. In short, there is the following functionality:
+The basic structure of the framework is presented below. Each subdirectory has its own example of using the appropriate available functionality. You can check [`examples`](./examples/README.md) files in order to see the ways to use the proposed toolkit. In short, there is the following functionality:
 
 - the ability to calculate the size of tensors after (transposed) convolutional layers
 - preprocessing an n-dimensional time series in `TensorDataset`
@@ -35,10 +35,10 @@ The structure of the main part of the package:
 
 ```
 ├── examples
+│ ├── examples.ipynb
 │ ├── builder_examples.ipynb
 │ ├── preprocess_examples.ipynb
-│ ├── models_examples.ipynb
-│ └── tools                     # additional functions for the examples
+│ └── models_examples.ipynb
 └── torchcnnbuilder
     ├── preprocess
     │ └── time_series.py
