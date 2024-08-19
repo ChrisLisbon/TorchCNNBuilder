@@ -526,7 +526,7 @@ class Builder:
 
             _validate_range_step(range_step, n_layers)
 
-            channels = list(range(range_start, range_stop + 1, range_step))
+            channels = list(range(range_start, range_stop + 1, range_step))[: n_layers + 1]
             self.max_channels = range_stop
             return channels
 
