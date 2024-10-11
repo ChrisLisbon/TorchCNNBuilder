@@ -19,8 +19,8 @@ class ForecasterBase(nn.Module):
     <https://github.com/ITMO-NSS-team/ice-concentration-prediction-paper?ysclid=lrhxbvsk8s328492826>`_.
 
       Attributes:
-          convolve (nn.Sequential): convolutional sequence - encoder part
-          transpose (nn.Sequential): transpose convolutional sequence - decoder part
+          encoder (nn.Sequential): convolutional sequence - encoder part
+          decoder (nn.Sequential): transpose convolutional sequence - decoder part
           conv_channels (List[int]): list of output channels after each convolutional layer
           transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
           conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
@@ -98,7 +98,7 @@ class ForecasterBase(nn.Module):
         if transpose_convolve_params is None:
             transpose_convolve_params = DEFAULT_TRANSPOSE_CONV_PARAMS
 
-        self.convolve = builder.build_convolve_sequence(
+        self.encoder = builder.build_convolve_sequence(
             n_layers=n_layers,
             in_channels=in_time_points,
             params=convolve_params,
@@ -107,7 +107,7 @@ class ForecasterBase(nn.Module):
             channel_growth_rate=channel_growth_rate,
         )
 
-        self.transpose = builder.build_transpose_convolve_sequence(
+        self.decoder = builder.build_transpose_convolve_sequence(
             n_layers=n_transpose_layers,
             in_channels=builder._conv_channels[-1],
             out_channels=out_time_points,
@@ -131,6 +131,6 @@ class ForecasterBase(nn.Module):
         :return: tensor after forward pass
         # noqa
         """
-        x = self.convolve(x)
-        x = self.transpose(x)
+        x = self.encoder(x)
+        x = self.decoder(x)
         return x

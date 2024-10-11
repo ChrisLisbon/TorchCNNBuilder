@@ -10,5 +10,5 @@ __pycache__/
 **/DS_Store
 
 # scripts in root
-*.py
-*.ipynb
+.py
+.ipynb

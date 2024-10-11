@@ -493,16 +493,25 @@ class Builder:
         return nn.Sequential(OrderedDict(modules))
 
     def latent_block(
-            self,
-            input_shape: Sequence[int],
-            output_shape: Sequence[int],
-            n_layers: int = 1, activation:
-            bool = False,
-            activation_function: Optional[nn.Module] = None):
+        self,
+        input_shape: Sequence[int],
+        output_shape: Sequence[int],
+        n_layers: int = 1,
+        activation: bool = False,
+        activation_function: Optional[nn.Module] = None,
+    ):
+        """
+        Creates a latent space transformation block.
+
+        :param input_shape: the shape of the input tensor
+        :param output_shape: the desired shape of the output tensor
+        :param n_layers: number of linear layers to use in the transformation. Default: 1
+        :param activation: whether to apply an activation function after each linear layer. Default: False
+        :param activation_function: if not provided, defaults to the module's activation function. Default: None
+        # noqa
+        """
         if activation_function is None:
             activation_function = self.activation_function
-
-
 
         return LatentSpaceModule(input_shape, output_shape, n_layers, activation, activation_function)
 
