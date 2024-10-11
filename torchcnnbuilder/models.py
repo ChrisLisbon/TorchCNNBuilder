@@ -15,7 +15,7 @@ from torchcnnbuilder.builder import Builder
 # ------------------------------------
 class ForecasterBase(nn.Module):
     """
-      The template class of the time series prediction CNN-architecture. The source of the original `article code
+    The template class of the time series prediction CNN-architecture. The source of the original `article code
     <https://github.com/ITMO-NSS-team/ice-concentration-prediction-paper?ysclid=lrhxbvsk8s328492826>`_.
 
       Attributes:

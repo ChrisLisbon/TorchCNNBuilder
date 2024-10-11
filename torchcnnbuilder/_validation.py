@@ -79,3 +79,14 @@ def _validate_sequence_length(sequence: Sequence[int], length: int) -> None:
 def _validate_input_size_is_not_none(input_size: Optional[Sequence[int]]) -> None:
     if input_size is None:
         raise ValueError("You need to specify builder input_size in order to use this method")
+
+
+def _validate_latent_shape(shape: Sequence[int]) -> None:
+    number_of_dims = len(shape)
+    if number_of_dims < 2:
+        raise ValueError(f"Number of dims should be greater than 2. You have {shape=}")
+
+
+def _validate_latent_layers(n_layers: int) -> None:
+    if n_layers < 1:
+        raise ValueError(f"Number of n layers in latent space should be greater than 1. You have {n_layers=}")
