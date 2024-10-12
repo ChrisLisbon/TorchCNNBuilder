@@ -93,7 +93,7 @@ class LatentSpaceModule(nn.Module):
 
     def __repr__(self):
         """
-        Custom string representation of the module, including its input and output shapes and number of layers
+        Custom string representation of the module
         """
         default_repr_model_params = [f"input_shape={self._input_shape}", f"output_shape={self._output_shape}"]
 

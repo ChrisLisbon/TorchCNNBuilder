@@ -42,7 +42,7 @@ class ForecasterBase(nn.Module):
         activation_function: nn.Module = nn.ReLU(inplace=True),
         finish_activation_function: Union[Optional[nn.Module], str] = None,
         normalization: Optional[str] = None,
-        latent_output_shape: Optional[Sequence[int]] = None,
+        latent_shape: Optional[Sequence[int]] = None,
         latent_n_layers: int = 1,
         latent_activation_function: Union[Optional[nn.Module], str] = None,
     ) -> None:
@@ -60,6 +60,9 @@ class ForecasterBase(nn.Module):
         :param activation_function: activation function. Default: nn.ReLU(inplace=True)
         :param finish_activation_function: last activation function, can be same as activation_function (str 'same'). Default: None
         :param normalization: choice of normalization between str 'dropout', 'batchnorm' and 'instancenorm'. Default: None
+        :param latent_shape:  the shape of the latent dim. Default: None,
+        :param latent_n_layers: number of linear layers to use in the latent transformation. Default: 1,
+        :param latent_activation_function: latent activation function if `latent_n_layers` > 1, can be 'same' as model one. Default: None,
         # noqa
         """
         super(ForecasterBase, self).__init__()
@@ -122,7 +125,7 @@ class ForecasterBase(nn.Module):
             channel_growth_rate=channel_growth_rate,
         )
 
-        if latent_output_shape is not None:
+        if latent_shape is not None:
             self.encoder = nn.Sequential(
                 OrderedDict(
                     [
@@ -131,7 +134,7 @@ class ForecasterBase(nn.Module):
                             "to-latent",
                             builder.latent_block(
                                 input_shape=(builder.conv_channels[-1], *builder.conv_layers[-1]),
-                                output_shape=latent_output_shape,
+                                output_shape=latent_shape,
                                 n_layers=latent_n_layers,
                                 activation_function=latent_activation_function,
                             ),
@@ -145,7 +148,7 @@ class ForecasterBase(nn.Module):
                         (
                             "from-latent",
                             builder.latent_block(
-                                input_shape=latent_output_shape,
+                                input_shape=latent_shape,
                                 output_shape=(builder.transpose_conv_channels[0], *builder.transpose_conv_layers[0]),
                                 n_layers=latent_n_layers,
                                 activation_function=latent_activation_function,
