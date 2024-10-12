@@ -4,17 +4,20 @@ from typing import Optional, Sequence
 import torch
 import torch.nn as nn
 
-from torchcnnbuilder._validation import _validate_latent_layers, _validate_latent_shape
+from torchcnnbuilder._validation import (
+    _validate_latent_layers,
+    _validate_latent_shape,
+    _validate_warning_huge_linear_weights_matrix,
+)
 
 
 class LatentSpaceModule(nn.Module):
     """
-    nn.Module that transforms a tensor from one latent space shape to another using fully connected layers
+    nn.Module that transforms a tensor from one latent space shape to another using linear fully connected layers
 
       Attributes:
           input_shape (Sequence[int]): the shape of the input tensor before transformation.
           output_shape (Sequence[int]): the shape of the output tensor after transformation
-          resize (nn.Sequential): the transformation through linear layers
     # noqa
     """
 
@@ -31,8 +34,7 @@ class LatentSpaceModule(nn.Module):
         :param input_shape: the shape of the input tensor
         :param output_shape: the desired shape of the output tensor
         :param n_layers: number of linear layers to use in the transformation. Default: 1
-        :param activation: whether to apply an activation function after each linear layer. Default: False
-        :param activation_function: activation function. Default: nn.ReLU(inplace=True)
+        :param activation_function: activation function. Default: None
         # noqa
         """
 
@@ -41,11 +43,13 @@ class LatentSpaceModule(nn.Module):
         _validate_latent_shape(output_shape)
         _validate_latent_layers(n_layers)
 
-        self.input_shape = input_shape
-        self.output_shape = output_shape
+        self._input_shape = input_shape
+        self._output_shape = output_shape
+        self._n_layers = n_layers
+        self._activation_function = activation_function
 
-        input_features = prod(input_shape)
-        output_features = prod(output_shape)
+        input_features = prod(self._input_shape)
+        output_features = prod(self._output_shape)
 
         if n_layers > 1:
             log_input = torch.log(torch.tensor(input_features, dtype=torch.int))
@@ -56,12 +60,26 @@ class LatentSpaceModule(nn.Module):
             features = [input_features, output_features]
 
         latent_layers = []
-        for i in range(n_layers):
-            latent_layers.append(nn.Linear(features[i], features[i + 1]))
+        for i in range(self._n_layers):
+            in_features, out_features = features[i], features[i + 1]
+
+            _validate_warning_huge_linear_weights_matrix(
+                in_features, out_features, level=f"linear latent layer number {i}"
+            )
+
+            latent_layers.append(nn.Linear(in_features, out_features))
             if activation_function is not None:
                 latent_layers.append(activation_function)
 
-        self.resize = nn.Sequential(*latent_layers)
+        self._resize = nn.Sequential(*latent_layers)
+
+    @property
+    def input_shape(self) -> Sequence[int]:
+        return self._input_shape
+
+    @property
+    def output_shape(self) -> Sequence[int]:
+        return self._output_shape
 
     def forward(self, x):
         """
@@ -71,4 +89,18 @@ class LatentSpaceModule(nn.Module):
         :return: tensor after forward pass
         # noqa
         """
-        return self.resize(x.view(-1)).view(self.output_shape)
+        return self._resize(x.view(-1)).view(self._output_shape)
+
+    def __repr__(self):
+        """
+        Custom string representation of the module, including its input and output shapes and number of layers
+        """
+        default_repr_model_params = [f"input_shape={self._input_shape}", f"output_shape={self._output_shape}"]
+
+        if self._n_layers != 1:
+            default_repr_model_params.append(f"n_layers={self._n_layers}")
+
+        if self._activation_function is not None:
+            default_repr_model_params.append(f"activation_function={self._activation_function}")
+
+        return f"LatentSpaceModule({', '.join(default_repr_model_params)})"

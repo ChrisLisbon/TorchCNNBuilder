@@ -128,7 +128,7 @@ class ForecasterBase(nn.Module):
                     [
                         ("convolution", convolution),
                         (
-                            "latent resize",
+                            "to-latent",
                             builder.latent_block(
                                 input_shape=(builder.conv_channels[-1], *builder.conv_layers[-1]),
                                 output_shape=latent_output_shape,
@@ -143,7 +143,7 @@ class ForecasterBase(nn.Module):
                 OrderedDict(
                     [
                         (
-                            "latent resize",
+                            "from-latent",
                             builder.latent_block(
                                 input_shape=latent_output_shape,
                                 output_shape=(builder.transpose_conv_channels[0], *builder.transpose_conv_layers[0]),
