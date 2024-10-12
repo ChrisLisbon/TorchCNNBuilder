@@ -1,5 +1,5 @@
 from math import prod
-from typing import Sequence
+from typing import Optional, Sequence
 
 import torch
 import torch.nn as nn
@@ -23,8 +23,7 @@ class LatentSpaceModule(nn.Module):
         input_shape: Sequence[int],
         output_shape: Sequence[int],
         n_layers: int = 1,
-        activation: bool = False,
-        activation_function: nn.Module = nn.ReLU(inplace=True),
+        activation_function: Optional[nn.Module] = None,
     ):
         """
         The constructor for LatentSpaceModule
@@ -59,7 +58,7 @@ class LatentSpaceModule(nn.Module):
         latent_layers = []
         for i in range(n_layers):
             latent_layers.append(nn.Linear(features[i], features[i + 1]))
-            if activation:
+            if activation_function is not None:
                 latent_layers.append(activation_function)
 
         self.resize = nn.Sequential(*latent_layers)
