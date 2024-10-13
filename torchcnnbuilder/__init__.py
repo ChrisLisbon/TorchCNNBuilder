@@ -1,6 +1,7 @@
 from torchcnnbuilder._constants import (
     DEFAULT_CONV_PARAMS,
     DEFAULT_TRANSPOSE_CONV_PARAMS,
+    MAX_PARAMS_NUMBER_PER_LAYER,
 )
 from torchcnnbuilder._formulas import (
     conv1d_out,
@@ -22,4 +23,5 @@ __all__ = [
     "conv_transpose3d_out",
     "DEFAULT_CONV_PARAMS",
     "DEFAULT_TRANSPOSE_CONV_PARAMS",
+    "MAX_PARAMS_NUMBER_PER_LAYER",
 ]

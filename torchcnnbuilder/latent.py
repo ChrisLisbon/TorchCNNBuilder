@@ -11,6 +11,9 @@ from torchcnnbuilder._validation import (
 )
 
 
+# ------------------------------------
+# Linear LatentSpaceModule class
+# ------------------------------------
 class LatentSpaceModule(nn.Module):
     """
     nn.Module that transforms a tensor from one latent space shape to another using linear fully connected layers
