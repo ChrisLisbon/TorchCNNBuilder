@@ -54,6 +54,9 @@ class LatentSpaceModule(nn.Module):
         input_features = prod(self._input_shape)
         output_features = prod(self._output_shape)
 
+        flatten_layer = nn.Flatten()
+        unflatten_layer = nn.Unflatten(1, self._output_shape)
+
         if n_layers > 1:
             log_input = torch.log(torch.tensor(input_features, dtype=torch.int))
             log_output = torch.log(torch.tensor(output_features, dtype=torch.int))
@@ -62,7 +65,7 @@ class LatentSpaceModule(nn.Module):
         else:
             features = [input_features, output_features]
 
-        latent_layers = []
+        latent_layers = [flatten_layer]
         for i in range(self._n_layers):
             in_features, out_features = features[i], features[i + 1]
 
@@ -74,6 +77,7 @@ class LatentSpaceModule(nn.Module):
             if activation_function is not None:
                 latent_layers.append(activation_function)
 
+        latent_layers.append(unflatten_layer)
         self._resize = nn.Sequential(*latent_layers)
 
     @property
@@ -92,7 +96,7 @@ class LatentSpaceModule(nn.Module):
         :return: tensor after forward pass
         # noqa
         """
-        return self._resize(x.view(-1)).view(self._output_shape)
+        return self._resize(x)
 
     def __repr__(self):
         """
