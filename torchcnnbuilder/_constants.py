@@ -14,3 +14,5 @@ DEFAULT_TRANSPOSE_CONV_PARAMS: Dict[str, int] = {
     "output_padding": 0,
     "dilation": 1,
 }
+
+MAX_PARAMS_NUMBER_PER_LAYER: int = 500_000_000

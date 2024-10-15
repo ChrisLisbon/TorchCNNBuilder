@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from typing import Optional, Sequence, Union
 
 import torch.nn as nn
@@ -15,12 +16,12 @@ from torchcnnbuilder.builder import Builder
 # ------------------------------------
 class ForecasterBase(nn.Module):
     """
-      The template class of the time series prediction CNN-architecture. The source of the original `article code
+    The template class of the time series prediction CNN-architecture. The source of the original `article code
     <https://github.com/ITMO-NSS-team/ice-concentration-prediction-paper?ysclid=lrhxbvsk8s328492826>`_.
 
       Attributes:
-          convolve (nn.Sequential): convolutional sequence - encoder part
-          transpose (nn.Sequential): transpose convolutional sequence - decoder part
+          encoder (nn.Sequential): convolutional sequence - encoder part
+          decoder (nn.Sequential): transpose convolutional sequence - decoder part
           conv_channels (List[int]): list of output channels after each convolutional layer
           transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
           conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
@@ -41,6 +42,9 @@ class ForecasterBase(nn.Module):
         activation_function: nn.Module = nn.ReLU(inplace=True),
         finish_activation_function: Union[Optional[nn.Module], str] = None,
         normalization: Optional[str] = None,
+        latent_shape: Optional[Sequence[int]] = None,
+        latent_n_layers: int = 1,
+        latent_activation_function: Union[Optional[nn.Module], str] = None,
     ) -> None:
         """
         The constructor for ForecasterBase
@@ -56,6 +60,9 @@ class ForecasterBase(nn.Module):
         :param activation_function: activation function. Default: nn.ReLU(inplace=True)
         :param finish_activation_function: last activation function, can be same as activation_function (str 'same'). Default: None
         :param normalization: choice of normalization between str 'dropout', 'batchnorm' and 'instancenorm'. Default: None
+        :param latent_shape:  the shape of the latent dim. Default: None,
+        :param latent_n_layers: number of linear layers to use in the latent transformation. Default: 1,
+        :param latent_activation_function: latent activation function if `latent_n_layers` > 1, can be 'same' as model one. Default: None,
         # noqa
         """
         super(ForecasterBase, self).__init__()
@@ -98,7 +105,7 @@ class ForecasterBase(nn.Module):
         if transpose_convolve_params is None:
             transpose_convolve_params = DEFAULT_TRANSPOSE_CONV_PARAMS
 
-        self.convolve = builder.build_convolve_sequence(
+        convolution = builder.build_convolve_sequence(
             n_layers=n_layers,
             in_channels=in_time_points,
             params=convolve_params,
@@ -107,7 +114,7 @@ class ForecasterBase(nn.Module):
             channel_growth_rate=channel_growth_rate,
         )
 
-        self.transpose = builder.build_transpose_convolve_sequence(
+        transpose_convolution = builder.build_transpose_convolve_sequence(
             n_layers=n_transpose_layers,
             in_channels=builder._conv_channels[-1],
             out_channels=out_time_points,
@@ -118,10 +125,47 @@ class ForecasterBase(nn.Module):
             channel_growth_rate=channel_growth_rate,
         )
 
-        self.conv_channels = builder._conv_channels
-        self.transpose_conv_channels = builder._transpose_conv_channels
-        self.conv_layers = builder._conv_layers
-        self.transpose_conv_layers = builder._transpose_conv_layers
+        if latent_shape is not None:
+            self.encoder = nn.Sequential(
+                OrderedDict(
+                    [
+                        ("convolution", convolution),
+                        (
+                            "to-latent",
+                            builder.latent_block(
+                                input_shape=(builder.conv_channels[-1], *builder.conv_layers[-1]),
+                                output_shape=latent_shape,
+                                n_layers=latent_n_layers,
+                                activation_function=latent_activation_function,
+                            ),
+                        ),
+                    ]
+                )
+            )
+            self.decoder = nn.Sequential(
+                OrderedDict(
+                    [
+                        (
+                            "from-latent",
+                            builder.latent_block(
+                                input_shape=latent_shape,
+                                output_shape=(builder.transpose_conv_channels[0], *builder.transpose_conv_layers[0]),
+                                n_layers=latent_n_layers,
+                                activation_function=latent_activation_function,
+                            ),
+                        ),
+                        ("transpose convolution", transpose_convolution),
+                    ]
+                )
+            )
+        else:
+            self.encoder = convolution
+            self.decoder = transpose_convolution
+
+        self.conv_channels = builder.conv_channels
+        self.transpose_conv_channels = builder.transpose_conv_channels
+        self.conv_layers = builder.conv_layers
+        self.transpose_conv_layers = builder.transpose_conv_layers
 
     def forward(self, x):
         """
@@ -131,6 +175,6 @@ class ForecasterBase(nn.Module):
         :return: tensor after forward pass
         # noqa
         """
-        x = self.convolve(x)
-        x = self.transpose(x)
+        x = self.encoder(x)
+        x = self.decoder(x)
         return x

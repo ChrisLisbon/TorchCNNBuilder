@@ -27,6 +27,7 @@ from torchcnnbuilder._validation import (
     _validate_min_channels_number,
     _validate_range_step,
 )
+from torchcnnbuilder.latent import LatentSpaceModule
 
 
 # ------------------------------------
@@ -490,6 +491,27 @@ class Builder:
         modules.append(("resize", resize_block))
 
         return nn.Sequential(OrderedDict(modules))
+
+    def latent_block(
+        self,
+        input_shape: Sequence[int],
+        output_shape: Sequence[int],
+        n_layers: int = 1,
+        activation_function: Union[Optional[nn.Module], str] = None,
+    ):
+        """
+        Creates a latent space transformation block.
+
+        :param input_shape: the shape of the input tensor
+        :param output_shape: the desired shape of the output tensor
+        :param n_layers: number of linear layers to use in the transformation. Default: 1
+        :param activation_function: can be same as builder activation_function (str 'same'). Default: None
+        # noqa
+        """
+        if activation_function == "same":
+            activation_function = self.activation_function
+
+        return LatentSpaceModule(input_shape, output_shape, n_layers, activation_function)
 
     def _calc_out_channels(
         self,
