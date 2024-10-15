@@ -24,7 +24,7 @@ pip install torchcnnbuilder
 ### Usage examples
 
 ---
-The basic structure of the framework is presented below. Each subdirectory has its own example of using the appropriate available functionality. You can check [`examples`](./examples/README.md) files in order to see the ways to use the proposed toolkit. In short, there is the following functionality:
+The basic structure of the framework is presented below. Each subdirectory has its own example of using the appropriate available functionality. You can check [`<directory>_examples.ipynb`](./examples) files in order to see the ways to use the proposed toolkit. In short, there is the following functionality:
 
 - the ability to calculate the size of tensors after (transposed) convolutional layers
 - preprocessing an n-dimensional time series in `TensorDataset`
@@ -35,10 +35,10 @@ The structure of the main part of the package:
 
 ```
 ├── examples
-│ ├── examples.ipynb
 │ ├── builder_examples.ipynb
 │ ├── preprocess_examples.ipynb
-│ └── models_examples.ipynb
+│ ├── models_examples.ipynb
+│ └── tools                     # additional functions for the examples
 └── torchcnnbuilder
     ├── preprocess
     │ └── time_series.py
@@ -52,6 +52,7 @@ Initially, the library was created to help predict n-dimensional time series *(g
 ---
 - [Forecasting of Sea Ice Concentration using CNN, PDE discovery and Bayesian Networks](https://www.sciencedirect.com/science/article/pii/S1877050923020094)
 - [Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
+- [Post about framework development on habr.com - in russian](https://habr.com/ru/companies/selectel/articles/818649/)
 
 ### Development
 
@@ -64,4 +65,6 @@ bash lint_and_check.sh
 ````
 *You can mark function docstrings using `#noqa`, in order for flake8 not to pay attention to them.*
 
+### Acknowledgement
 
+The project is supported by [FASIE](https://fasie.ru/) - Foundation for Assistance to Small Innovative Enterprises.
