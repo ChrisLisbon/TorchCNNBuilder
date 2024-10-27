@@ -54,17 +54,6 @@ Initially, the library was created to help predict n-dimensional time series *(g
 - [Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
 - [Post about framework development on habr.com - in russian](https://habr.com/ru/companies/selectel/articles/818649/)
 
-### Development
-
----
-We try to maintain good practices of readable open source code. Therefore, if you want to participate in the development and open your pool request, pay attention to the following points:
-- Every push is checked by the flake8 job. It will show you PEP8 errors or possible code improvements.
-- Use this linter script after your code:
-```bash
-bash lint_and_check.sh
-````
-*You can mark function docstrings using `#noqa`, in order for flake8 not to pay attention to them.*
-
 ### Acknowledgement
 
 The project is supported by [FASIE](https://fasie.ru/) - Foundation for Assistance to Small Innovative Enterprises.
