@@ -16,12 +16,7 @@ from torchcnnbuilder._validation import (
 # ------------------------------------
 class LatentSpaceModule(nn.Module):
     """
-    nn.Module that transforms a tensor from one latent space shape to another using linear fully connected layers
-
-      Attributes:
-          input_shape (Sequence[int]): the shape of the input tensor before transformation.
-          output_shape (Sequence[int]): the shape of the output tensor after transformation
-    # noqa
+    Module for transforming a tensor from one latent space shape to another using linear fully connected layers.
     """
 
     def __init__(
@@ -32,13 +27,18 @@ class LatentSpaceModule(nn.Module):
         activation_function: Optional[nn.Module] = None,
     ):
         """
-        The constructor for LatentSpaceModule
+        This module reshapes an input tensor into a specified output shape, with an optional sequence of
+        fully connected layers and activation functions to modulate the transformation.
 
-        :param input_shape: the shape of the input tensor
-        :param output_shape: the desired shape of the output tensor
-        :param n_layers: number of linear layers to use in the transformation. Default: 1
-        :param activation_function: activation function. Default: None
-        # noqa
+        Args:
+            input_shape (Sequence[int]): Shape of the input tensor.
+            output_shape (Sequence[int]): Desired shape of the output tensor.
+            n_layers (int, optional): Number of linear layers to use in the transformation. Defaults to 1.
+            activation_function (Optional[nn.Module], optional): Activation function to apply after each layer.
+                If None, no activation is applied. Defaults to None.
+
+        Raises:
+            ValueError: If `input_shape`, `output_shape`, or `n_layers` are invalid.
         """
 
         super().__init__()
@@ -82,19 +82,33 @@ class LatentSpaceModule(nn.Module):
 
     @property
     def input_shape(self) -> Sequence[int]:
+        """
+        Returns the shape of the input tensor.
+
+        Returns:
+            Sequence[int]: Shape of the input tensor.
+        """
         return self._input_shape
 
     @property
     def output_shape(self) -> Sequence[int]:
+        """
+        Returns the shape of the output tensor.
+
+        Returns:
+            Sequence[int]: Shape of the output tensor.
+        """
         return self._output_shape
 
     def forward(self, x):
         """
-        Forward pass of the model
+        Performs a forward pass through the module, transforming the input tensor.
 
-        :param x: tensor before forward pass
-        :return: tensor after forward pass
-        # noqa
+        Args:
+            x (torch.Tensor): Input tensor to be transformed.
+
+        Returns:
+            torch.Tensor: Transformed output tensor with the specified output shape.
         """
         return self._resize(x)
 

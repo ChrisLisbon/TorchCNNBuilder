@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>torchcnnbuilder.builder API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>torchcnnbuilder.builder</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="torchcnnbuilder.builder.Builder"><code class="flex name class">
+<span>class <span class="ident">Builder</span></span>
+<span>(</span><span>input_size: Optional[Sequence[int]] = None, minimum_feature_map_size: Union[Sequence[int], int] = 5, max_channels: int = 512, min_channels: int = 1, activation_function: torch.nn.modules.module.Module = ReLU(inplace=True), finish_activation_function: Union[torch.nn.modules.module.Module, ForwardRef(None), str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class for creating СNN architectures</p>
+<p>Initializes the Builder instance.</p>
+<h2 id="args">Args</h2>
+<p>input_size (Optional[Sequence[int]], optional):
+Input size of the input tensor. Necessary for creating
+convolution sequences. Defaults to None.
+minimum_feature_map_size (Union[Sequence[int], int], optional):
+Minimum feature map size. Defaults to 5.
+max_channels (int, optional):
+Maximum number of layers after any convolution. Defaults to 512.
+min_channels (int, optional):
+Minimum number of layers after any convolution. Defaults to 1.
+activation_function (nn.Module, optional):
+Activation function. Defaults to nn.ReLU(inplace=True).
+finish_activation_function (Union[Optional[nn.Module], str], optional):
+Last activation function, can be the same as activation_function
+(use string 'same' for that). Defaults to None.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If input_size is not a valid shape.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Builder:
+    &#34;&#34;&#34;
+    A class for creating СNN architectures
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        input_size: Optional[Sequence[int]] = None,
+        minimum_feature_map_size: Union[Sequence[int], int] = 5,
+        max_channels: int = 512,
+        min_channels: int = 1,
+        activation_function: nn.Module = nn.ReLU(inplace=True),
+        finish_activation_function: Union[Optional[nn.Module], str] = None,
+    ) -&gt; None:
+        &#34;&#34;&#34;
+        Initializes the Builder instance.
+
+        Args:
+            input_size (Optional[Sequence[int]], optional):
+                Input size of the input tensor. Necessary for creating
+                convolution sequences. Defaults to None.
+            minimum_feature_map_size (Union[Sequence[int], int], optional):
+                Minimum feature map size. Defaults to 5.
+            max_channels (int, optional):
+                Maximum number of layers after any convolution. Defaults to 512.
+            min_channels (int, optional):
+                Minimum number of layers after any convolution. Defaults to 1.
+            activation_function (nn.Module, optional):
+                Activation function. Defaults to nn.ReLU(inplace=True).
+            finish_activation_function (Union[Optional[nn.Module], str], optional):
+                Last activation function, can be the same as activation_function
+                (use string &#39;same&#39; for that). Defaults to None.
+
+        Raises:
+            ValueError: If input_size is not a valid shape.
+        &#34;&#34;&#34;
+
+        if input_size is None:
+            self.input_size = input_size
+        else:
+            self.input_size = tuple(i for i in input_size)
+
+            if len(self.input_size) == 1:
+                self.minimum_feature_map_size = (
+                    (minimum_feature_map_size,)
+                    if isinstance(minimum_feature_map_size, int)
+                    else minimum_feature_map_size
+                )
+            if len(self.input_size) == 2:
+                self.minimum_feature_map_size = (
+                    _double_params(
+                        minimum_feature_map_size,
+                    )
+                    if isinstance(minimum_feature_map_size, int)
+                    else minimum_feature_map_size
+                )
+            if len(self.input_size) == 3:
+                self.minimum_feature_map_size = (
+                    _triple_params(
+                        minimum_feature_map_size,
+                    )
+                    if isinstance(minimum_feature_map_size, int)
+                    else minimum_feature_map_size
+                )
+
+        self.max_channels = max_channels
+        self._initial_max_channels = max_channels
+
+        self.min_channels = min_channels
+        self._initial_min_channels = min_channels
+
+        self._default_convolve_params = DEFAULT_CONV_PARAMS
+        self._default_transpose_params = DEFAULT_TRANSPOSE_CONV_PARAMS
+
+        # finish_activation_function can be str &#39;same&#39; which equals to activation_function
+        self.activation_function = activation_function
+        self.finish_activation_function = finish_activation_function
+
+        self._conv_channels = None
+        self._transpose_conv_channels = None
+
+        self._conv_layers = None
+        self._transpose_conv_layers = None
+
+    @property
+    def conv_channels(self) -&gt; Optional[List[int]]:
+        &#34;&#34;&#34;Gets the convolutional channels.
+
+        Returns:
+            Optional[List[int]]: A list of convolutional channel sizes or None
+            if not initialized.
+        &#34;&#34;&#34;
+        return self._conv_channels
+
+    @property
+    def transpose_conv_channels(self) -&gt; Optional[List[int]]:
+        &#34;&#34;&#34;Gets the transposed convolutional channels.
+
+        Returns:
+            Optional[List[int]]: A list of transposed convolutional channel sizes
+            or None if not initialized.
+        &#34;&#34;&#34;
+        return self._transpose_conv_channels
+
+    @property
+    def conv_layers(self) -&gt; Optional[List[Tuple[int, ...]]]:
+        &#34;&#34;&#34;Gets the convolutional layers.
+
+        Returns:
+            Optional[List[Tuple[int, ...]]]: A list of tuples representing
+            convolutional layer configurations or None if not initialized.
+        &#34;&#34;&#34;
+        return self._conv_layers
+
+    @property
+    def transpose_conv_layers(self) -&gt; Optional[List[Tuple[int, ...]]]:
+        &#34;&#34;&#34;Gets the transposed convolutional layers.
+
+        Returns:
+            Optional[List[Tuple[int, ...]]]: A list of tuples representing
+            transposed convolutional layer configurations or None if not
+            initialized.
+        &#34;&#34;&#34;
+        return self._transpose_conv_layers
+
+    def build_convolve_block(
+        self,
+        in_channels: int,
+        out_channels: int,
+        params: Optional[dict] = None,
+        normalization: Optional[str] = None,
+        sub_blocks: int = 1,
+        p: float = 0.5,
+        inplace: bool = False,
+        eps: float = 1e-5,
+        momentum: Optional[float] = 0.1,
+        affine: bool = True,
+        conv_dim: int = 2,
+    ) -&gt; nn.Sequential:
+        &#34;&#34;&#34;Builds a single block of convolution layers.
+
+        This method creates a sequential block that consists of convolutional layers,
+        optional normalization layers, and an activation function.
+
+        Args:
+            in_channels (int): Number of channels in the input image.
+            out_channels (int): Number of channels produced by the convolution.
+            params (Optional[dict], optional): Convolutional layer parameters
+                (for nn.ConvNd). Defaults to None.
+            normalization (Optional[str], optional): Type of normalization to apply.
+                Options are &#39;dropout&#39;, &#39;instancenorm&#39;, and &#39;batchnorm&#39;. Defaults to None.
+            sub_blocks (int, optional): Number of convolutional layers within the block.
+                Defaults to 1.
+            p (float, optional): Probability of an element being zeroed for dropout/instancenorm.
+                Defaults to 0.5.
+            inplace (bool, optional): If True, performs the operation in-place
+                for dropout/instancenorm. Defaults to False.
+            eps (float, optional): A value added to the denominator for numerical stability
+                (used in batchnorm/instancenorm). Defaults to 1e-5.
+            momentum (Optional[float], optional): Momentum for running_mean or running_var
+                computation (used in batchnorm). If None, a cumulative moving average is used.
+                Defaults to 0.1.
+            affine (bool, optional): If True, the module has learnable affine parameters
+                (used in batchnorm). Defaults to True.
+            conv_dim (int, optional): The dimension of the convolutional operation (2 for
+                2D convolution, 3 for 3D convolution). Defaults to 2.
+
+        Returns:
+            nn.Sequential: A sequential block containing convolutional layers,
+            optional normalization layers, and an activation function.
+        &#34;&#34;&#34;
+        params = _set_conv_params(default_params=self._default_convolve_params, params=params)
+        convolution = _select_conv_dimension(conv_dim=conv_dim)
+
+        if sub_blocks &gt; 1:
+            kernel_size = params[&#34;kernel_size&#34;]
+            kernel_size = kernel_size if isinstance(kernel_size, int) else kernel_size[0]
+            params[&#34;padding&#34;] = kernel_size // 2
+            params[&#34;stride&#34;] = 1
+
+        blocks = []
+        for i in range(sub_blocks):
+            block = []
+
+            conv = convolution(in_channels=in_channels, out_channels=out_channels, **params)
+            in_channels = out_channels
+            block.append(conv)
+
+            if normalization:
+                norm = _select_norm_dimension(conv_dim=conv_dim, normalization=normalization)
+
+                if normalization in (&#34;batchnorm&#34;, &#34;instancenorm&#34;):
+                    norm = norm(
+                        num_features=out_channels,
+                        eps=eps,
+                        momentum=momentum,
+                        affine=affine,
+                    )
+
+                if normalization == &#34;dropout&#34;:
+                    norm = norm(p=p, inplace=inplace)
+
+                block.append(norm)
+
+            activation_function = self.activation_function
+            block.append(activation_function)
+
+            if sub_blocks &gt; 1:
+                block = nn.Sequential(*block)
+                blocks.append((f&#34;sub-block {i + 1}&#34;, block))
+            else:
+                blocks.extend(block)
+
+        if sub_blocks &gt; 1:
+            return nn.Sequential(OrderedDict(blocks))
+
+        return nn.Sequential(*blocks)
+
+    def build_convolve_sequence(
+        self,
+        n_layers: int,
+        in_channels: int = 1,
+        params: Optional[dict] = None,
+        normalization: Optional[str] = None,
+        sub_blocks: int = 1,
+        p: float = 0.5,
+        inplace: bool = False,
+        eps: float = 1e-5,
+        momentum: Optional[float] = 0.1,
+        affine: bool = True,
+        ratio: float = 2.0,
+        start: int = 32,
+        channel_growth_rate: str = &#34;exponential&#34;,
+        conv_dim: int = 2,
+    ) -&gt; nn.Sequential:
+        &#34;&#34;&#34;Builds a sequence of convolution blocks.
+
+        This method constructs a sequential block of convolutional layers,
+        with optional normalization and multiple sub-blocks per layer.
+
+        Args:
+            n_layers (int): Number of convolution layers in the encoder part.
+            in_channels (int, optional): Number of channels in the first input tensor.
+                Defaults to 1.
+            params (Optional[dict], optional): Convolutional layer parameters
+                (for nn.ConvNd). Defaults to None.
+            normalization (Optional[str], optional): Type of normalization to apply.
+                Options are &#39;dropout&#39;, &#39;instancenorm&#39;, and &#39;batchnorm&#39;. Defaults to None.
+            sub_blocks (int, optional): Number of convolutions within each layer.
+                Defaults to 1.
+            p (float, optional): Probability of an element being zeroed for dropout.
+                Defaults to 0.5.
+            inplace (bool, optional): If True, performs the operation in-place
+                for dropout. Defaults to False.
+            eps (float, optional): A value added to the denominator for numerical stability
+                (used in batchnorm/instancenorm). Defaults to 1e-5.
+            momentum (Optional[float], optional): Momentum for running_mean or running_var
+                computation (used in batchnorm). If None, a cumulative moving average is used.
+                Defaults to 0.1.
+            affine (bool, optional): If True, the module has learnable affine parameters
+                (used in batchnorm). Defaults to True.
+            ratio (float, optional): Multiplier for the geometric progression of increasing
+                channels (feature maps). Used for &#39;channel_growth_rate&#39; as &#39;exponential&#39;
+                or &#39;power&#39;. Defaults to 2.0.
+            start (int, optional): Starting position of the geometric progression
+                when &#39;channel_growth_rate&#39; is set to &#39;exponential&#39;. Defaults to 32.
+            channel_growth_rate (str, optional): Method for calculating the number of
+                feature maps. Options include &#39;exponential&#39;, &#39;proportion&#39;, &#39;linear&#39;,
+                &#39;power&#39;, and &#39;constant&#39;. Defaults to &#39;exponential&#39;.
+            conv_dim (int, optional): The dimension of the convolutional operation.
+                Defaults to 2.
+
+        Returns:
+            nn.Sequential: A sequential block containing the specified number of
+            convolutional layers.
+        &#34;&#34;&#34;
+        _validate_input_size_is_not_none(self.input_size)
+        params = _set_conv_params(default_params=self._default_convolve_params, params=params)
+        conv_out = _select_conv_calc(conv_dim=conv_dim)
+
+        modules = []
+        input_layer_size_list = [self.input_size]
+        input_channels_count_list = self._calc_out_channels(
+            in_size=self.input_size,
+            in_channels=in_channels,
+            n_layers=n_layers,
+            ratio=ratio,
+            start=start,
+            channel_growth_rate=channel_growth_rate,
+        )
+
+        for layer in range(n_layers):
+            input_layer_size = input_layer_size_list[-1]
+
+            _validate_difference_in_dimensions(self.input_size, conv_dim)
+            _validate_available_layers(layer, input_layer_size, self.minimum_feature_map_size)
+            _validate_max_channels_number(layer, input_channels_count_list, self.max_channels)
+            _validate_min_channels_number(layer, input_channels_count_list, self.min_channels)
+
+            in_channels = input_channels_count_list[layer]
+            out_channels = input_channels_count_list[layer + 1]
+
+            out_layer_size = conv_out(input_size=input_layer_size, **params)
+            input_layer_size_list.append(out_layer_size)
+
+            convolve_block = self.build_convolve_block(
+                in_channels=in_channels,
+                out_channels=out_channels,
+                normalization=normalization,
+                sub_blocks=sub_blocks,
+                p=p,
+                inplace=inplace,
+                eps=eps,
+                momentum=momentum,
+                affine=affine,
+                params=params,
+                conv_dim=conv_dim,
+            )
+
+            modules.append((f&#34;conv {layer + 1}&#34;, convolve_block))
+
+        self._conv_channels = input_channels_count_list
+        self._conv_layers = input_layer_size_list
+        return nn.Sequential(OrderedDict(modules))
+
+    def build_transpose_convolve_block(
+        self,
+        in_channels: int,
+        out_channels: int,
+        params: Optional[dict] = None,
+        normalization: Optional[str] = None,
+        sub_blocks: int = 1,
+        p: float = 0.5,
+        inplace: bool = False,
+        eps: float = 1e-5,
+        momentum: Optional[float] = 0.1,
+        affine: bool = True,
+        last_block: bool = False,
+        conv_dim: int = 2,
+    ) -&gt; nn.Sequential:
+        &#34;&#34;&#34;Builds a single block of transposed convolution layers.
+
+        This method constructs a sequential block of transposed convolutional layers,
+        with optional normalization and multiple sub-blocks per layer.
+
+        Args:
+            in_channels (int): Number of channels in the input image.
+            out_channels (int): Number of channels produced by the transposed convolution.
+            params (Optional[dict], optional): Parameters for the transposed convolutional layer
+                (for nn.ConvTranspose2d). Defaults to None.
+            normalization (Optional[str], optional): Type of normalization to apply.
+                Options are &#39;dropout&#39;, &#39;instancenorm&#39;, and &#39;batchnorm&#39;. Defaults to None.
+            sub_blocks (int, optional): Number of convolutions within each layer.
+                Defaults to 1.
+            p (float, optional): Probability of an element being zeroed for dropout.
+                Defaults to 0.5.
+            inplace (bool, optional): If True, performs the operation in-place
+                for dropout. Defaults to False.
+            eps (float, optional): A value added to the denominator for numerical stability
+                (used in batchnorm/instancenorm). Defaults to 1e-5.
+            momentum (Optional[float], optional): Momentum for running_mean or running_var
+                computation (used in batchnorm). If None, a cumulative moving average is used.
+                Defaults to 0.1.
+            affine (bool, optional): If True, the module has learnable affine parameters
+                (used in batchnorm). Defaults to True.
+            last_block (bool, optional): If True, no activation function is applied after
+                the transposed convolution. Defaults to False.
+            conv_dim (int, optional): The dimension of the convolutional operation.
+                Defaults to 2.
+
+        Returns:
+            nn.Sequential: A sequential block containing the specified transposed
+            convolutional layers, possibly including normalization and activation functions.
+        &#34;&#34;&#34;
+        params = _set_conv_params(default_params=self._default_transpose_params, params=params)
+        convolution = _select_conv_dimension(conv_dim=conv_dim, transpose=True)
+
+        if sub_blocks &gt; 1:
+            kernel_size = params[&#34;kernel_size&#34;]
+            kernel_size = kernel_size if isinstance(kernel_size, int) else kernel_size[0]
+            params[&#34;padding&#34;] = kernel_size // 2
+            params[&#34;stride&#34;] = 1
+
+        blocks = []
+        last_out_channels = out_channels
+        for i in range(sub_blocks):
+            block = []
+
+            out_channels = last_out_channels if i == sub_blocks - 1 else in_channels
+            conv = convolution(in_channels=in_channels, out_channels=out_channels, **params)
+            block.append(conv)
+
+            if normalization:
+                norm = _select_norm_dimension(conv_dim=conv_dim, normalization=normalization)
+
+                if normalization in (&#34;batchnorm&#34;, &#34;instancenorm&#34;):
+                    norm = norm(
+                        num_features=out_channels,
+                        eps=eps,
+                        momentum=momentum,
+                        affine=affine,
+                    )
+
+                if normalization == &#34;dropout&#34;:
+                    norm = norm(p=p, inplace=inplace)
+
+                block.append(norm)
+
+            activation_function = self.activation_function
+            if last_block and i == sub_blocks - 1:
+                if self.finish_activation_function == &#34;same&#34;:
+                    block.append(activation_function)
+                elif self.finish_activation_function:
+                    block.append(self.finish_activation_function)
+            else:
+                block.append(activation_function)
+
+            if sub_blocks &gt; 1:
+                block = nn.Sequential(*block)
+                blocks.append((f&#34;transpose sub-block {i + 1}&#34;, block))
+            else:
+                blocks.extend(block)
+
+        if sub_blocks &gt; 1:
+            return nn.Sequential(OrderedDict(blocks))
+
+        return nn.Sequential(*blocks)
+
+    def build_transpose_convolve_sequence(
+        self,
+        n_layers: int,
+        in_channels: Optional[int] = None,
+        out_channels: int = 1,
+        out_size: Optional[tuple] = None,
+        params: Optional[dict] = None,
+        normalization: Optional[str] = None,
+        sub_blocks: int = 1,
+        p: float = 0.5,
+        inplace: bool = False,
+        eps: float = 1e-5,
+        momentum: Optional[float] = 0.1,
+        affine: bool = True,
+        ratio: float = 2.0,
+        channel_growth_rate: str = &#34;exponential&#34;,
+        conv_dim: int = 2,
+        adaptive_pool: str = &#34;avgpool&#34;,
+    ) -&gt; nn.Sequential:
+        &#34;&#34;&#34;Builds a sequence of transposed convolution blocks.
+
+        This method constructs a sequential layer of transposed convolution blocks,
+        allowing for customization through normalization, sub-blocks, and other parameters.
+
+        Args:
+            n_layers (int): Number of transposed convolution layers to create.
+            in_channels (Optional[int], optional): Number of channels in the first input tensor.
+                Defaults to None, which will use the last value from _conv_channels if available.
+            out_channels (int, optional): Number of channels after the transposed convolution sequence.
+                Defaults to 1.
+            out_size (Optional[tuple], optional): Desired output size after the transposed convolution sequence.
+                Defaults to None, which uses the input size.
+            params (Optional[dict], optional): Parameters for the transposed convolutional layer
+                (for nn.ConvTranspose2d). Defaults to None.
+            normalization (Optional[str], optional): Type of normalization to apply.
+                Options include &#39;dropout&#39;, &#39;instancenorm&#39;, and &#39;batchnorm&#39;. Defaults to None.
+            sub_blocks (int, optional): Number of transposed convolutions within each layer.
+                Defaults to 1.
+            p (float, optional): Probability of an element being zeroed for dropout.
+                Defaults to 0.5.
+            inplace (bool, optional): If True, performs the operation in-place
+                for dropout. Defaults to False.
+            eps (float, optional): A value added to the denominator for numerical stability
+                (used in batchnorm/instancenorm). Defaults to 1e-5.
+            momentum (Optional[float], optional): Momentum for running_mean or running_var
+                computation (used in batchnorm). If None, a cumulative moving average is used.
+                Defaults to 0.1.
+            affine (bool, optional): If True, the module has learnable affine parameters
+                (used in batchnorm). Defaults to True.
+            ratio (float, optional): Multiplier for the geometric progression of increasing channels
+                (feature maps). Used for &#39;channel_growth_rate&#39; as &#39;exponential&#39; or &#39;power&#39;.
+                Defaults to 2 (powers of two).
+            channel_growth_rate (str, optional): Method of calculating the number of feature maps.
+                Options include &#39;exponential&#39;, &#39;proportion&#39;, &#39;linear&#39;, &#39;power&#39;, and &#39;constant&#39;.
+                Defaults to &#39;exponential&#39;.
+            conv_dim (int, optional): The dimension of the convolutional operation.
+                Defaults to 2.
+            adaptive_pool (str, optional): Type of adaptive pooling layer to apply last,
+                can be &#39;avgpool&#39; or &#39;maxpool&#39;. Defaults to &#39;avgpool&#39;.
+
+        Returns:
+            nn.Sequential: A sequential block containing the specified transposed convolutional
+            layers, possibly including normalization and adaptive pooling.
+        &#34;&#34;&#34;
+        _validate_input_size_is_not_none(self.input_size)
+        params = _set_conv_params(default_params=self._default_transpose_params, params=params)
+        conv_out = _select_conv_calc(conv_dim=conv_dim, transpose=True)
+
+        modules = []
+
+        if in_channels is None and self._conv_channels:
+            in_channels = self._conv_channels[-1]
+
+        _validate_build_transpose_convolve_init(in_channels, self._conv_channels)
+
+        if self._conv_layers:
+            input_layer_size_list = [self._conv_layers[-1]]
+
+        input_channels_count_list = self._calc_out_transpose_channels(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            n_layers=n_layers,
+            ratio=ratio,
+            channel_growth_rate=channel_growth_rate,
+        )
+        for layer in range(n_layers):
+            _validate_max_channels_number(layer, input_channels_count_list, self.max_channels)
+            _validate_min_channels_number(layer, input_channels_count_list, min_channels=1)
+
+            in_channels = input_channels_count_list[layer]
+            out_channels = input_channels_count_list[layer + 1]
+
+            if self._conv_layers:
+                input_layer_size = input_layer_size_list[-1]
+                out_layer_size = conv_out(input_size=input_layer_size, **params)
+                input_layer_size_list.append(out_layer_size)
+
+            last_block_condition = layer == n_layers - 1
+            convolve_block = self.build_transpose_convolve_block(
+                in_channels=in_channels,
+                out_channels=out_channels,
+                normalization=normalization,
+                sub_blocks=sub_blocks,
+                p=p,
+                inplace=inplace,
+                eps=eps,
+                momentum=momentum,
+                affine=affine,
+                params=params,
+                last_block=last_block_condition,
+                conv_dim=conv_dim,
+            )
+
+            modules.append((f&#34;deconv {layer + 1}&#34;, convolve_block))
+
+        self._transpose_conv_channels = input_channels_count_list
+
+        if self._conv_layers:
+            self._transpose_conv_layers = input_layer_size_list
+
+        if out_size is None:
+            out_size = self.input_size
+
+        adaptive_pooling = _select_adaptive_pooling_dimension(conv_dim=conv_dim, pooling=adaptive_pool)
+        resize_block = adaptive_pooling(output_size=tuple(out_size))
+        modules.append((&#34;resize&#34;, resize_block))
+
+        return nn.Sequential(OrderedDict(modules))
+
+    def latent_block(
+        self,
+        input_shape: Sequence[int],
+        output_shape: Sequence[int],
+        n_layers: int = 1,
+        activation_function: Union[Optional[nn.Module], str] = None,
+    ):
+        &#34;&#34;&#34;Creates a latent space transformation block.
+
+        This method constructs a latent space module that transforms an input tensor
+        of a specified shape into an output tensor of a desired shape using
+        linear layers and an optional activation function.
+
+        Args:
+            input_shape (Sequence[int]): The shape of the input tensor, typically
+                represented as a sequence of integers.
+            output_shape (Sequence[int]): The desired shape of the output tensor,
+                specified as a sequence of integers.
+            n_layers (int, optional): The number of linear layers to use in the
+                transformation. Defaults to 1.
+            activation_function (Union[Optional[nn.Module], str], optional):
+                Specifies the activation function to apply after the linear layers.
+                If set to &#39;same&#39;, it will use the instance&#39;s predefined activation
+                function. Defaults to None.
+
+        Returns:
+            LatentSpaceModule: An instance of the LatentSpaceModule class that
+            performs the specified transformation from input to output shape.
+        &#34;&#34;&#34;
+        if activation_function == &#34;same&#34;:
+            activation_function = self.activation_function
+
+        return LatentSpaceModule(input_shape, output_shape, n_layers, activation_function)
+
+    def _calc_out_channels(
+        self,
+        in_size: Sequence[int],
+        in_channels: int,
+        n_layers: int,
+        ratio: float = 2.0,
+        start: int = 32,
+        constant: int = 1,
+        channel_growth_rate: str = &#34;exponential&#34;,
+    ) -&gt; List[int]:
+        _validate_channel_growth_rate_param(channel_growth_rate)
+
+        if channel_growth_rate == &#34;exponential&#34;:
+            self.max_channels = self._initial_max_channels
+            return [in_channels] + [int(start * ratio**i) for i in range(n_layers)]
+
+        if channel_growth_rate == &#34;proportion&#34;:
+            range_start = in_channels
+            range_stop = int((sum(in_size) * 0.5) // len(in_size) + in_channels)
+            range_step = (range_stop - in_channels) // n_layers
+
+            _validate_range_step(range_step, n_layers)
+
+            channels = list(range(range_start, range_stop + 1, range_step))[: n_layers + 1]
+            self.max_channels = range_stop
+            return channels
+
+        if channel_growth_rate == &#34;linear&#34;:
+            self.max_channels = self.min_channels + n_layers
+            return [in_channels] + [in_channels + i + 1 for i in range(n_layers)]
+
+        if channel_growth_rate == &#34;constant&#34;:
+            self.max_channels = constant + 1
+            return [in_channels] + [constant for _ in range(n_layers)]
+
+        if channel_growth_rate == &#34;power&#34;:
+            self.max_channels = self._initial_max_channels
+            return [in_channels] + [int((in_channels + i) ** ratio) for i in range(1, n_layers + 1)]
+
+    @staticmethod
+    def _calc_out_transpose_channels(
+        in_channels: int,
+        out_channels: int,
+        n_layers: int,
+        ratio: float = 2.0,
+        constant: int = 1,
+        channel_growth_rate: str = &#34;exponential&#34;,
+    ) -&gt; List[int]:
+        _validate_channel_growth_rate_param(channel_growth_rate)
+
+        if channel_growth_rate == &#34;exponential&#34;:
+            return [int(in_channels / ratio**i) for i in range(n_layers)] + [out_channels]
+
+        if channel_growth_rate == &#34;proportion&#34;:
+            channels = list(range(out_channels, in_channels, (in_channels - out_channels) // n_layers))[::-1]
+            channels = channels[:n_layers]
+            channels[-1] = out_channels
+            return [in_channels] + channels
+
+        if channel_growth_rate == &#34;linear&#34;:
+            return [in_channels] + [in_channels - i for i in range(1, n_layers)] + [out_channels]
+
+        if channel_growth_rate == &#34;constant&#34;:
+            return [in_channels] + [constant for _ in range(n_layers - 1)] + [out_channels]
+
+        if channel_growth_rate == &#34;power&#34;:
+            return (
+                [in_channels] + [int(math.pow((n_layers - i + 1), ratio)) for i in range(1, n_layers)] + [out_channels]
+            )</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="torchcnnbuilder.builder.Builder.conv_channels"><code class="name">prop <span class="ident">conv_channels</span> : Optional[List[int]]</code></dt>
+<dd>
+<div class="desc"><p>Gets the convolutional channels.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[List[int]]</code></dt>
+<dd>A list of convolutional channel sizes or None</dd>
+</dl>
+<p>if not initialized.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def conv_channels(self) -&gt; Optional[List[int]]:
+    &#34;&#34;&#34;Gets the convolutional channels.
+
+    Returns:
+        Optional[List[int]]: A list of convolutional channel sizes or None
+        if not initialized.
+    &#34;&#34;&#34;
+    return self._conv_channels</code></pre>
+</details>
+</dd>
+<dt id="torchcnnbuilder.builder.Builder.conv_layers"><code class="name">prop <span class="ident">conv_layers</span> : Optional[List[Tuple[int, ...]]]</code></dt>
+<dd>
+<div class="desc"><p>Gets the convolutional layers.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[List[Tuple[int, &hellip;]]]</code></dt>
+<dd>A list of tuples representing</dd>
+</dl>
+<p>convolutional layer configurations or None if not initialized.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def conv_layers(self) -&gt; Optional[List[Tuple[int, ...]]]:
+    &#34;&#34;&#34;Gets the convolutional layers.
+
+    Returns:
+        Optional[List[Tuple[int, ...]]]: A list of tuples representing
+        convolutional layer configurations or None if not initialized.
+    &#34;&#34;&#34;
+    return self._conv_layers</code></pre>
+</details>
+</dd>
+<dt id="torchcnnbuilder.builder.Builder.transpose_conv_channels"><code class="name">prop <span class="ident">transpose_conv_channels</span> : Optional[List[int]]</code></dt>
+<dd>
+<div class="desc"><p>Gets the transposed convolutional channels.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[List[int]]</code></dt>
+<dd>A list of transposed convolutional channel sizes</dd>
+</dl>
+<p>or None if not initialized.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def transpose_conv_channels(self) -&gt; Optional[List[int]]:
+    &#34;&#34;&#34;Gets the transposed convolutional channels.
+
+    Returns:
+        Optional[List[int]]: A list of transposed convolutional channel sizes
+        or None if not initialized.
+    &#34;&#34;&#34;
+    return self._transpose_conv_channels</code></pre>
+</details>
+</dd>
+<dt id="torchcnnbuilder.builder.Builder.transpose_conv_layers"><code class="name">prop <span class="ident">transpose_conv_layers</span> : Optional[List[Tuple[int, ...]]]</code></dt>
+<dd>
+<div class="desc"><p>Gets the transposed convolutional layers.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[List[Tuple[int, &hellip;]]]</code></dt>
+<dd>A list of tuples representing</dd>
+</dl>
+<p>transposed convolutional layer configurations or None if not
+initialized.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def transpose_conv_layers(self) -&gt; Optional[List[Tuple[int, ...]]]:
+    &#34;&#34;&#34;Gets the transposed convolutional layers.
+
+    Returns:
+        Optional[List[Tuple[int, ...]]]: A list of tuples representing
+        transposed convolutional layer configurations or None if not
+        initialized.
+    &#34;&#34;&#34;
+    return self._transpose_conv_layers</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="torchcnnbuilder.builder.Builder.build_convolve_block"><code class="name flex">
+<span>def <span class="ident">build_convolve_block</span></span>(<span>self, in_channels: int, out_channels: int, params: Optional[dict] = None, normalization: Optional[str] = None, sub_blocks: int = 1, p: float = 0.5, inplace: bool = False, eps: float = 1e-05, momentum: Optional[float] = 0.1, affine: bool = True, conv_dim: int = 2) ‑> torch.nn.modules.container.Sequential</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Builds a single block of convolution layers.</p>
+<p>This method creates a sequential block that consists of convolutional layers,
+optional normalization layers, and an activation function.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>in_channels</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of channels in the input image.</dd>
+<dt><strong><code>out_channels</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of channels produced by the convolution.</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>Optional[dict]</code>, optional</dt>
+<dd>Convolutional layer parameters
+(for nn.ConvNd). Defaults to None.</dd>
+<dt><strong><code>normalization</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
+<dd>Type of normalization to apply.
+Options are 'dropout', 'instancenorm', and 'batchnorm'. Defaults to None.</dd>
+<dt><strong><code>sub_blocks</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutional layers within the block.
+Defaults to 1.</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Probability of an element being zeroed for dropout/instancenorm.
+Defaults to 0.5.</dd>
+<dt><strong><code>inplace</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, performs the operation in-place
+for dropout/instancenorm. Defaults to False.</dd>
+<dt><strong><code>eps</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>A value added to the denominator for numerical stability
+(used in batchnorm/instancenorm). Defaults to 1e-5.</dd>
+<dt><strong><code>momentum</code></strong> :&ensp;<code>Optional[float]</code>, optional</dt>
+<dd>Momentum for running_mean or running_var
+computation (used in batchnorm). If None, a cumulative moving average is used.
+Defaults to 0.1.</dd>
+<dt><strong><code>affine</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, the module has learnable affine parameters
+(used in batchnorm). Defaults to True.</dd>
+<dt><strong><code>conv_dim</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The dimension of the convolutional operation (2 for
+2D convolution, 3 for 3D convolution). Defaults to 2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>nn.Sequential</code></dt>
+<dd>A sequential block containing convolutional layers,</dd>
+</dl>
+<p>optional normalization layers, and an activation function.</p></div>
+</dd>
+<dt id="torchcnnbuilder.builder.Builder.build_convolve_sequence"><code class="name flex">
+<span>def <span class="ident">build_convolve_sequence</span></span>(<span>self, n_layers: int, in_channels: int = 1, params: Optional[dict] = None, normalization: Optional[str] = None, sub_blocks: int = 1, p: float = 0.5, inplace: bool = False, eps: float = 1e-05, momentum: Optional[float] = 0.1, affine: bool = True, ratio: float = 2.0, start: int = 32, channel_growth_rate: str = 'exponential', conv_dim: int = 2) ‑> torch.nn.modules.container.Sequential</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Builds a sequence of convolution blocks.</p>
+<p>This method constructs a sequential block of convolutional layers,
+with optional normalization and multiple sub-blocks per layer.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of convolution layers in the encoder part.</dd>
+<dt><strong><code>in_channels</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of channels in the first input tensor.
+Defaults to 1.</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>Optional[dict]</code>, optional</dt>
+<dd>Convolutional layer parameters
+(for nn.ConvNd). Defaults to None.</dd>
+<dt><strong><code>normalization</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
+<dd>Type of normalization to apply.
+Options are 'dropout', 'instancenorm', and 'batchnorm'. Defaults to None.</dd>
+<dt><strong><code>sub_blocks</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutions within each layer.
+Defaults to 1.</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Probability of an element being zeroed for dropout.
+Defaults to 0.5.</dd>
+<dt><strong><code>inplace</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, performs the operation in-place
+for dropout. Defaults to False.</dd>
+<dt><strong><code>eps</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>A value added to the denominator for numerical stability
+(used in batchnorm/instancenorm). Defaults to 1e-5.</dd>
+<dt><strong><code>momentum</code></strong> :&ensp;<code>Optional[float]</code>, optional</dt>
+<dd>Momentum for running_mean or running_var
+computation (used in batchnorm). If None, a cumulative moving average is used.
+Defaults to 0.1.</dd>
+<dt><strong><code>affine</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, the module has learnable affine parameters
+(used in batchnorm). Defaults to True.</dd>
+<dt><strong><code>ratio</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Multiplier for the geometric progression of increasing
+channels (feature maps). Used for 'channel_growth_rate' as 'exponential'
+or 'power'. Defaults to 2.0.</dd>
+<dt><strong><code>start</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Starting position of the geometric progression
+when 'channel_growth_rate' is set to 'exponential'. Defaults to 32.</dd>
+<dt><strong><code>channel_growth_rate</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Method for calculating the number of
+feature maps. Options include 'exponential', 'proportion', 'linear',
+'power', and 'constant'. Defaults to 'exponential'.</dd>
+<dt><strong><code>conv_dim</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The dimension of the convolutional operation.
+Defaults to 2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>nn.Sequential</code></dt>
+<dd>A sequential block containing the specified number of</dd>
+</dl>
+<p>convolutional layers.</p></div>
+</dd>
+<dt id="torchcnnbuilder.builder.Builder.build_transpose_convolve_block"><code class="name flex">
+<span>def <span class="ident">build_transpose_convolve_block</span></span>(<span>self, in_channels: int, out_channels: int, params: Optional[dict] = None, normalization: Optional[str] = None, sub_blocks: int = 1, p: float = 0.5, inplace: bool = False, eps: float = 1e-05, momentum: Optional[float] = 0.1, affine: bool = True, last_block: bool = False, conv_dim: int = 2) ‑> torch.nn.modules.container.Sequential</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Builds a single block of transposed convolution layers.</p>
+<p>This method constructs a sequential block of transposed convolutional layers,
+with optional normalization and multiple sub-blocks per layer.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>in_channels</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of channels in the input image.</dd>
+<dt><strong><code>out_channels</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of channels produced by the transposed convolution.</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>Optional[dict]</code>, optional</dt>
+<dd>Parameters for the transposed convolutional layer
+(for nn.ConvTranspose2d). Defaults to None.</dd>
+<dt><strong><code>normalization</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
+<dd>Type of normalization to apply.
+Options are 'dropout', 'instancenorm', and 'batchnorm'. Defaults to None.</dd>
+<dt><strong><code>sub_blocks</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutions within each layer.
+Defaults to 1.</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Probability of an element being zeroed for dropout.
+Defaults to 0.5.</dd>
+<dt><strong><code>inplace</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, performs the operation in-place
+for dropout. Defaults to False.</dd>
+<dt><strong><code>eps</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>A value added to the denominator for numerical stability
+(used in batchnorm/instancenorm). Defaults to 1e-5.</dd>
+<dt><strong><code>momentum</code></strong> :&ensp;<code>Optional[float]</code>, optional</dt>
+<dd>Momentum for running_mean or running_var
+computation (used in batchnorm). If None, a cumulative moving average is used.
+Defaults to 0.1.</dd>
+<dt><strong><code>affine</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, the module has learnable affine parameters
+(used in batchnorm). Defaults to True.</dd>
+<dt><strong><code>last_block</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, no activation function is applied after
+the transposed convolution. Defaults to False.</dd>
+<dt><strong><code>conv_dim</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The dimension of the convolutional operation.
+Defaults to 2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>nn.Sequential</code></dt>
+<dd>A sequential block containing the specified transposed</dd>
+</dl>
+<p>convolutional layers, possibly including normalization and activation functions.</p></div>
+</dd>
+<dt id="torchcnnbuilder.builder.Builder.build_transpose_convolve_sequence"><code class="name flex">
+<span>def <span class="ident">build_transpose_convolve_sequence</span></span>(<span>self, n_layers: int, in_channels: Optional[int] = None, out_channels: int = 1, out_size: Optional[tuple] = None, params: Optional[dict] = None, normalization: Optional[str] = None, sub_blocks: int = 1, p: float = 0.5, inplace: bool = False, eps: float = 1e-05, momentum: Optional[float] = 0.1, affine: bool = True, ratio: float = 2.0, channel_growth_rate: str = 'exponential', conv_dim: int = 2, adaptive_pool: str = 'avgpool') ‑> torch.nn.modules.container.Sequential</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Builds a sequence of transposed convolution blocks.</p>
+<p>This method constructs a sequential layer of transposed convolution blocks,
+allowing for customization through normalization, sub-blocks, and other parameters.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of transposed convolution layers to create.</dd>
+<dt><strong><code>in_channels</code></strong> :&ensp;<code>Optional[int]</code>, optional</dt>
+<dd>Number of channels in the first input tensor.
+Defaults to None, which will use the last value from _conv_channels if available.</dd>
+<dt><strong><code>out_channels</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of channels after the transposed convolution sequence.
+Defaults to 1.</dd>
+<dt><strong><code>out_size</code></strong> :&ensp;<code>Optional[tuple]</code>, optional</dt>
+<dd>Desired output size after the transposed convolution sequence.
+Defaults to None, which uses the input size.</dd>
+<dt><strong><code>params</code></strong> :&ensp;<code>Optional[dict]</code>, optional</dt>
+<dd>Parameters for the transposed convolutional layer
+(for nn.ConvTranspose2d). Defaults to None.</dd>
+<dt><strong><code>normalization</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
+<dd>Type of normalization to apply.
+Options include 'dropout', 'instancenorm', and 'batchnorm'. Defaults to None.</dd>
+<dt><strong><code>sub_blocks</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of transposed convolutions within each layer.
+Defaults to 1.</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Probability of an element being zeroed for dropout.
+Defaults to 0.5.</dd>
+<dt><strong><code>inplace</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, performs the operation in-place
+for dropout. Defaults to False.</dd>
+<dt><strong><code>eps</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>A value added to the denominator for numerical stability
+(used in batchnorm/instancenorm). Defaults to 1e-5.</dd>
+<dt><strong><code>momentum</code></strong> :&ensp;<code>Optional[float]</code>, optional</dt>
+<dd>Momentum for running_mean or running_var
+computation (used in batchnorm). If None, a cumulative moving average is used.
+Defaults to 0.1.</dd>
+<dt><strong><code>affine</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>If True, the module has learnable affine parameters
+(used in batchnorm). Defaults to True.</dd>
+<dt><strong><code>ratio</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Multiplier for the geometric progression of increasing channels
+(feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power'.
+Defaults to 2 (powers of two).</dd>
+<dt><strong><code>channel_growth_rate</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Method of calculating the number of feature maps.
+Options include 'exponential', 'proportion', 'linear', 'power', and 'constant'.
+Defaults to 'exponential'.</dd>
+<dt><strong><code>conv_dim</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The dimension of the convolutional operation.
+Defaults to 2.</dd>
+<dt><strong><code>adaptive_pool</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Type of adaptive pooling layer to apply last,
+can be 'avgpool' or 'maxpool'. Defaults to 'avgpool'.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>nn.Sequential</code></dt>
+<dd>A sequential block containing the specified transposed convolutional</dd>
+</dl>
+<p>layers, possibly including normalization and adaptive pooling.</p></div>
+</dd>
+<dt id="torchcnnbuilder.builder.Builder.latent_block"><code class="name flex">
+<span>def <span class="ident">latent_block</span></span>(<span>self, input_shape: Sequence[int], output_shape: Sequence[int], n_layers: int = 1, activation_function: Union[torch.nn.modules.module.Module, ForwardRef(None), str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a latent space transformation block.</p>
+<p>This method constructs a latent space module that transforms an input tensor
+of a specified shape into an output tensor of a desired shape using
+linear layers and an optional activation function.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_shape</code></strong> :&ensp;<code>Sequence[int]</code></dt>
+<dd>The shape of the input tensor, typically
+represented as a sequence of integers.</dd>
+<dt><strong><code>output_shape</code></strong> :&ensp;<code>Sequence[int]</code></dt>
+<dd>The desired shape of the output tensor,
+specified as a sequence of integers.</dd>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The number of linear layers to use in the
+transformation. Defaults to 1.</dd>
+</dl>
+<p>activation_function (Union[Optional[nn.Module], str], optional):
+Specifies the activation function to apply after the linear layers.
+If set to 'same', it will use the instance's predefined activation
+function. Defaults to None.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>LatentSpaceModule</code></dt>
+<dd>An instance of the LatentSpaceModule class that</dd>
+</dl>
+<p>performs the specified transformation from input to output shape.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="torchcnnbuilder" href="index.html">torchcnnbuilder</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="torchcnnbuilder.builder.Builder" href="#torchcnnbuilder.builder.Builder">Builder</a></code></h4>
+<ul class="">
+<li><code><a title="torchcnnbuilder.builder.Builder.build_convolve_block" href="#torchcnnbuilder.builder.Builder.build_convolve_block">build_convolve_block</a></code></li>
+<li><code><a title="torchcnnbuilder.builder.Builder.build_convolve_sequence" href="#torchcnnbuilder.builder.Builder.build_convolve_sequence">build_convolve_sequence</a></code></li>
+<li><code><a title="torchcnnbuilder.builder.Builder.build_transpose_convolve_block" href="#torchcnnbuilder.builder.Builder.build_transpose_convolve_block">build_transpose_convolve_block</a></code></li>
+<li><code><a title="torchcnnbuilder.builder.Builder.build_transpose_convolve_sequence" href="#torchcnnbuilder.builder.Builder.build_transpose_convolve_sequence">build_transpose_convolve_sequence</a></code></li>
+<li><code><a title="torchcnnbuilder.builder.Builder.conv_channels" href="#torchcnnbuilder.builder.Builder.conv_channels">conv_channels</a></code></li>
+<li><code><a title="torchcnnbuilder.builder.Builder.conv_layers" href="#torchcnnbuilder.builder.Builder.conv_layers">conv_layers</a></code></li>
+<li><code><a title="torchcnnbuilder.builder.Builder.latent_block" href="#torchcnnbuilder.builder.Builder.latent_block">latent_block</a></code></li>
+<li><code><a title="torchcnnbuilder.builder.Builder.transpose_conv_channels" href="#torchcnnbuilder.builder.Builder.transpose_conv_channels">transpose_conv_channels</a></code></li>
+<li><code><a title="torchcnnbuilder.builder.Builder.transpose_conv_layers" href="#torchcnnbuilder.builder.Builder.transpose_conv_layers">transpose_conv_layers</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

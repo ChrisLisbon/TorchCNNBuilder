@@ -16,17 +16,11 @@ from torchcnnbuilder.builder import Builder
 # ------------------------------------
 class ForecasterBase(nn.Module):
     """
-    The template class of the time series prediction CNN-architecture. The source of the original `article code
-    <https://github.com/ITMO-NSS-team/ice-concentration-prediction-paper?ysclid=lrhxbvsk8s328492826>`_.
+    A base class for CNN-based time series forecasting architectures. This class serves as a template for building
+    time series prediction models with an encoder-decoder architecture.
 
-      Attributes:
-          encoder (nn.Sequential): convolutional sequence - encoder part
-          decoder (nn.Sequential): transpose convolutional sequence - decoder part
-          conv_channels (List[int]): list of output channels after each convolutional layer
-          transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
-          conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
-          transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
-    # noqa
+    Original source:
+    [article code](https://github.com/ITMO-NSS-team/ice-concentration-prediction-paper?ysclid=lrhxbvsk8s328492826).
     """
 
     def __init__(
@@ -47,23 +41,34 @@ class ForecasterBase(nn.Module):
         latent_activation_function: Union[Optional[nn.Module], str] = None,
     ) -> None:
         """
-        The constructor for ForecasterBase
+        Initializes the ForecasterBase with the encoder-decoder structure and specified layer parameters.
+        See the model diagram below:
 
-        :param input_size: input size of the input tensor of the one time point
-        :param n_layers: number of the convolution layers in the encoder part
-        :param in_time_points: number of time points (channels) in the first input tensor (prehistory size)
-        :param out_time_points: number of time points (channels) in the last output tensor (forecasting size)
-        :param conv_dim: the dimension of the convolutional operation 1, 2 or 3. If 2 time_points equals to the number of channels. Default: 2
-        :param n_transpose_layers: number of the transpose convolution layers in the encoder part. Default: None (same as n_layers)
-        :param convolve_params: parameters of convolutional layers (by default same as in torch). Default: None
-        :param transpose_convolve_params: parameters of transpose convolutional layers (by default same as in torch). Default: None
-        :param activation_function: activation function. Default: nn.ReLU(inplace=True)
-        :param finish_activation_function: last activation function, can be same as activation_function (str 'same'). Default: None
-        :param normalization: choice of normalization between str 'dropout', 'batchnorm' and 'instancenorm'. Default: None
-        :param latent_shape:  the shape of the latent dim. Default: None,
-        :param latent_n_layers: number of linear layers to use in the latent transformation. Default: 1,
-        :param latent_activation_function: latent activation function if `latent_n_layers` > 1, can be 'same' as model one. Default: None,
-        # noqa
+        .. image:: ../media/ForecasterBase.png
+
+        Args:
+            input_size (Sequence[int]): The shape of the input tensor for one time point.
+            n_layers (int): The number of convolution layers in the encoder.
+            in_time_points (int): The number of time points (channels) in the input tensor (prehistory size).
+            out_time_points (int): The number of time points (channels) in the output tensor (forecasting size).
+            conv_dim (int): The dimension of the convolution operation (1, 2, or 3). If set to 2, `in_time_points` is
+                used as the number of channels. Default is 2.
+            n_transpose_layers (Optional[int]): The number of transpose convolution layers in the decoder.
+                If None, uses the same value as `n_layers`. Default is None.
+            convolve_params (Optional[dict]): Parameters for convolution layers. If None, defaults to PyTorch’s default
+                values. Default is None.
+            transpose_convolve_params (Optional[dict]): Parameters for transpose convolution layers. If None, defaults
+                to PyTorch’s default values. Default is None.
+            activation_function (nn.Module): Activation function used in each layer. Default is `nn.ReLU(inplace=True)`.
+            finish_activation_function (Union[Optional[nn.Module], str]): Final activation function. If 'same',
+                uses the same activation function as `activation_function`. Default is None.
+            normalization (Optional[str]): Type of normalization ('dropout', 'batchnorm', or 'instancenorm').
+             Default is None.
+            latent_shape (Optional[Sequence[int]]): The shape of the latent space. If None, no latent space
+            transformation is applied. Default is None.
+            latent_n_layers (int): Number of layers in the latent space transformation. Default is 1.
+            latent_activation_function (Union[Optional[nn.Module], str]): Activation function for latent space. If 'same',
+                uses the same activation function as the model. Default is None.
         """
         super(ForecasterBase, self).__init__()
         _validate_conv_dim(conv_dim)
@@ -169,11 +174,13 @@ class ForecasterBase(nn.Module):
 
     def forward(self, x):
         """
-        Forward pass of the model
+        Performs the forward pass of the encoder-decoder model, transforming the input tensor.
 
-        :param x: tensor before forward pass
-        :return: tensor after forward pass
-        # noqa
+        Args:
+            x (torch.Tensor): The input tensor to be transformed by the model.
+
+        Returns:
+            torch.Tensor: The output tensor after passing through the encoder and decoder layers.
         """
         x = self.encoder(x)
         x = self.decoder(x)

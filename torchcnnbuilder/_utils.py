@@ -10,36 +10,14 @@ from torchcnnbuilder._validation import (
 
 
 def _double_params(param: int) -> Tuple[int, int]:
-    """
-    Creating two parameters instead of one
-
-    :param param: int param of some function
-    :return Tuple[int, int]: doubled param
-    # noqa
-    """
     return param, param
 
 
 def _triple_params(param: int) -> Tuple[int, int, int]:
-    """
-    Creating three parameters instead of one
-
-    :param param: int param of some function
-    :return Tuple[int, int, int]: tripled param
-    # noqa
-    """
     return param, param, param
 
 
 def _set_conv_params(default_params: Dict[str, int], params: Optional[Dict[str, int]]) -> Dict[str, int]:
-    """
-    Set convolution or transpose convolution params by using default one
-
-    :param default_params: default convolution or transpose convolution params
-    :param params: new users convolution params
-    :return Dict[str, int]: set convolution params
-    # noqa
-    """
     default_params = default_params.copy()
     if params is not None:
         for key, value in params.items():
@@ -48,14 +26,6 @@ def _set_conv_params(default_params: Dict[str, int], params: Optional[Dict[str, 
 
 
 def _select_conv_dimension(conv_dim: int, transpose: bool = False) -> Type[nn.Module]:
-    """
-    The function to select nn.ConvNd or nn.ConvTransposeNd
-
-    :param conv_dim: the dimension of the convolutional operation
-    :param transpose: choice of conv types between transposed and ordinary one. Default: False
-    :return: nn.Module object
-    # noqa
-    """
     _validate_conv_dim(conv_dim)
 
     if conv_dim == 1:
@@ -75,14 +45,6 @@ def _select_conv_dimension(conv_dim: int, transpose: bool = False) -> Type[nn.Mo
 
 
 def _select_norm_dimension(conv_dim: int, normalization: str = "batchnorm") -> Type[nn.Module]:
-    """
-    The function to select nn.BatchNormNd, nn.InstanceNormNd or nn.DropoutNd
-
-    :param conv_dim: the dimension of the convolutional operation
-    :param normalization: choice of normalization between str 'dropout', 'batchnorm' and 'instancenorm'. Default: 'batchnorm'
-    :return: nn.Module object
-    # noqa
-    """
     _validate_normalization_param(normalization)
 
     if normalization == "dropout":
@@ -111,14 +73,6 @@ def _select_norm_dimension(conv_dim: int, normalization: str = "batchnorm") -> T
 
 
 def _select_adaptive_pooling_dimension(conv_dim: int, pooling: str = "avgpool") -> Type[nn.Module]:
-    """
-    The function to select nn.AdaptivePoolNd
-
-    :param conv_dim: the dimension of the convolutional operation
-    :param pooling: choice of adaptive pooling between str 'avgpool' and 'maxpool'. Default: 'avgpool'
-    :return: nn.Module object
-    # noqa
-    """
     _validate_pooling_param(pooling)
     _validate_conv_dim(conv_dim)
 

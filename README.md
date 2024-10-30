@@ -21,31 +21,9 @@ The simplest way to install framework is using `pip`:
 pip install torchcnnbuilder
 ```
 
-### Usage examples
+### Documentation 
 
----
-The basic structure of the framework is presented below. Each subdirectory has its own example of using the appropriate available functionality. You can check [`<directory>_examples.ipynb`](./examples) files in order to see the ways to use the proposed toolkit. In short, there is the following functionality:
-
-- the ability to calculate the size of tensors after (transposed) convolutional layers
-- preprocessing an n-dimensional time series in `TensorDataset`
-- automatic creation of (transposed) convolutional sequences
-- automatic creation of (transposed) convolutional layers and (transposed) blocks from convolutional layers
-
-The structure of the main part of the package:
-
-```
-├── examples
-│ ├── builder_examples.ipynb
-│ ├── preprocess_examples.ipynb
-│ ├── models_examples.ipynb
-│ └── tools                     # additional functions for the examples
-└── torchcnnbuilder
-    ├── preprocess
-    │ └── time_series.py
-    ├── builder.py
-    └── models.py
-```
-Initially, the library was created to help predict n-dimensional time series *(geodata)*, so there is a corresponding functionality and templates of predictive models *(like `ForecasterBase`)*.
+TDB:
 
 ### Sources
 
