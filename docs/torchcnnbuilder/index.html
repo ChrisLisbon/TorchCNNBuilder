@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>torchcnnbuilder API documentation</title>
+<meta name="description" content="**TorchCNNBuilder** is an open-source framework for the automatic creation of CNN architectures.
+This framework should first of all help researchers …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>torchcnnbuilder</code></h1>
+</header>
+<section id="section-intro">
+<p><strong>TorchCNNBuilder</strong> is an open-source framework for the automatic creation of CNN architectures.
+This framework should first of all help researchers in the applicability of CNN models for a huge range of tasks,
+taking over most of the writing of the architecture code. This framework is distributed under the 3-Clause BSD license.
+All the functionality is written only using <code>pytorch</code> <em>(no third-party dependencies)</em>.</p>
+<h1 id="installation">Installation</h1>
+<p>The simplest way to install framework is using <code>pip</code>:</p>
+<pre><code>pip install torchcnnbuilder
+</code></pre>
+<h1 id="purposes">Purposes</h1>
+<p>Initially, the library was created to help predict n-dimensional time series <em>(geodata)</em>, so there is a corresponding functionality and templates of predictive models <em>(like <code>ForecasterBase</code>)</em>.
+Basic framework functions are presented below: </p>
+<ul>
+<li>the ability to calculate the size of tensors after (transposed) convolutional layers</li>
+<li>preprocessing an n-dimensional time series in <code>TensorDataset</code> (<code><a title="torchcnnbuilder.preprocess" href="preprocess/index.html">torchcnnbuilder.preprocess</a></code>)</li>
+<li>automatic creation of (transposed) convolutional sequences (<code><a title="torchcnnbuilder.builder" href="builder.html">torchcnnbuilder.builder</a></code>)</li>
+<li>automatic creation of (transposed) convolutional layers and (transposed) blocks from convolutional layers (<code><a title="torchcnnbuilder.preprocess" href="preprocess/index.html">torchcnnbuilder.preprocess</a></code>)</li>
+<li>automatic creation of convolution encoder-decoder models (<code><a title="torchcnnbuilder.models" href="models.html">torchcnnbuilder.models</a></code>)</li>
+<li>the ability to change latent space params after/before encoder/decoder parts (<code><a title="torchcnnbuilder.latent" href="latent.html">torchcnnbuilder.latent</a></code>)</li>
+</ul>
+<h1 id="constants">Constants</h1>
+<p>You can check current package version by using constant <code>__version__</code>:</p>
+<pre><code class="language-python">from torchcnnbuilder import __version__
+
+print(__version__)
+# output: 0.1.2
+</code></pre>
+<p>Also you can check default torch convolution/transpose convolution params:</p>
+<pre><code class="language-python">from torchcnnbuilder import DEFAULT_CONV_PARAMS, DEFAULT_TRANSPOSE_CONV_PARAMS
+
+print(DEFAULT_CONV_PARAMS)
+# output: {'kernel_size': 3, 'stride': 1, 'padding': 0, 'dilation': 1}
+
+print(DEFAULT_TRANSPOSE_CONV_PARAMS)
+# output: {'kernel_size': 3, 'stride': 1, 'padding': 0, 'output_padding': 0, 'dilation': 1}
+</code></pre>
+<h1 id="development">Development</h1>
+<p>We try to maintain good practices of readable open source code.
+Therefore, if you want to participate in the development and open your pool request, pay attention to the following points:
+- Every push is checked by the flake8 job. It will show you PEP8 errors or possible code improvements.
+- Use this linter script in the repo root after your code:</p>
+<pre><code class="language-bash">bash lint_and_check.sh
+</code></pre>
+<p><em>You can mark function docstrings using <code>#noqa</code>, in order for flake8 not to pay attention to them.</em></p>
+<h2 id="general-tips">General tips</h2>
+<ul>
+<li>If it's possible, try to create pull-requests by using fork</li>
+<li>Give only appropriate names to commits / issues / pull-requests</li>
+<li>It's better to use <code>pyenv</code>, <code>conda</code> or some different options of python environments in order to develop</li>
+</ul>
+<h2 id="release-process">Release process</h2>
+<p>Despite the fact that the framework is very small, we want to maintain its consistency.
+The release procedure looks like this:</p>
+<ul>
+<li>pull-request is approved by maintainers and merged with squashing commits</li>
+<li>a new tag is being released to the github repository</li>
+<li>a new tag is being released in pypi</li>
+</ul>
+<h2 id="building-doc">Building doc</h2>
+<p>Our doc is created by using `pdoc' framework.</p>
+<ul>
+<li>In order to <strong>build</strong> the doc locally run in the repo root:</li>
+</ul>
+<pre><code class="language-bash">pdoc --html -o docs --config latex_math=True torchcnnbuilder/ --force
+</code></pre>
+<ul>
+<li>In order to <strong>serve</strong> the doc locally run in the repo root: </li>
+</ul>
+<pre><code class="language-bash">python -m http.server --directory docs/torchcnnbuilder
+</code></pre>
+<ul>
+<li>Or you can use this script in the root of repo in order to do previous two steps:</li>
+</ul>
+<pre><code class="language-bash">sh build_and_serve.sh
+</code></pre>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="torchcnnbuilder.builder" href="builder.html">torchcnnbuilder.builder</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="torchcnnbuilder.latent" href="latent.html">torchcnnbuilder.latent</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="torchcnnbuilder.models" href="models.html">torchcnnbuilder.models</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="torchcnnbuilder.preprocess" href="preprocess/index.html">torchcnnbuilder.preprocess</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="torchcnnbuilder.conv1d_out"><code class="name flex">
+<span>def <span class="ident">conv1d_out</span></span>(<span>input_size: Union[Tuple[int], int], kernel_size: Union[Tuple[int], int] = 3, stride: Union[Tuple[int], int] = 1, padding: Union[Tuple[int], int] = 0, dilation: Union[Tuple[int], int] = 1, n_layers: int = 1) ‑> Tuple[int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the output size of a tensor after applying a 1D convolution operation (nn.Conv1d).</p>
+<p>The size calculation after the convolutional layer is carried out according to the formula from the <code>torch</code> module
+<em>(the default parameters are the same as in <code>nn.ConvNd</code>)</em>.
+Counting functions are implemented for convolutions of dimensions from 1 to 3. At the same time, depending on the
+dimension, one number or the corresponding tuple of dimensions can be supplied to the parameters of each function.
+If it is necessary to calculate the convolution for tensors of N dimensions, then it is enough to simply apply a
+one-dimensional convolution N times. Some result values <strong>can be negative</strong> (due to the formula) which means you
+<strong>should choose another conv params</strong> (tensor dimensions degenerates to zero). The formula for calculating the size
+of the tensor after convolution for one dimension is presented below:</p>
+<p><span><span class="MathJax_Preview">
+H_{out} = \lfloor \frac{H_{in} + 2 \times padding[0] -
+dilation[0] \times (kernel[0] - 1) + 1}{stride[0]}
+floor + 1
+</span><script type="math/tex; mode=display">
+H_{out} = \lfloor \frac{H_{in} + 2 \times padding[0] -
+dilation[0] \times (kernel[0] - 1) + 1}{stride[0]}
+floor + 1
+</script></span></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_size</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dd>Size of the input tensor or vector [h].</dd>
+<dt><strong><code>kernel_size</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Size of the convolution kernel. Defaults to 3.</dd>
+<dt><strong><code>stride</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Stride of the convolution. Defaults to 1.</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Padding added to both sides of the input. Defaults to 0.</dd>
+<dt><strong><code>dilation</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Spacing between kernel elements. Defaults to 1.</dd>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutional layers. Defaults to 1.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int]</code></dt>
+<dd>The size of the output tensor or vector [h] as a tuple.</dd>
+</dl></div>
+</dd>
+<dt id="torchcnnbuilder.conv2d_out"><code class="name flex">
+<span>def <span class="ident">conv2d_out</span></span>(<span>input_size: Union[Tuple[int, int], int], kernel_size: Union[Tuple[int, int], int] = 3, stride: Union[Tuple[int, int], int] = 1, padding: Union[Tuple[int, int], int] = 0, dilation: Union[Tuple[int, int], int] = 1, n_layers: int = 1) ‑> Tuple[int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the output size of a tensor after applying a 2D convolution operation (nn.Conv2d).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_size</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code></dt>
+<dd>Size of the input tensor [h, w].</dd>
+<dt><strong><code>kernel_size</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Size of the convolution kernel. Defaults to 3.</dd>
+<dt><strong><code>stride</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Stride of the convolution. Defaults to 1.</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Padding added to all sides of the input. Defaults to 0.</dd>
+<dt><strong><code>dilation</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Spacing between kernel elements. Defaults to 1.</dd>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutional layers. Defaults to 1.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int, int]</code></dt>
+<dd>The size of the output tensor [h, w].</dd>
+</dl></div>
+</dd>
+<dt id="torchcnnbuilder.conv3d_out"><code class="name flex">
+<span>def <span class="ident">conv3d_out</span></span>(<span>input_size: Union[Tuple[int, int, int], int], kernel_size: Union[Tuple[int, int, int], int] = 3, stride: Union[Tuple[int, int, int], int] = 1, padding: Union[Tuple[int, int, int], int] = 0, dilation: Union[Tuple[int, int, int], int] = 1, n_layers: int = 1) ‑> Tuple[int, int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the output size of a tensor after applying a 3D convolution operation (nn.Conv3d).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_size</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code></dt>
+<dd>Size of the input tensor [d, h, w].</dd>
+<dt><strong><code>kernel_size</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Size of the convolution kernel. Defaults to 3.</dd>
+<dt><strong><code>stride</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Stride of the convolution. Defaults to 1.</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Padding added to all sides of the input. Defaults to 0.</dd>
+<dt><strong><code>dilation</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Spacing between kernel elements. Defaults to 1.</dd>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutional layers. Defaults to 1.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int, int, int]</code></dt>
+<dd>The size of the output tensor [d, h, w].</dd>
+</dl></div>
+</dd>
+<dt id="torchcnnbuilder.conv_transpose1d_out"><code class="name flex">
+<span>def <span class="ident">conv_transpose1d_out</span></span>(<span>input_size: Union[Tuple[int], int], kernel_size: Union[Tuple[int], int] = 3, stride: Union[Tuple[int], int] = 1, padding: Union[Tuple[int], int] = 0, output_padding: Union[Tuple[int], int] = 0, dilation: Union[Tuple[int], int] = 1, n_layers: int = 1) ‑> Tuple[int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the output size of a tensor after a transposed 1D convolution (nn.ConvTranspose1d).</p>
+<p>The size calculation after the transposed convolutional layer is carried out according to the formula from the
+torch module <em>(the default parameters are the same as in <code>nn.ConvTransposeNd</code>)</em>. Counting functions are
+implemented for transposed convolutions of dimensions from 1 to 3. At the same time, depending on the dimension,
+one number or the corresponding tuple of dimensions can be supplied to the parameters of each function.
+If it is necessary to calculate the transposed convolution for tensors of N dimensions, then it is enough
+to simply apply a one-dimensional transposed convolution N times. Some result values <strong>can be negative</strong>
+(due to the formula) which means you <strong>should choose another conv params</strong> (tensor dimensions
+degenerates to zero). The formula for calculating the size of the tensor after transposed
+convolution for one dimension is presented below:</p>
+<p><span><span class="MathJax_Preview">
+H_{out} = (H_{in} - 1) \times stride[0] - 2 \times padding[0] + dilation[0]
+\times (kernel\_size[0] - 1) + output\_padding[0] + 1
+</span><script type="math/tex; mode=display">
+H_{out} = (H_{in} - 1) \times stride[0] - 2 \times padding[0] + dilation[0]
+\times (kernel\_size[0] - 1) + output\_padding[0] + 1
+</script></span></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_size</code></strong> :&ensp;<code>Union[Tuple[int], int]</code></dt>
+<dd>Size of the input tensor/vector [h].</dd>
+<dt><strong><code>kernel_size</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Size of the transposed convolution kernel. Defaults to 3.</dd>
+<dt><strong><code>stride</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Stride of the transposed convolution. Defaults to 1.</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Padding added to both sides of the input. Defaults to 0.</dd>
+<dt><strong><code>output_padding</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Additional size added to one side of the output shape.</dd>
+<dt>Defaults to 0.</dt>
+<dt><strong><code>dilation</code></strong> :&ensp;<code>Union[Tuple[int], int]</code>, optional</dt>
+<dd>Spacing between kernel elements. Defaults to 1.</dd>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutional layers. Defaults to 1.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int]</code></dt>
+<dd>Size of the output tensor/vector [h].</dd>
+</dl></div>
+</dd>
+<dt id="torchcnnbuilder.conv_transpose2d_out"><code class="name flex">
+<span>def <span class="ident">conv_transpose2d_out</span></span>(<span>input_size: Union[Tuple[int, int], int], kernel_size: Union[Tuple[int, int], int] = 3, stride: Union[Tuple[int, int], int] = 1, padding: Union[Tuple[int, int], int] = 0, output_padding: Union[Tuple[int, int], int] = 0, dilation: Union[Tuple[int, int], int] = 1, n_layers: int = 1) ‑> Tuple[int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the output size of a tensor after a transposed 2D convolution (nn.ConvTranspose2d).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_size</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code></dt>
+<dd>Size of the input tensor [h, w].</dd>
+<dt><strong><code>kernel_size</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Size of the transposed convolution kernel. Defaults to 3.</dd>
+<dt><strong><code>stride</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Stride of the transposed convolution. Defaults to 1.</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Padding added to both sides of the input. Defaults to 0.</dd>
+<dt><strong><code>output_padding</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Additional size added to one side of the output shape.</dd>
+<dt>Defaults to 0.</dt>
+<dt><strong><code>dilation</code></strong> :&ensp;<code>Union[Tuple[int, int], int]</code>, optional</dt>
+<dd>Spacing between kernel elements. Defaults to 1.</dd>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutional layers. Defaults to 1.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int, int]</code></dt>
+<dd>Size of the output tensor [h, w].</dd>
+</dl></div>
+</dd>
+<dt id="torchcnnbuilder.conv_transpose3d_out"><code class="name flex">
+<span>def <span class="ident">conv_transpose3d_out</span></span>(<span>input_size: Union[Tuple[int, int, int], int], kernel_size: Union[Tuple[int, int, int], int] = 3, stride: Union[Tuple[int, int, int], int] = 1, padding: Union[Tuple[int, int, int], int] = 0, output_padding: Union[Tuple[int, int, int], int] = 0, dilation: Union[Tuple[int, int, int], int] = 1, n_layers: int = 1) ‑> Tuple[int, int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the output size of a tensor after a transposed 3D convolution (nn.ConvTranspose3d).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_size</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code></dt>
+<dd>Size of the input tensor [d, h, w].</dd>
+<dt><strong><code>kernel_size</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Size of the transposed convolution kernel. Defaults to 3.</dd>
+<dt><strong><code>stride</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Stride of the transposed convolution. Defaults to 1.</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Padding added to both sides of the input. Defaults to 0.</dd>
+<dt><strong><code>output_padding</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Additional size added to one side of the output shape.</dd>
+<dt>Defaults to 0.</dt>
+<dt><strong><code>dilation</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
+<dd>Spacing between kernel elements. Defaults to 1.</dd>
+<dt><strong><code>n_layers</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of convolutional layers. Defaults to 1.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int, int, int]</code></dt>
+<dd>Size of the output tensor [d, h, w].</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#purposes">Purposes</a></li>
+<li><a href="#constants">Constants</a></li>
+<li><a href="#development">Development</a><ul>
+<li><a href="#general-tips">General tips</a></li>
+<li><a href="#release-process">Release process</a></li>
+<li><a href="#building-doc">Building doc</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="torchcnnbuilder.builder" href="builder.html">torchcnnbuilder.builder</a></code></li>
+<li><code><a title="torchcnnbuilder.latent" href="latent.html">torchcnnbuilder.latent</a></code></li>
+<li><code><a title="torchcnnbuilder.models" href="models.html">torchcnnbuilder.models</a></code></li>
+<li><code><a title="torchcnnbuilder.preprocess" href="preprocess/index.html">torchcnnbuilder.preprocess</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="torchcnnbuilder.conv1d_out" href="#torchcnnbuilder.conv1d_out">conv1d_out</a></code></li>
+<li><code><a title="torchcnnbuilder.conv2d_out" href="#torchcnnbuilder.conv2d_out">conv2d_out</a></code></li>
+<li><code><a title="torchcnnbuilder.conv3d_out" href="#torchcnnbuilder.conv3d_out">conv3d_out</a></code></li>
+<li><code><a title="torchcnnbuilder.conv_transpose1d_out" href="#torchcnnbuilder.conv_transpose1d_out">conv_transpose1d_out</a></code></li>
+<li><code><a title="torchcnnbuilder.conv_transpose2d_out" href="#torchcnnbuilder.conv_transpose2d_out">conv_transpose2d_out</a></code></li>
+<li><code><a title="torchcnnbuilder.conv_transpose3d_out" href="#torchcnnbuilder.conv_transpose3d_out">conv_transpose3d_out</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>
