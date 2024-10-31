@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 import torch
 from skimage.transform import resize
 from torch import nn, optim
@@ -29,7 +30,7 @@ def prapare_dataset(move: str, persons: np.ndarray, frames_num: int):
     return dataset
 
 epochs = 20000
-batch_size = 100
+batch_size = 300
 
 train_series = prapare_dataset('walking', np.arange(1, 17), 40)[:, 20:, :, :]
 train_series = resize(train_series, (train_series.shape[0], train_series.shape[1],  128, 128))
@@ -65,6 +66,8 @@ val_losses = []
 
 optimizer = optim.AdamW(model.parameters(), lr=0.0001)
 criterion = nn.L1Loss()
+epoches = []
+
 
 for epoch in range(epochs):
     loss = 0
@@ -95,9 +98,17 @@ for epoch in range(epochs):
 
     losses.append(loss)
     val_losses.append(val_loss_value)
+    epoches.append(epoch)
 
     if epoch%1000==0:
-        torch.save(model.state_dict(), f'models/KTH_{epoch}.pt')
+        torch.save(model.state_dict(), f'models_KTH/KTH_{epoch}.pt')
+        torch.save(optimizer.state_dict(), f'models_KTH/optim_KTH_{epoch}.pt')
+        df = pd.DataFrame()
+        df['epoch'] = epoches
+        df['train_loss'] = losses
+        df['val_losses'] = val_losses
+        df.to_csv(f'models_KTH/models_KTH/KTH_{epoch}.csv', index=False)
+
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
 ax1.plot(np.arange(epochs), losses)
@@ -115,7 +126,7 @@ ax2.grid()
 ax2.set_yscale('log')
 plt.suptitle('Convergence plot')
 plt.tight_layout()
-plt.savefig(f'models/10to10_convergence_KTH_{epoch}.png')
+plt.savefig(f'models_KTH/KTH_{epoch}.png')
 plt.show()
 
 test_features = test_series[:, :10, :, :]
