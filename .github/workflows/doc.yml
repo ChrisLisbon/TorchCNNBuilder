@@ -25,7 +25,7 @@ jobs:
           pip install pdoc==15.0.0 torchcnnbuilder
 
       - name: Build doc
-        run: pdoc --math -d google --no-include-undocumented --no-browser -t .docs/ ./torchcnnbuilder
+        run: pdoc --math -d google --no-include-undocumented -o docs/ -t .docs/ ./torchcnnbuilder
 
       - name: Aploud doc artifacts
         uses: actions/upload-pages-artifact@v3
