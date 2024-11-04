@@ -81,5 +81,5 @@ python -m http.server --directory docs/torchcnnbuilder
 
 - Or you can use this script in the root of repo in order to do previous two steps:
 ```bash
-sh build_and_serve.sh
+sh build_and_serve.sh --force
 ```

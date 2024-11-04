@@ -106,13 +106,15 @@ def multi_output_tensor(
         data (Sequence[Any]): Time series data in an N-dimensional format (e.g., list, numpy array, or tensor).
         forecast_len (int): Number of time steps for each target output tensor.
         pre_history_len (int): Length of the time window for input tensors.
-        additional_x (Union[Sequence[Any], None], optional): Additional input data to augment features. Defaults to None.
+        additional_x (Union[Sequence[Any], None], optional): Additional input data to augment features.
+            Defaults to None.
         additional_is_array (bool, optional): If True, treats `additional_x` as separate time series. Defaults to False.
         additional_x_stack (bool, optional): If True, stacks `additional_x` features onto input data (X). If False
             and `additional_is_array` is also False, `additional_x` is returned separately. Defaults to True.
         threshold (Union[bool, float], optional): Threshold for binarizing the output tensor (Y). If set to a float,
             values above the threshold are set to 1, and values below are set to 0. Defaults to False.
-        x_binarize (bool, optional): If True, applies binarization to the input tensor (X) as per `threshold`. Defaults to False.
+        x_binarize (bool, optional): If True, applies binarization to the input tensor (X) as per `threshold`.
+            Defaults to False.
 
     Returns:
         TensorDataset: A dataset containing input and output tensors for training.

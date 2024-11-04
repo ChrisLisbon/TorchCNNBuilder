@@ -15,7 +15,7 @@ def conv1d_out(
     dilation: Union[Tuple[int], int] = 1,
     n_layers: int = 1,
 ) -> Tuple[int]:
-    """
+    r"""
     Calculates the output size of a tensor after applying a 1D convolution operation (nn.Conv1d).
 
     The size calculation after the convolutional layer is carried out according to the formula from the `torch` module
@@ -28,8 +28,8 @@ def conv1d_out(
     of the tensor after convolution for one dimension is presented below:
 
     $$
-    H_{out} = \lfloor \\frac{H_{in} + 2 \\times padding[0] -
-    dilation[0] \\times (kernel[0] - 1) + 1}{stride[0]} \rfloor + 1
+    H_{out} = \lfloor \frac{H_{in} + 2 \times padding[0] -
+    dilation[0] \times (kernel[0] - 1) + 1}{stride[0]} \rfloor + 1
     $$
 
     Args:
@@ -138,7 +138,7 @@ def conv_transpose1d_out(
     dilation: Union[Tuple[int], int] = 1,
     n_layers: int = 1,
 ) -> Tuple[int]:
-    """Calculates the output size of a tensor after a transposed 1D convolution (nn.ConvTranspose1d).
+    r"""Calculates the output size of a tensor after a transposed 1D convolution (nn.ConvTranspose1d).
 
     The size calculation after the transposed convolutional layer is carried out according to the formula from the
     torch module *(the default parameters are the same as in `nn.ConvTransposeNd`)*. Counting functions are
@@ -151,8 +151,8 @@ def conv_transpose1d_out(
     convolution for one dimension is presented below:
 
     $$
-    H_{out} = (H_{in} - 1) \\times stride[0] - 2 \\times padding[0] + dilation[0]
-    \\times (kernel\_size[0] - 1) + output\_padding[0] + 1
+    H_{out} = (H_{in} - 1) \times stride[0] - 2 \times padding[0] + dilation[0]
+    \times (kernel\_size[0] - 1) + output\_padding[0] + 1
     $$
 
     Args:
@@ -252,10 +252,12 @@ def conv_transpose3d_out(
 
     Args:
         input_size (Union[Tuple[int, int, int], int]): Size of the input tensor [d, h, w].
-        kernel_size (Union[Tuple[int, int, int], int], optional): Size of the transposed convolution kernel. Defaults to 3.
+        kernel_size (Union[Tuple[int, int, int], int], optional): Size of the transposed convolution kernel.
+            Defaults to 3.
         stride (Union[Tuple[int, int, int], int], optional): Stride of the transposed convolution. Defaults to 1.
         padding (Union[Tuple[int, int, int], int], optional): Padding added to both sides of the input. Defaults to 0.
-        output_padding (Union[Tuple[int, int, int], int], optional): Additional size added to one side of the output shape.
+        output_padding (Union[Tuple[int, int, int], int], optional): Additional size added to one side of
+            the output shape.
         Defaults to 0.
         dilation (Union[Tuple[int, int, int], int], optional): Spacing between kernel elements. Defaults to 1.
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.

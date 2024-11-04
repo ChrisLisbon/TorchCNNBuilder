@@ -67,8 +67,8 @@ class ForecasterBase(nn.Module):
             latent_shape (Optional[Sequence[int]]): The shape of the latent space. If None, no latent space
             transformation is applied. Default is None.
             latent_n_layers (int): Number of layers in the latent space transformation. Default is 1.
-            latent_activation_function (Union[Optional[nn.Module], str]): Activation function for latent space. If 'same',
-                uses the same activation function as the model. Default is None.
+            latent_activation_function (Union[Optional[nn.Module], str]): Activation function for latent space.
+                If 'same', uses the same activation function as the model. Default is None.
         """
         super(ForecasterBase, self).__init__()
         _validate_conv_dim(conv_dim)

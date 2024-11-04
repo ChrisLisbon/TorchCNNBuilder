@@ -85,8 +85,8 @@ uses the same activation function as <code>activation_function</code>. Default i
 <dt><strong><code>latent_n_layers</code></strong> :&ensp;<code>int</code></dt>
 <dd>Number of layers in the latent space transformation. Default is 1.</dd>
 <dt><strong><code>latent_activation_function</code></strong> :&ensp;<code>Union[Optional[nn.Module], str]</code></dt>
-<dd>Activation function for latent space. If 'same',
-uses the same activation function as the model. Default is None.</dd>
+<dd>Activation function for latent space.
+If 'same', uses the same activation function as the model. Default is None.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -145,8 +145,8 @@ uses the same activation function as the model. Default is None.</dd>
             latent_shape (Optional[Sequence[int]]): The shape of the latent space. If None, no latent space
             transformation is applied. Default is None.
             latent_n_layers (int): Number of layers in the latent space transformation. Default is 1.
-            latent_activation_function (Union[Optional[nn.Module], str]): Activation function for latent space. If &#39;same&#39;,
-                uses the same activation function as the model. Default is None.
+            latent_activation_function (Union[Optional[nn.Module], str]): Activation function for latent space.
+                If &#39;same&#39;, uses the same activation function as the model. Default is None.
         &#34;&#34;&#34;
         super(ForecasterBase, self).__init__()
         _validate_conv_dim(conv_dim)

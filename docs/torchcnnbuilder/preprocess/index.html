@@ -53,7 +53,8 @@ optional data can be provided to expand the input features with extra time serie
 <dt><strong><code>pre_history_len</code></strong> :&ensp;<code>int</code></dt>
 <dd>Length of the time window for input tensors.</dd>
 <dt><strong><code>additional_x</code></strong> :&ensp;<code>Union[Sequence[Any], None]</code>, optional</dt>
-<dd>Additional input data to augment features. Defaults to None.</dd>
+<dd>Additional input data to augment features.
+Defaults to None.</dd>
 <dt><strong><code>additional_is_array</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>If True, treats <code>additional_x</code> as separate time series. Defaults to False.</dd>
 <dt><strong><code>additional_x_stack</code></strong> :&ensp;<code>bool</code>, optional</dt>
@@ -63,7 +64,8 @@ and <code>additional_is_array</code> is also False, <code>additional_x</code> is
 <dd>Threshold for binarizing the output tensor (Y). If set to a float,
 values above the threshold are set to 1, and values below are set to 0. Defaults to False.</dd>
 <dt><strong><code>x_binarize</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>If True, applies binarization to the input tensor (X) as per <code>threshold</code>. Defaults to False.</dd>
+<dd>If True, applies binarization to the input tensor (X) as per <code>threshold</code>.
+Defaults to False.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>

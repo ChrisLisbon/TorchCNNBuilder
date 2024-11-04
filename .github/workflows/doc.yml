@@ -1,0 +1,31 @@
+name: Build Doc
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    name: Build torchcnnbuilder documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pdoc
+
+      - name: Remove old documentation directory
+        run: rm -rf docs/torchcnnbuilder/
+
+      - name: Build documentation
+        run: pdoc --html -o docs --config latex_math=True torchcnnbuilder/ --force
+
+      - name: List documentation files
+        run: ls -R docs 
