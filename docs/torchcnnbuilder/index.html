@@ -144,12 +144,10 @@ one-dimensional convolution N times. Some result values <strong>can be negative<
 of the tensor after convolution for one dimension is presented below:</p>
 <p><span><span class="MathJax_Preview">
 H_{out} = \lfloor \frac{H_{in} + 2 \times padding[0] -
-dilation[0] \times (kernel[0] - 1) + 1}{stride[0]}
-floor + 1
+dilation[0] \times (kernel[0] - 1) + 1}{stride[0]} \rfloor + 1
 </span><script type="math/tex; mode=display">
 H_{out} = \lfloor \frac{H_{in} + 2 \times padding[0] -
-dilation[0] \times (kernel[0] - 1) + 1}{stride[0]}
-floor + 1
+dilation[0] \times (kernel[0] - 1) + 1}{stride[0]} \rfloor + 1
 </script></span></p>
 <h2 id="args">Args</h2>
 <dl>
@@ -308,13 +306,15 @@ H_{out} = (H_{in} - 1) \times stride[0] - 2 \times padding[0] + dilation[0]
 <dt><strong><code>input_size</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code></dt>
 <dd>Size of the input tensor [d, h, w].</dd>
 <dt><strong><code>kernel_size</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
-<dd>Size of the transposed convolution kernel. Defaults to 3.</dd>
+<dd>Size of the transposed convolution kernel.
+Defaults to 3.</dd>
 <dt><strong><code>stride</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
 <dd>Stride of the transposed convolution. Defaults to 1.</dd>
 <dt><strong><code>padding</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
 <dd>Padding added to both sides of the input. Defaults to 0.</dd>
 <dt><strong><code>output_padding</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
-<dd>Additional size added to one side of the output shape.</dd>
+<dd>Additional size added to one side of
+the output shape.</dd>
 <dt>Defaults to 0.</dt>
 <dt><strong><code>dilation</code></strong> :&ensp;<code>Union[Tuple[int, int, int], int]</code>, optional</dt>
 <dd>Spacing between kernel elements. Defaults to 1.</dd>
