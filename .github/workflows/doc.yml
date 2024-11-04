@@ -1,7 +1,7 @@
 name: Build and Serve Doc
 
-on:
-  workflow_dispatch:
+on: [push]
+
 
 permissions:
   contents: read
