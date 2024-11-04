@@ -63,7 +63,7 @@ class ForecasterBase(nn.Module):
             finish_activation_function (Union[Optional[nn.Module], str]): Final activation function. If 'same',
                 uses the same activation function as `activation_function`. Default is None.
             normalization (Optional[str]): Type of normalization ('dropout', 'batchnorm', or 'instancenorm').
-             Default is None.
+                Default is None.
             latent_shape (Optional[Sequence[int]]): The shape of the latent space. If None, no latent space
             transformation is applied. Default is None.
             latent_n_layers (int): Number of layers in the latent space transformation. Default is 1.

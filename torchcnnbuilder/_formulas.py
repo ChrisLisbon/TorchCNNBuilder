@@ -161,7 +161,7 @@ def conv_transpose1d_out(
         stride (Union[Tuple[int], int], optional): Stride of the transposed convolution. Defaults to 1.
         padding (Union[Tuple[int], int], optional): Padding added to both sides of the input. Defaults to 0.
         output_padding (Union[Tuple[int], int], optional): Additional size added to one side of the output shape.
-        Defaults to 0.
+            Defaults to 0.
         dilation (Union[Tuple[int], int], optional): Spacing between kernel elements. Defaults to 1.
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
@@ -204,7 +204,7 @@ def conv_transpose2d_out(
         stride (Union[Tuple[int, int], int], optional): Stride of the transposed convolution. Defaults to 1.
         padding (Union[Tuple[int, int], int], optional): Padding added to both sides of the input. Defaults to 0.
         output_padding (Union[Tuple[int, int], int], optional): Additional size added to one side of the output shape.
-        Defaults to 0.
+            Defaults to 0.
         dilation (Union[Tuple[int, int], int], optional): Spacing between kernel elements. Defaults to 1.
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
@@ -257,8 +257,7 @@ def conv_transpose3d_out(
         stride (Union[Tuple[int, int, int], int], optional): Stride of the transposed convolution. Defaults to 1.
         padding (Union[Tuple[int, int, int], int], optional): Padding added to both sides of the input. Defaults to 0.
         output_padding (Union[Tuple[int, int, int], int], optional): Additional size added to one side of
-            the output shape.
-        Defaults to 0.
+            the output shape. Defaults to 0.
         dilation (Union[Tuple[int, int, int], int], optional): Spacing between kernel elements. Defaults to 1.
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
