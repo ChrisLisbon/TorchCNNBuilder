@@ -21,11 +21,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install pdoc
 
-      - name: Remove old documentation directory
-        run: rm -rf docs/torchcnnbuilder/
+      - name: Remove old documentation
+        run: rm -rf docs/*.html
 
       - name: Build documentation
-        run: pdoc --html -o docs --config latex_math=True torchcnnbuilder/ --force
+        run: |
+          pdoc --html -o docs --config latex_math=True torchcnnbuilder/ --force
+          mv docs/torchcnnbuilder/* docs/
+          rm -rf docs/torchcnnbuilder
 
       - name: List documentation files
-        run: ls -R docs 
+        run: ls -R docs
+        
