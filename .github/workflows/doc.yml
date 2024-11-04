@@ -3,7 +3,6 @@ name: Build and Serve Doc
 on:
   workflow_dispatch:
 
-
 permissions:
   contents: read
 
