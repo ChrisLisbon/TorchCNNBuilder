@@ -44,7 +44,7 @@ class ForecasterBase(nn.Module):
         Initializes the ForecasterBase with the encoder-decoder structure and specified layer parameters.
         See the model diagram below:
 
-        .. image:: ../media/ForecasterBase.png
+        ![image](../.docs/media/ForecasterBase.png)
 
         Args:
             input_size (Sequence[int]): The shape of the input tensor for one time point.
@@ -180,7 +180,7 @@ class ForecasterBase(nn.Module):
             x (torch.Tensor): The input tensor to be transformed by the model.
 
         Returns:
-            torch.Tensor: The output tensor after passing through the encoder and decoder layers.
+            The output tensor after passing through the encoder and decoder layers.
         """
         x = self.encoder(x)
         x = self.decoder(x)

@@ -41,7 +41,7 @@ def conv1d_out(
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
     Returns:
-        Tuple[int]: The size of the output tensor or vector [h] as a tuple.
+        The size of the output tensor or vector [h] as a tuple.
     """
     input_size = (input_size,) if isinstance(input_size, int) else input_size
     padding = (padding,) if isinstance(padding, int) else padding
@@ -75,7 +75,7 @@ def conv2d_out(
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
     Returns:
-        Tuple[int, int]: The size of the output tensor [h, w].
+        The size of the output tensor [h, w].
     """
     input_size = _double_params(input_size) if isinstance(input_size, int) else input_size
     padding = _double_params(padding) if isinstance(padding, int) else padding
@@ -110,7 +110,7 @@ def conv3d_out(
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
     Returns:
-        Tuple[int, int, int]: The size of the output tensor [d, h, w].
+        The size of the output tensor [d, h, w].
     """
     input_size = _triple_params(input_size) if isinstance(input_size, int) else input_size
     padding = _triple_params(padding) if isinstance(padding, int) else padding
@@ -166,7 +166,7 @@ def conv_transpose1d_out(
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
     Returns:
-        Tuple[int]: Size of the output tensor/vector [h].
+        Size of the output tensor/vector [h].
     """
     input_size = (input_size,) if isinstance(input_size, int) else input_size
     padding = (padding,) if isinstance(padding, int) else padding
@@ -209,7 +209,7 @@ def conv_transpose2d_out(
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
     Returns:
-        Tuple[int, int]: Size of the output tensor [h, w].
+        Size of the output tensor [h, w].
     """
     input_size = _double_params(input_size) if isinstance(input_size, int) else input_size
     padding = _double_params(padding) if isinstance(padding, int) else padding
@@ -262,7 +262,7 @@ def conv_transpose3d_out(
         n_layers (int, optional): Number of convolutional layers. Defaults to 1.
 
     Returns:
-        Tuple[int, int, int]: Size of the output tensor [d, h, w].
+        Size of the output tensor [d, h, w].
     """
     input_size = _triple_params(input_size) if isinstance(input_size, int) else input_size
     padding = _triple_params(padding) if isinstance(padding, int) else padding

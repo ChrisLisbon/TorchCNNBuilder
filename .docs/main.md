@@ -67,19 +67,12 @@ The release procedure looks like this:
 
 ## Building doc 
 
-Our doc is created by using `pdoc' framework.
-
-- In order to **build** the doc locally run in the repo root:
+Our doc is created by using `pdoc` framework. In order to **build** and **serve** the doc locally:
+- Install `pdoc`:
 ```bash
-pdoc --html -o docs --config latex_math=True torchcnnbuilder/ --force
+pip install pdoc==15.0.0
 ```
-
-- In order to **serve** the doc locally run in the repo root: 
+- Run in the repo root:
 ```bash
-python -m http.server --directory docs/torchcnnbuilder
-```
-
-- Or you can use this script in the root of repo in order to do previous two steps:
-```bash
-sh build_and_serve.sh --force
+pdoc --math -d google --no-include-undocumented -t .docs/ ./torchcnnbuilder
 ```

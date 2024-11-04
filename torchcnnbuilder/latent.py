@@ -86,7 +86,7 @@ class LatentSpaceModule(nn.Module):
         Returns the shape of the input tensor.
 
         Returns:
-            Sequence[int]: Shape of the input tensor.
+            Shape of the input tensor.
         """
         return self._input_shape
 
@@ -96,7 +96,7 @@ class LatentSpaceModule(nn.Module):
         Returns the shape of the output tensor.
 
         Returns:
-            Sequence[int]: Shape of the output tensor.
+            Shape of the output tensor.
         """
         return self._output_shape
 
@@ -108,7 +108,7 @@ class LatentSpaceModule(nn.Module):
             x (torch.Tensor): Input tensor to be transformed.
 
         Returns:
-            torch.Tensor: Transformed output tensor with the specified output shape.
+            Transformed output tensor with the specified output shape.
         """
         return self._resize(x)
 

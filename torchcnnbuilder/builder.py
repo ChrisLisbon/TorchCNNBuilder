@@ -122,7 +122,7 @@ class Builder:
         """Gets the convolutional channels.
 
         Returns:
-            Optional[List[int]]: A list of convolutional channel sizes or None
+            A list of convolutional channel sizes or None
             if not initialized.
         """
         return self._conv_channels
@@ -132,7 +132,7 @@ class Builder:
         """Gets the transposed convolutional channels.
 
         Returns:
-            Optional[List[int]]: A list of transposed convolutional channel sizes
+            A list of transposed convolutional channel sizes
             or None if not initialized.
         """
         return self._transpose_conv_channels
@@ -142,8 +142,7 @@ class Builder:
         """Gets the convolutional layers.
 
         Returns:
-            Optional[List[Tuple[int, ...]]]: A list of tuples representing
-            convolutional layer configurations or None if not initialized.
+            A list of tuples representing convolutional layer configurations or None if not initialized.
         """
         return self._conv_layers
 
@@ -152,8 +151,7 @@ class Builder:
         """Gets the transposed convolutional layers.
 
         Returns:
-            Optional[List[Tuple[int, ...]]]: A list of tuples representing
-            transposed convolutional layer configurations or None if not
+            A list of tuples representing transposed convolutional layer configurations or None if not
             initialized.
         """
         return self._transpose_conv_layers
@@ -201,7 +199,7 @@ class Builder:
                 2D convolution, 3 for 3D convolution). Defaults to 2.
 
         Returns:
-            nn.Sequential: A sequential block containing convolutional layers,
+            A sequential block containing convolutional layers,
             optional normalization layers, and an activation function.
         """
         params = _set_conv_params(default_params=self._default_convolve_params, params=params)
@@ -306,7 +304,7 @@ class Builder:
                 Defaults to 2.
 
         Returns:
-            nn.Sequential: A sequential block containing the specified number of
+            A sequential block containing the specified number of
             convolutional layers.
         """
         _validate_input_size_is_not_none(self.input_size)
@@ -404,7 +402,7 @@ class Builder:
                 Defaults to 2.
 
         Returns:
-            nn.Sequential: A sequential block containing the specified transposed
+            A sequential block containing the specified transposed
             convolutional layers, possibly including normalization and activation functions.
         """
         params = _set_conv_params(default_params=self._default_transpose_params, params=params)
@@ -522,7 +520,7 @@ class Builder:
                 can be 'avgpool' or 'maxpool'. Defaults to 'avgpool'.
 
         Returns:
-            nn.Sequential: A sequential block containing the specified transposed convolutional
+            A sequential block containing the specified transposed convolutional
             layers, possibly including normalization and adaptive pooling.
         """
         _validate_input_size_is_not_none(self.input_size)
@@ -616,7 +614,7 @@ class Builder:
                 function. Defaults to None.
 
         Returns:
-            LatentSpaceModule: An instance of the LatentSpaceModule class that
+            An instance of the LatentSpaceModule class that
             performs the specified transformation from input to output shape.
         """
         if activation_function == "same":

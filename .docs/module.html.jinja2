@@ -1,0 +1,22 @@
+{% extends "default/module.html.jinja2" %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .responsive-img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll("img").forEach(img => {
+                img.classList.add("responsive-img");
+            });
+        });
+    </script>
+{% endblock %}

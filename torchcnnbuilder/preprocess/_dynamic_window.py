@@ -17,7 +17,7 @@ def single_output_tensor(
     Preprocesses a time series into a tensor with input (X) and output (Y) parts for single-step predictions.
     See the tensor transformation diagram below:
 
-    .. image:: ../../media/single_output_tensor.png
+    ![image](../../.docs/media/single_output_tensor.png)
 
     This function prepares input and output tensors for training a model with a given forecast length. Additional
     optional data can be provided to expand the input features with extra time series.
@@ -38,7 +38,7 @@ def single_output_tensor(
             Defaults to False.
 
     Returns:
-        TensorDataset: A dataset containing the input and output tensors for training.
+       A dataset containing the input and output tensors for training.
 
     Raises:
         ValueError: If `forecast_len` is greater than the data length.
@@ -97,7 +97,7 @@ def multi_output_tensor(
     Preprocesses a time series into a sliding-window tensor with input (X) and output (Y)
     parts for multi-step predictions. See the tensor transformation diagram below:
 
-    .. image:: ../../media/multi_output_tensor.png
+    ![image](../../.docs/media/single_output_tensor.png)
 
     This function prepares input and output tensors for training a model with a given forecast length. Additional
     optional data can be provided to expand the input features with extra time series.
@@ -117,7 +117,7 @@ def multi_output_tensor(
             Defaults to False.
 
     Returns:
-        TensorDataset: A dataset containing input and output tensors for training.
+        A dataset containing input and output tensors for training.
 
     Raises:
         ValueError: If `forecast_len` or `pre_history_len` exceed the data length.
