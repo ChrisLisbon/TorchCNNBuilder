@@ -1,6 +1,9 @@
 name: Build and Serve Doc
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read
@@ -33,9 +36,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: List files in repo
-        run: ls -R
-
       - name: Build doc
         run: pdoc --math -d google --no-include-undocumented -o docs/ -t .docs/ ./torchcnnbuilder
 
@@ -48,6 +48,7 @@ jobs:
     name: Deploy torchcnnbuilder doc
     needs: build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
 
     permissions:
       pages: write
