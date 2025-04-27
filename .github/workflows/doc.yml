@@ -33,6 +33,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
+      - name: List files in repo
+        run: ls -R
+
       - name: Build doc
         run: pdoc --math -d google --no-include-undocumented -o docs/ -t .docs/ ./torchcnnbuilder
 
