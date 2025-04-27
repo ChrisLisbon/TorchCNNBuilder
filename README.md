@@ -23,7 +23,7 @@ pip install torchcnnbuilder
 
 ### Documentation 
 
-Check the documentation [here](https://ChrisLisbon.github.io/TorchCNNBuilder/torchcnnbuilder.html). 
+Check the documentation [here](https://chrislisbon.github.io/TorchCNNBuilder/torchcnnbuilder.html). 
 
 ### Development 
 
