@@ -23,7 +23,19 @@ pip install torchcnnbuilder
 
 ### Documentation 
 
-TDB:
+Check the documentation [here](). 
+
+### Development 
+
+In order to check available local `Makefile` commands run in the project root: 
+```sh
+make help
+```
+```yaml
+help: Show help for each of the Makefile recipes.
+lint: Lint the project with flake8 lib.
+doc: Build and run the doc locally.
+```
 
 ### Sources
 

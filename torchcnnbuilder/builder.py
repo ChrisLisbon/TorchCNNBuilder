@@ -4,10 +4,6 @@ from typing import List, Optional, Sequence, Tuple, Union
 
 import torch.nn as nn
 
-from torchcnnbuilder._constants import (
-    DEFAULT_CONV_PARAMS,
-    DEFAULT_TRANSPOSE_CONV_PARAMS,
-)
 from torchcnnbuilder._formulas import _select_conv_calc
 from torchcnnbuilder._utils import (
     _double_params,
@@ -27,6 +23,7 @@ from torchcnnbuilder._validation import (
     _validate_min_channels_number,
     _validate_range_step,
 )
+from torchcnnbuilder.constants import DEFAULT_CONV_PARAMS, DEFAULT_TRANSPOSE_CONV_PARAMS
 from torchcnnbuilder.latent import LatentSpaceModule
 
 

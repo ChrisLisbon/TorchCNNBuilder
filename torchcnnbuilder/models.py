@@ -3,12 +3,9 @@ from typing import Optional, Sequence, Union
 
 import torch.nn as nn
 
-from torchcnnbuilder._constants import (
-    DEFAULT_CONV_PARAMS,
-    DEFAULT_TRANSPOSE_CONV_PARAMS,
-)
 from torchcnnbuilder._validation import _validate_conv_dim, _validate_sequence_length
 from torchcnnbuilder.builder import Builder
+from torchcnnbuilder.constants import DEFAULT_CONV_PARAMS, DEFAULT_TRANSPOSE_CONV_PARAMS
 
 
 # ------------------------------------

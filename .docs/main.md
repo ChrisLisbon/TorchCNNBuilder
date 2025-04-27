@@ -1,3 +1,8 @@
+**TorchCNNBuilder** is an open-source framework for the automatic creation of CNN architectures.
+This framework should first of all help researchers in the applicability of CNN models for a huge range of tasks,
+taking over most of the writing of the architecture code. This framework is distributed under the 3-Clause BSD license.
+All the functionality is written only using `pytorch` *(no third-party dependencies)*.
+
 # Installation
 
 The simplest way to install framework is using `pip`:
@@ -17,25 +22,11 @@ Basic framework functions are presented below:
 - automatic creation of convolution encoder-decoder models (`torchcnnbuilder.models`)
 - the ability to change latent space params after/before encoder/decoder parts (`torchcnnbuilder.latent`)
 
-# Constants 
-
 You can check current package version by using constant `__version__`:
 ```python
 from torchcnnbuilder import __version__
 
 print(__version__)
-# output: 0.1.2
-```
-
-Also you can check default torch convolution/transpose convolution params:
-```python
-from torchcnnbuilder import DEFAULT_CONV_PARAMS, DEFAULT_TRANSPOSE_CONV_PARAMS
-
-print(DEFAULT_CONV_PARAMS)
-# output: {'kernel_size': 3, 'stride': 1, 'padding': 0, 'dilation': 1}
-
-print(DEFAULT_TRANSPOSE_CONV_PARAMS)
-# output: {'kernel_size': 3, 'stride': 1, 'padding': 0, 'output_padding': 0, 'dilation': 1}
 ```
 
 # Development
@@ -43,10 +34,10 @@ print(DEFAULT_TRANSPOSE_CONV_PARAMS)
 We try to maintain good practices of readable open source code. 
 Therefore, if you want to participate in the development and open your pool request, pay attention to the following points:
 - Every push is checked by the flake8 job. It will show you PEP8 errors or possible code improvements.
-- Use this linter script in the repo root after your code:
+- Use this linter script in the repo root after your code *(it needs some extra dependencies)*:
 
 ```bash
-bash lint_and_check.sh
+make lint
 ```
 *You can mark function docstrings using `#noqa`, in order for flake8 not to pay attention to them.*
 
@@ -67,12 +58,9 @@ The release procedure looks like this:
 
 ## Building doc 
 
-Our doc is created by using `pdoc` framework. In order to **build** and **serve** the doc locally:
-- Install `pdoc`:
-```bash
-pip install pdoc==15.0.0
+Our doc is created by using `pdoc` framework. In order to **build** and **serve** 
+the doc locally run in the project root:
+```sh
+make doc
 ```
-- Run in the repo root:
-```bash
-pdoc --math -d google --no-include-undocumented -t .docs/ ./torchcnnbuilder
-```
+This command is checking and installing `pdoc`, then is building and serving the doc.
