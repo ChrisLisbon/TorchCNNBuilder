@@ -6,6 +6,7 @@ DEFAULT_CONV_PARAMS: Dict[str, int] = {
     "padding": 0,
     "dilation": 1,
 }
+"""Default pytorch convolution params."""
 
 DEFAULT_TRANSPOSE_CONV_PARAMS: Dict[str, int] = {
     "kernel_size": 3,
@@ -14,5 +15,6 @@ DEFAULT_TRANSPOSE_CONV_PARAMS: Dict[str, int] = {
     "output_padding": 0,
     "dilation": 1,
 }
+"""Default pytorch transpose convolution params."""
 
-MAX_PARAMS_NUMBER_PER_LAYER: int = 500_000_000
+_MAX_PARAMS_NUMBER_PER_LAYER: int = 500_000_000

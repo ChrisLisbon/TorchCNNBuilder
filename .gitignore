@@ -1,14 +1,15 @@
-# cache info
-.idea
+# pypi build utils
 build
 dist
-.ipynb_checkpoints
 torchcnnbuilder.egg-info
+
+# system cache info
+.idea
 __pycache__/
 **/__pycache__/
 .DS_Store
 **/DS_Store
+.ipynb_checkpoints
 
 # scripts in root
-.py
-.ipynb
+*.ipynb

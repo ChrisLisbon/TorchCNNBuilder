@@ -4,10 +4,6 @@ from typing import List, Optional, Sequence, Tuple, Union
 
 import torch.nn as nn
 
-from torchcnnbuilder._constants import (
-    DEFAULT_CONV_PARAMS,
-    DEFAULT_TRANSPOSE_CONV_PARAMS,
-)
 from torchcnnbuilder._formulas import _select_conv_calc
 from torchcnnbuilder._utils import (
     _double_params,
@@ -27,6 +23,7 @@ from torchcnnbuilder._validation import (
     _validate_min_channels_number,
     _validate_range_step,
 )
+from torchcnnbuilder.constants import DEFAULT_CONV_PARAMS, DEFAULT_TRANSPOSE_CONV_PARAMS
 from torchcnnbuilder.latent import LatentSpaceModule
 
 
@@ -36,19 +33,6 @@ from torchcnnbuilder.latent import LatentSpaceModule
 class Builder:
     """
     A class for creating СNN architectures
-
-    Attributes:
-        input_size (Sequence[int]): input size of the input tensor
-        minimum_feature_map_size (Union[Tuple, int]): minimum feature map size. Default: 5
-        max_channels (int): maximum number of layers after any convolution. Default: 512
-        min_channels (int): minimum number of layers after any convolution. Default: 32
-        activation_function (nn.Module): activation function. Default: nn.ReLU(inplace=True)
-        finish_activation_function (Union[str, Optional[nn.Module]): last activation function, can be same as activation_function (str 'same'). Default: None
-        conv_channels (List[int]): list of output channels after each convolutional layer
-        transpose_conv_channels (List[int]): list of output channels after each transposed convolutional layer
-        conv_layers (List[tuple]): list of output tensor sizes after each convolutional layer
-        transpose_conv_layers (List[tuple]): list of output tensor sizes after each transposed convolutional layer
-        # noqa
     """
 
     def __init__(
@@ -61,15 +45,26 @@ class Builder:
         finish_activation_function: Union[Optional[nn.Module], str] = None,
     ) -> None:
         """
-        The constructor for Builder
+        Initializes the Builder instance.
 
-        :param input_size: input size of the input tensor. Necessary for creating conv sequences. Default: None
-        :param minimum_feature_map_size: minimum feature map size. Default: 5
-        :param max_channels: maximum number of layers after any convolution. Default: 512
-        :param min_channels: minimum number of layers after any convolution. Default: 32
-        :param activation_function: activation function. Default: nn.ReLU(inplace=True)
-        :param finish_activation_function: last activation function, can be same as activation_function (str 'same'). Default: None
-        # noqa
+        Args:
+            input_size (Optional[Sequence[int]], optional):
+                Input size of the input tensor. Necessary for creating
+                convolution sequences. Defaults to None.
+            minimum_feature_map_size (Union[Sequence[int], int], optional):
+                Minimum feature map size. Defaults to 5.
+            max_channels (int, optional):
+                Maximum number of layers after any convolution. Defaults to 512.
+            min_channels (int, optional):
+                Minimum number of layers after any convolution. Defaults to 1.
+            activation_function (nn.Module, optional):
+                Activation function. Defaults to nn.ReLU(inplace=True).
+            finish_activation_function (Union[Optional[nn.Module], str], optional):
+                Last activation function, can be the same as activation_function
+                (use string 'same' for that). Defaults to None.
+
+        Raises:
+            ValueError: If input_size is not a valid shape.
         """
 
         if input_size is None:
@@ -121,18 +116,41 @@ class Builder:
 
     @property
     def conv_channels(self) -> Optional[List[int]]:
+        """Gets the convolutional channels.
+
+        Returns:
+            A list of convolutional channel sizes or None
+            if not initialized.
+        """
         return self._conv_channels
 
     @property
     def transpose_conv_channels(self) -> Optional[List[int]]:
+        """Gets the transposed convolutional channels.
+
+        Returns:
+            A list of transposed convolutional channel sizes
+            or None if not initialized.
+        """
         return self._transpose_conv_channels
 
     @property
     def conv_layers(self) -> Optional[List[Tuple[int, ...]]]:
+        """Gets the convolutional layers.
+
+        Returns:
+            A list of tuples representing convolutional layer configurations or None if not initialized.
+        """
         return self._conv_layers
 
     @property
     def transpose_conv_layers(self) -> Optional[List[Tuple[int, ...]]]:
+        """Gets the transposed convolutional layers.
+
+        Returns:
+            A list of tuples representing transposed convolutional layer configurations or None if not
+            initialized.
+        """
         return self._transpose_conv_layers
 
     def build_convolve_block(
@@ -149,22 +167,37 @@ class Builder:
         affine: bool = True,
         conv_dim: int = 2,
     ) -> nn.Sequential:
-        """
-        The function to build a single block of convolution layers
+        """Builds a single block of convolution layers.
 
-        :param in_channels: number of channels in the input image
-        :param out_channels: number of channels produced by the convolution
-        :param params: convolutional layer parameters (nn.ConvNd). Default: None
-        :param normalization: choice of normalization between str 'dropout', 'instancenorm' and 'batchnorm'. Default: None
-        :param sub_blocks: number of convolutions in one layer. Default: 1
-        :param p: probability of an element to be zero-ed (for dropout/instancenorm). Default: 0.5
-        :param inplace: if set to True, will do this operation in-place (for dropout/instancenorm). Default: False
-        :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
-        :param momentum: used for the running_mean or running_var computation. Can be None for cumulative moving average (for batchnorm). Default: 0.1
-        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm). Default: True
-        :param conv_dim: the dimension of the convolutional operation. Default: 2
-        :return nn.Sequential: one convolution block with an activation function
-        # noqa
+        This method creates a sequential block that consists of convolutional layers,
+        optional normalization layers, and an activation function.
+
+        Args:
+            in_channels (int): Number of channels in the input image.
+            out_channels (int): Number of channels produced by the convolution.
+            params (Optional[dict], optional): Convolutional layer parameters
+                (for nn.ConvNd). Defaults to None.
+            normalization (Optional[str], optional): Type of normalization to apply.
+                Options are 'dropout', 'instancenorm', and 'batchnorm'. Defaults to None.
+            sub_blocks (int, optional): Number of convolutional layers within the block.
+                Defaults to 1.
+            p (float, optional): Probability of an element being zeroed for dropout/instancenorm.
+                Defaults to 0.5.
+            inplace (bool, optional): If True, performs the operation in-place
+                for dropout/instancenorm. Defaults to False.
+            eps (float, optional): A value added to the denominator for numerical stability
+                (used in batchnorm/instancenorm). Defaults to 1e-5.
+            momentum (Optional[float], optional): Momentum for running_mean or running_var
+                computation (used in batchnorm). If None, a cumulative moving average is used.
+                Defaults to 0.1.
+            affine (bool, optional): If True, the module has learnable affine parameters
+                (used in batchnorm). Defaults to True.
+            conv_dim (int, optional): The dimension of the convolutional operation (2 for
+                2D convolution, 3 for 3D convolution). Defaults to 2.
+
+        Returns:
+            A sequential block containing convolutional layers,
+            optional normalization layers, and an activation function.
         """
         params = _set_conv_params(default_params=self._default_convolve_params, params=params)
         convolution = _select_conv_dimension(conv_dim=conv_dim)
@@ -230,25 +263,46 @@ class Builder:
         channel_growth_rate: str = "exponential",
         conv_dim: int = 2,
     ) -> nn.Sequential:
-        """
-         The function to build a sequence of convolution blocks
+        """Builds a sequence of convolution blocks.
 
-        :param n_layers: number of the convolution layers in the encoder part
-        :param in_channels: number of channels in the first input tensor. Default: 1
-        :param params: convolutional layer parameters (nn.ConvNd). Default: None
-        :param normalization: choice of normalization between str 'dropout', 'instancenorm' and 'batchnorm'. Default: None
-        :param sub_blocks: number of convolutions in one layer. Default: 1
-        :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
-        :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
-        :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
-        :param momentum: used for the running_mean or running_var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
-        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
-        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power' . Default: 2 (powers of two)
-        :param start: start position of a geometric progression in the case of 'channel_growth_rate=exponential'. Default: 32
-        :param channel_growth_rate: the way of calculating the number of feature maps between 'exponential', 'proportion', 'linear', 'power' and 'constant'. Default: 'exponential'
-        :param conv_dim: the dimension of the convolutional operation. Default: 2
-        :return nn.Sequential: convolutional sequence
-        # noqa
+        This method constructs a sequential block of convolutional layers,
+        with optional normalization and multiple sub-blocks per layer.
+
+        Args:
+            n_layers (int): Number of convolution layers in the encoder part.
+            in_channels (int, optional): Number of channels in the first input tensor.
+                Defaults to 1.
+            params (Optional[dict], optional): Convolutional layer parameters
+                (for nn.ConvNd). Defaults to None.
+            normalization (Optional[str], optional): Type of normalization to apply.
+                Options are 'dropout', 'instancenorm', and 'batchnorm'. Defaults to None.
+            sub_blocks (int, optional): Number of convolutions within each layer.
+                Defaults to 1.
+            p (float, optional): Probability of an element being zeroed for dropout.
+                Defaults to 0.5.
+            inplace (bool, optional): If True, performs the operation in-place
+                for dropout. Defaults to False.
+            eps (float, optional): A value added to the denominator for numerical stability
+                (used in batchnorm/instancenorm). Defaults to 1e-5.
+            momentum (Optional[float], optional): Momentum for running_mean or running_var
+                computation (used in batchnorm). If None, a cumulative moving average is used.
+                Defaults to 0.1.
+            affine (bool, optional): If True, the module has learnable affine parameters
+                (used in batchnorm). Defaults to True.
+            ratio (float, optional): Multiplier for the geometric progression of increasing
+                channels (feature maps). Used for 'channel_growth_rate' as 'exponential'
+                or 'power'. Defaults to 2.0.
+            start (int, optional): Starting position of the geometric progression
+                when 'channel_growth_rate' is set to 'exponential'. Defaults to 32.
+            channel_growth_rate (str, optional): Method for calculating the number of
+                feature maps. Options include 'exponential', 'proportion', 'linear',
+                'power', and 'constant'. Defaults to 'exponential'.
+            conv_dim (int, optional): The dimension of the convolutional operation.
+                Defaults to 2.
+
+        Returns:
+            A sequential block containing the specified number of
+            convolutional layers.
         """
         _validate_input_size_is_not_none(self.input_size)
         params = _set_conv_params(default_params=self._default_convolve_params, params=params)
@@ -314,23 +368,39 @@ class Builder:
         last_block: bool = False,
         conv_dim: int = 2,
     ) -> nn.Sequential:
-        """
-        The function to build a single block of transposed convolution layers
+        """Builds a single block of transposed convolution layers.
 
-        :param in_channels: number of channels in the input image
-        :param out_channels: number of channels produced by the convolution
-        :param params: convolutional layer parameters (nn.Conv2d). Default: None
-        :param normalization: choice of normalization between str 'dropout', 'instancenorm' and 'batchnorm'. Default: None
-        :param sub_blocks: number of convolutions in one layer. Default: 1
-        :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
-        :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
-        :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
-        :param momentum: used for the running_mean or running_var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
-        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
-        :param last_block: if True there is no activation function after the transposed convolution. Default: False
-        :param conv_dim: the dimension of the convolutional operation. Default: 2
-        :return nn.Sequential: one convolution block with an activation function
-        # noqa
+        This method constructs a sequential block of transposed convolutional layers,
+        with optional normalization and multiple sub-blocks per layer.
+
+        Args:
+            in_channels (int): Number of channels in the input image.
+            out_channels (int): Number of channels produced by the transposed convolution.
+            params (Optional[dict], optional): Parameters for the transposed convolutional layer
+                (for nn.ConvTranspose2d). Defaults to None.
+            normalization (Optional[str], optional): Type of normalization to apply.
+                Options are 'dropout', 'instancenorm', and 'batchnorm'. Defaults to None.
+            sub_blocks (int, optional): Number of convolutions within each layer.
+                Defaults to 1.
+            p (float, optional): Probability of an element being zeroed for dropout.
+                Defaults to 0.5.
+            inplace (bool, optional): If True, performs the operation in-place
+                for dropout. Defaults to False.
+            eps (float, optional): A value added to the denominator for numerical stability
+                (used in batchnorm/instancenorm). Defaults to 1e-5.
+            momentum (Optional[float], optional): Momentum for running_mean or running_var
+                computation (used in batchnorm). If None, a cumulative moving average is used.
+                Defaults to 0.1.
+            affine (bool, optional): If True, the module has learnable affine parameters
+                (used in batchnorm). Defaults to True.
+            last_block (bool, optional): If True, no activation function is applied after
+                the transposed convolution. Defaults to False.
+            conv_dim (int, optional): The dimension of the convolutional operation.
+                Defaults to 2.
+
+        Returns:
+            A sequential block containing the specified transposed
+            convolutional layers, possibly including normalization and activation functions.
         """
         params = _set_conv_params(default_params=self._default_transpose_params, params=params)
         convolution = _select_conv_dimension(conv_dim=conv_dim, transpose=True)
@@ -405,27 +475,50 @@ class Builder:
         conv_dim: int = 2,
         adaptive_pool: str = "avgpool",
     ) -> nn.Sequential:
-        """
-        The function to build a sequence of transposed convolution blocks
+        """Builds a sequence of transposed convolution blocks.
 
-        :param n_layers: number of the convolution layers in the encoder part
-        :param in_channels: number of channels in the first input tensor. Default: None
-        :param out_channels: number of channels after the transposed convolution sequence. Default: 1
-        :param out_size: output size after the transposed convolution sequence. Default: None (input size)
-        :param params: transposed convolutional layer parameters (nn.ConvTranspose2d). Default: None
-        :param normalization: choice of normalization between str 'dropout', 'instancenorm' and 'batchnorm'. Default: None
-        :param sub_blocks: number of transposed convolutions in one layer. Default: 1
-        :param p: probability of an element to be zero-ed (for dropout). Default: 0.5
-        :param inplace: if set to True, will do this operation in-place (for dropout). Default: False
-        :param eps: a value added to the denominator for numerical stability (for batchnorm/instancenorm). Default: 1e-5
-        :param momentum: used for the running_mean or runnIng_var computation. Can be None for cumulative moving average (for batchnorm/instancenorm). Default: 0.1
-        :param affine: a boolean value, when set to True, this module has learnable affine parameters (for batchnorm/instancenorm). Default: True
-        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power' . Default: 2 (powers of two)
-        :param channel_growth_rate: the way of calculating the number of feature maps between 'exponential', 'proportion', 'linear', 'power' and 'constant'. Default: 'exponential'
-        :param conv_dim: the dimension of the convolutional operation. Default: 2
-        :param adaptive_pool: choice of a last layer as an adaptive pooling between str 'avgpool' or 'maxpool'. Default: 'avgpool'
-        :return nn.Sequential: transposed convolutional sequence
-        # noqa
+        This method constructs a sequential layer of transposed convolution blocks,
+        allowing for customization through normalization, sub-blocks, and other parameters.
+
+        Args:
+            n_layers (int): Number of transposed convolution layers to create.
+            in_channels (Optional[int], optional): Number of channels in the first input tensor.
+                Defaults to None, which will use the last value from _conv_channels if available.
+            out_channels (int, optional): Number of channels after the transposed convolution sequence.
+                Defaults to 1.
+            out_size (Optional[tuple], optional): Desired output size after the transposed convolution sequence.
+                Defaults to None, which uses the input size.
+            params (Optional[dict], optional): Parameters for the transposed convolutional layer
+                (for nn.ConvTranspose2d). Defaults to None.
+            normalization (Optional[str], optional): Type of normalization to apply.
+                Options include 'dropout', 'instancenorm', and 'batchnorm'. Defaults to None.
+            sub_blocks (int, optional): Number of transposed convolutions within each layer.
+                Defaults to 1.
+            p (float, optional): Probability of an element being zeroed for dropout.
+                Defaults to 0.5.
+            inplace (bool, optional): If True, performs the operation in-place
+                for dropout. Defaults to False.
+            eps (float, optional): A value added to the denominator for numerical stability
+                (used in batchnorm/instancenorm). Defaults to 1e-5.
+            momentum (Optional[float], optional): Momentum for running_mean or running_var
+                computation (used in batchnorm). If None, a cumulative moving average is used.
+                Defaults to 0.1.
+            affine (bool, optional): If True, the module has learnable affine parameters
+                (used in batchnorm). Defaults to True.
+            ratio (float, optional): Multiplier for the geometric progression of increasing channels
+                (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power'.
+                Defaults to 2 (powers of two).
+            channel_growth_rate (str, optional): Method of calculating the number of feature maps.
+                Options include 'exponential', 'proportion', 'linear', 'power', and 'constant'.
+                Defaults to 'exponential'.
+            conv_dim (int, optional): The dimension of the convolutional operation.
+                Defaults to 2.
+            adaptive_pool (str, optional): Type of adaptive pooling layer to apply last,
+                can be 'avgpool' or 'maxpool'. Defaults to 'avgpool'.
+
+        Returns:
+            A sequential block containing the specified transposed convolutional
+            layers, possibly including normalization and adaptive pooling.
         """
         _validate_input_size_is_not_none(self.input_size)
         params = _set_conv_params(default_params=self._default_transpose_params, params=params)
@@ -499,14 +592,27 @@ class Builder:
         n_layers: int = 1,
         activation_function: Union[Optional[nn.Module], str] = None,
     ):
-        """
-        Creates a latent space transformation block.
+        """Creates a latent space transformation block.
 
-        :param input_shape: the shape of the input tensor
-        :param output_shape: the desired shape of the output tensor
-        :param n_layers: number of linear layers to use in the transformation. Default: 1
-        :param activation_function: can be same as builder activation_function (str 'same'). Default: None
-        # noqa
+        This method constructs a latent space module that transforms an input tensor
+        of a specified shape into an output tensor of a desired shape using
+        linear layers and an optional activation function.
+
+        Args:
+            input_shape (Sequence[int]): The shape of the input tensor, typically
+                represented as a sequence of integers.
+            output_shape (Sequence[int]): The desired shape of the output tensor,
+                specified as a sequence of integers.
+            n_layers (int, optional): The number of linear layers to use in the
+                transformation. Defaults to 1.
+            activation_function (Union[Optional[nn.Module], str], optional):
+                Specifies the activation function to apply after the linear layers.
+                If set to 'same', it will use the instance's predefined activation
+                function. Defaults to None.
+
+        Returns:
+            An instance of the LatentSpaceModule class that
+            performs the specified transformation from input to output shape.
         """
         if activation_function == "same":
             activation_function = self.activation_function
@@ -523,18 +629,6 @@ class Builder:
         constant: int = 1,
         channel_growth_rate: str = "exponential",
     ) -> List[int]:
-        """
-        The function to calculate output channels after each convolutional layer
-
-        :param in_size: input size of the first input tensor
-        :param in_channels: number of channels in the first input tensor
-        :param n_layers: number of the convolution layers in the encoder part
-        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power' . Default: 2 (powers of two)
-        :param start: start position of a geometric progression in the case of ascending=False. Default: 32
-        :param channel_growth_rate: the way of calculating the number of feature maps between 'exponential', 'proportion', 'linear', 'power' and 'constant'. Default: 'exponential'
-        :return: output channels after each convolutional layer
-        # noqa
-        """
         _validate_channel_growth_rate_param(channel_growth_rate)
 
         if channel_growth_rate == "exponential":
@@ -573,17 +667,6 @@ class Builder:
         constant: int = 1,
         channel_growth_rate: str = "exponential",
     ) -> List[int]:
-        """
-        The function to calculate output channels after each transposed convolutional layer
-
-        :param in_channels: number of channels in the first input tensor
-        :param out_channels: number of channels in the last tensor
-        :param n_layers: number of the transposed convolution layers in the encoder part
-        :param ratio: multiplier for the geometric progression of increasing channels (feature maps). Used for 'channel_growth_rate' as 'exponential' or 'power' . Default: 2 (powers of two)
-        :param channel_growth_rate: the way of calculating the number of feature maps between 'exponential', 'proportion', 'linear', 'power' and 'constant'. Default: 'exponential'
-        :return: output channels after each transposed convolutional layer
-        # noqa
-        """
         _validate_channel_growth_rate_param(channel_growth_rate)
 
         if channel_growth_rate == "exponential":

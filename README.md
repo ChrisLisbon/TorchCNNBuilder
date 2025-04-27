@@ -21,31 +21,21 @@ The simplest way to install framework is using `pip`:
 pip install torchcnnbuilder
 ```
 
-### Usage examples
+### Documentation 
 
----
-The basic structure of the framework is presented below. Each subdirectory has its own example of using the appropriate available functionality. You can check [`<directory>_examples.ipynb`](./examples) files in order to see the ways to use the proposed toolkit. In short, there is the following functionality:
+Check the documentation [here](https://ChrisLisbon.github.io/TorchCNNBuilder/torchcnnbuilder.html). 
 
-- the ability to calculate the size of tensors after (transposed) convolutional layers
-- preprocessing an n-dimensional time series in `TensorDataset`
-- automatic creation of (transposed) convolutional sequences
-- automatic creation of (transposed) convolutional layers and (transposed) blocks from convolutional layers
+### Development 
 
-The structure of the main part of the package:
-
+In order to check available local `Makefile` commands run in the project root: 
+```sh
+make help
 ```
-├── examples
-│ ├── builder_examples.ipynb
-│ ├── preprocess_examples.ipynb
-│ ├── models_examples.ipynb
-│ └── tools                     # additional functions for the examples
-└── torchcnnbuilder
-    ├── preprocess
-    │ └── time_series.py
-    ├── builder.py
-    └── models.py
+```yaml
+help: Show help for each of the Makefile recipes.
+lint: Lint the project with flake8 lib.
+doc: Build and run the doc locally.
 ```
-Initially, the library was created to help predict n-dimensional time series *(geodata)*, so there is a corresponding functionality and templates of predictive models *(like `ForecasterBase`)*.
 
 ### Sources
 
@@ -53,17 +43,6 @@ Initially, the library was created to help predict n-dimensional time series *(g
 - [Forecasting of Sea Ice Concentration using CNN, PDE discovery and Bayesian Networks](https://www.sciencedirect.com/science/article/pii/S1877050923020094)
 - [Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
 - [Post about framework development on habr.com - in russian](https://habr.com/ru/companies/selectel/articles/818649/)
-
-### Development
-
----
-We try to maintain good practices of readable open source code. Therefore, if you want to participate in the development and open your pool request, pay attention to the following points:
-- Every push is checked by the flake8 job. It will show you PEP8 errors or possible code improvements.
-- Use this linter script after your code:
-```bash
-bash lint_and_check.sh
-````
-*You can mark function docstrings using `#noqa`, in order for flake8 not to pay attention to them.*
 
 ### Acknowledgement
 

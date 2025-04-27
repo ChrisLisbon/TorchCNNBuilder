@@ -3,7 +3,7 @@ from typing import List, Optional, Sequence, Tuple, Union
 
 from torch import tensor
 
-from torchcnnbuilder._constants import MAX_PARAMS_NUMBER_PER_LAYER
+from torchcnnbuilder.constants import _MAX_PARAMS_NUMBER_PER_LAYER
 
 
 # ------------------------------------
@@ -105,9 +105,9 @@ def _validate_warning_huge_linear_weights_matrix(
     in_features: int, out_features: int, level: Optional[str] = None
 ) -> None:
     level = "" if level is None else f"LEVEL=[{level}]: "
-    if in_features * out_features >= MAX_PARAMS_NUMBER_PER_LAYER:
+    if in_features * out_features >= _MAX_PARAMS_NUMBER_PER_LAYER:
         warnings.warn(
             level + f"One of your weight matrices has shape ({in_features}, {out_features}). "
-            f"That's more than {MAX_PARAMS_NUMBER_PER_LAYER=:,} params. Be aware of computation problems "
+            f"That's more than {_MAX_PARAMS_NUMBER_PER_LAYER=:,} params. Be aware of computation problems "
             f"during initialization or training."
         )

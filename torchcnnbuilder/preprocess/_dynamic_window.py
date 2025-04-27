@@ -14,17 +14,35 @@ def single_output_tensor(
     x_binarize: bool = False,
 ) -> TensorDataset:
     """
-    The function to preprocess an n-dimensional time series into a tensor with only the X and Y parts
+    Preprocesses a time series into a tensor with input (X) and output (Y) parts for single-step predictions.
+    See the tensor transformation diagram below:
 
-    :param data: N-dimensional arrays, lists, numpy arrays, tensors etc.
-    :param forecast_len: length of prediction for each y-train future tensor (target)
-    :param additional_x: extra x-train data. Default: None
-    :param additional_is_array: if additional x-train is an array of x_i data like other time series. Default: False
-    :param additional_x_stack: if True stack each additional_x_i to x-train. Default: True
-    :param threshold: binarization threshold for each y-tensor. Default: False
-    :param x_binarize: binarization with threshold for each x-tensor. Default: False
-    :return TensorDataset: TensorDataset of X-train and y-train
-    # noqa
+    ![image](../../.docs/media/single_output_tensor.png)
+
+    This function prepares input and output tensors for training a model with a given forecast length. Additional
+    optional data can be provided to expand the input features with extra time series.
+
+    Args:
+        data (Sequence[Any]): The time series data in an N-dimensional format (e.g., list, numpy array, or tensor).
+        forecast_len (int): Number of time steps for each target output tensor.
+        additional_x (Union[Sequence[Any], None], optional): Extra data to add as additional input features.
+            Defaults to None.
+        additional_is_array (bool, optional): If True, treats `additional_x` as a collection of separate
+            time series. Defaults to False.
+        additional_x_stack (bool, optional): If True, stacks `additional_x` features onto input data (X).
+            If False and `additional_is_array` is also False, `additional_x` will be returned separately.
+            Defaults to True.
+        threshold (Union[bool, float], optional): Threshold for binarizing output tensor (Y). If set to a float,
+            values above the threshold are set to 1, and values below are set to 0. Defaults to False.
+        x_binarize (bool, optional): If True, applies the same binarization as `threshold` to the input tensor (X).
+            Defaults to False.
+
+    Returns:
+       A dataset containing the input and output tensors for training.
+
+    Raises:
+        ValueError: If `forecast_len` is greater than the data length.
+        TypeError: If the types of `data` or `additional_x` are unsupported.
     """
     tensors = torch.Tensor(data)
 
@@ -76,20 +94,35 @@ def multi_output_tensor(
     x_binarize: bool = False,
 ) -> TensorDataset:
     """
-     The function to preprocess an n-dimensional time series into a tensor with a sliding window for the X and Y parts
+    Preprocesses a time series into a sliding-window tensor with input (X) and output (Y)
+    parts for multi-step predictions. See the tensor transformation diagram below:
 
-    :param data: N-dimensional arrays, lists, numpy arrays, tensors etc.
-    :param forecast_len: length of prediction for each y-train future tensor (target)
-    :param pre_history_len: length of pre-history for each x-train future tensor
-    :param additional_x: extra x-train data. Default: None
-    :param additional_is_array: if additional x-train is an array of x_i data like other time series. Default: False
-    :param additional_x_stack: if True stack each additional_x_i to x-train. Default: True
-    :param threshold: binarization threshold for each y-tensor. Default: False
-    :param x_binarize: binarization with threshold for each x-tensor. Default: False
-    :return TensorDataset: TensorDataset of X-train and y-train
-    # noqa
+    ![image](../../.docs/media/single_output_tensor.png)
+
+    This function prepares input and output tensors for training a model with a given forecast length. Additional
+    optional data can be provided to expand the input features with extra time series.
+
+    Args:
+        data (Sequence[Any]): Time series data in an N-dimensional format (e.g., list, numpy array, or tensor).
+        forecast_len (int): Number of time steps for each target output tensor.
+        pre_history_len (int): Length of the time window for input tensors.
+        additional_x (Union[Sequence[Any], None], optional): Additional input data to augment features.
+            Defaults to None.
+        additional_is_array (bool, optional): If True, treats `additional_x` as separate time series. Defaults to False.
+        additional_x_stack (bool, optional): If True, stacks `additional_x` features onto input data (X). If False
+            and `additional_is_array` is also False, `additional_x` is returned separately. Defaults to True.
+        threshold (Union[bool, float], optional): Threshold for binarizing the output tensor (Y). If set to a float,
+            values above the threshold are set to 1, and values below are set to 0. Defaults to False.
+        x_binarize (bool, optional): If True, applies binarization to the input tensor (X) as per `threshold`.
+            Defaults to False.
+
+    Returns:
+        A dataset containing input and output tensors for training.
+
+    Raises:
+        ValueError: If `forecast_len` or `pre_history_len` exceed the data length.
+        TypeError: If the types of `data` or `additional_x` are unsupported.
     """
-
     tensors = torch.Tensor(data)
 
     x_train_list, y_train_list = [], []
