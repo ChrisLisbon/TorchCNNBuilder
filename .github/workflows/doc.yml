@@ -39,6 +39,9 @@ jobs:
       - name: Build doc
         run: pdoc --math -d google --no-include-undocumented -o docs/ -t .docs/ ./torchcnnbuilder
 
+      - name: List generated docs
+        run: ls -R docs/
+
       - name: Aploud doc artifacts
         uses: actions/upload-pages-artifact@v3
         with:
