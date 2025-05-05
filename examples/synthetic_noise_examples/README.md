@@ -2,7 +2,7 @@
 
 Imitation of noise in 1%, 3%, 5%, 10%, 25% 50%:
 
-
+<p float="left">
 <img src="noise_examples/noise_0.gif" style="width:150px;">
 <img src="noise_examples/noise_1.gif" style="width:150px;">
 <img src="noise_examples/noise_3.gif" style="width:150px;">
@@ -10,6 +10,7 @@ Imitation of noise in 1%, 3%, 5%, 10%, 25% 50%:
 <img src="noise_examples/noise_10.gif" style="width:150px;">
 <img src="noise_examples/noise_25.gif" style="width:150px;">
 <img src="noise_examples/noise_50.gif" style="width:150px;">
+</p>
 
 Models train script with grid of experiments: [``` grid_train.py```](grid_train.py)
 

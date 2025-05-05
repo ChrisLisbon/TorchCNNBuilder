@@ -24,7 +24,7 @@ pip install torchcnnbuilder
 
 ### Usage
 
-To initialize simple model with encoder-decoder architecture ```ForecasterBase``` class should be called:
+To initialize simple model with encoder-decoder architecture call ```ForecasterBase``` class:
 ```
 model = ForecasterBase(input_size=[H, W],
                        in_time_points=C_in,
@@ -33,7 +33,7 @@ model = ForecasterBase(input_size=[H, W],
 ```
 Where ```[H, W]``` - size of image in pixels, ```C_in``` - number of input channels, ```C_out``` - number of out_channels. 
 
-To operate separately with encoder and decoder parts of model they can be called from model:
+To operate separately with encoder and decoder parts they can be called from model:
 ```
 encoder = model.encoder
 decoder = model.decoder
