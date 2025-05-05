@@ -21,6 +21,31 @@ The simplest way to install framework is using `pip`:
 pip install torchcnnbuilder
 ```
 
+
+### Usage
+
+To initialize simple model with encoder-decoder architecture ```ForecasterBase``` class should be called:
+```
+model = ForecasterBase(input_size=[H, W],
+                       in_time_points=C_in,
+                       out_time_points=C_out,
+                       n_layers=5)
+```
+Where ```[H, W]``` - size of image in pixels, ```C_in``` - number of input channels, ```C_out``` - number of out_channels. 
+
+To operate separately with encoder and decoder parts of model they can be called from model:
+```
+encoder = model.encoder
+decoder = model.decoder
+```
+
+### Examples
+
+Extensive usage scenarios can be found in [examples](examples) folder.
+
+Components calls and usage in folder [usage_examples](examples/usage_examples).
+
+
 ### Documentation 
 
 Check the documentation [here](https://chrislisbon.github.io/TorchCNNBuilder/torchcnnbuilder.html). 
@@ -43,6 +68,14 @@ doc: Build and run the doc locally.
 - [Forecasting of Sea Ice Concentration using CNN, PDE discovery and Bayesian Networks](https://www.sciencedirect.com/science/article/pii/S1877050923020094)
 - [Surrogate Modelling for Sea Ice Concentration using Lightweight Neural Ensemble](https://arxiv.org/abs/2312.04330)
 - [Post about framework development on habr.com - in russian](https://habr.com/ru/companies/selectel/articles/818649/)
+
+
+### Contributing
+
+- To join the project feel free to [contact us](mailto:jul.borisova@itmo.ru);
+
+- [Issues](https://github.com/ChrisLisbon/TorchCNNBuilder/issues) and 
+[Pull Requests](https://github.com/ChrisLisbon/TorchCNNBuilder/pulls): submit bugs found or log feature requests.
 
 ### Acknowledgement
 
