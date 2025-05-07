@@ -2,7 +2,7 @@
 # TorchCNNBuilder
 <p align="center">
 
-<img src=".docs/media/logo.png" width="300">
+<img src=".docs/media/logo_transparent.PNG" width="300">
 </p>
 
 <div id="badges">
