@@ -1,4 +1,9 @@
+
 # TorchCNNBuilder
+<p align="center">
+
+<img src=".docs/media/logo.png" width="300">
+</p>
 
 <div id="badges">
     <a href="https://pytorch.org/">
