@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 import torch
 
 from torchcnnbuilder.models import ForecasterBase
-from torchcnnbuilder.preprocess._dynamic_window import multi_output_tensor, single_output_tensor
+from torchcnnbuilder.preprocess import multi_output_tensor, single_output_tensor
 from pytorch_msssim import ssim
 
 import datetime
