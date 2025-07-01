@@ -11,8 +11,8 @@
 
 Примеры сборки и обучения моделей:
 - [`synthetic_noise_examples`](synthetic_noise_examples) - Эксперимент по подбору архитектуры и оценки устойчивости к шуму
-- [`anime_example`](anime_example.ipynb) - Пример на данных с медиа-контентом
-- [`moving mnist example`](moving_mnist_example.ipynb) - Пример для датасета MovingMnist
+- [`anime_example`](anime_example_ru.ipynb) - Пример на данных с медиа-контентом
+- [`moving mnist example`](moving_mnist_example_ru.ipynb) - Пример для датасета MovingMnist
 
 
 [`speed device test`](speed_device_test.py) - демонстрирует скорость сборки модели и использование cpu и CUDA
