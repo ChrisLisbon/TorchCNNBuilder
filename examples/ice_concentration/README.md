@@ -2,7 +2,8 @@
 
 ## Sea Ice Concentration Forecasting Example
 
-The ice condition data was prepared based on the OSI SAF product.  You can download a prepared sample dataset to run the example [here](https://disk.yandex.ru/d/C8KknPCr65nqSw).
+The ice condition data was prepared based on the OSI SAF product.  You can download a prepared sample 
+dataset to run the example [here](https://disk.yandex.ru/d/C8KrnPCr65nqSw).
 
 After downloading the data, you need to specify the data directory in the [```data_loader```](data_loader.py) file - ```/path_to_data/```.
 
