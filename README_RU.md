@@ -66,7 +66,7 @@ decoder = model.decoder
 
 ### Примеры
 
-Сценарии использования можно найти в папке [examples](examples) folder.
+Сценарии использования можно найти в папке [examples](examples).
 
 Примеры вызова компонентов — в папке [usage_examples](examples/usage_examples).
 

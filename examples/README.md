@@ -1,4 +1,4 @@
-[[Click For Russian version]](README_RU)
+[[Click For Russian version]](README_RU.md)
 
 # Usage examples
 
