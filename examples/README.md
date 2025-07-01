@@ -13,6 +13,7 @@ Relevant usage examples can be found in this directory. The API examples of each
 Examples of models building and training:
 - [`synthetic_noise_examples`](synthetic_noise_examples) - Architecture selection and noise resistance experiment
 - [`anime_example`](anime_example.ipynb) - Media-content example
+- [`ice concentration`](ice_concentration) - ice concentration example
 - [`moving mnist example`](moving_mnist_example.ipynb) - MovingMnist dataset example
 
 

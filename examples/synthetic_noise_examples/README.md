@@ -1,3 +1,5 @@
+[[Click For Russian version]](README_RU.md)
+
 ### Experimental setup for noise synthetic video prediction
 
 Imitation of noise in 1%, 3%, 5%, 10%, 25% 50%:
