@@ -23,7 +23,7 @@ except ImportError:
 try:
     import pandas as pd
 except ImportError:
-    print(f'matplotlib not found, installing')
+    print(f'pandas not found, installing')
     import pip
     pip.main(["install", "pandas"])
     import pandas as pd
