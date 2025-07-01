@@ -1,4 +1,3 @@
-
 # TorchCNNBuilder
 <p align="center">
 
@@ -16,7 +15,15 @@
 </div>
 
 ---
-**TorchCNNBuilder** is an open-source framework for the automatic creation of CNN architectures. This framework should first of all help researchers in the applicability of CNN models for a huge range of tasks, taking over most of the writing of the architecture code. This framework is distributed under the 3-Clause BSD license. All the functionality is written only using `pytorch` *(no third-party dependencies)*.
+### Description in Russian is presented [here](README_RU.md).
+
+---
+
+**TorchCNNBuilder** is an open-source framework for the automatic creation of CNN architectures. 
+This framework should first of all help researchers in the applicability of CNN models for a 
+huge range of tasks, taking over most of the writing of the architecture code. 
+This framework is distributed under the **3-Clause BSD license**. All the functionality is written 
+only using `pytorch` *(no third-party dependencies)*.
 
 ### Installation
 
@@ -26,6 +33,21 @@ The simplest way to install framework is using `pip`:
 pip install torchcnnbuilder
 ```
 
+<details><summary>Additional packages for examples run</summary>
+
+Please note that when running examples from the [examples](examples) folder, 
+additional libraries are used to visualize and generate the dataset:
+
+```
+pip install numpy
+pip install pytorch_msssim
+pip install matplotlib
+pip install tqdm
+```
+
+They are not required for the library to work, so their installation is optional.
+
+</details>
 
 ### Usage
 
@@ -68,6 +90,61 @@ help: Show help for each of the Makefile recipes.
 lint: Lint the project with flake8 lib.
 doc: Build and run the doc locally.
 ```
+
+### Application Areas
+
+TorchCNNBuilder enables CNN architectures for diverse real-world applications across multiple domains:
+
+#### Environmental Monitoring
+
+- **Sea ice concentration forecasting**  
+  Predict Arctic and Antarctic ice melt patterns to support climate research and maritime navigation safety using satellite imagery time series.
+
+- **Climate pattern recognition**  
+  Analyze large-scale atmospheric data to identify emerging weather patterns, extreme event precursors, and long-term climate trends.
+
+- **Pollution level prediction**  
+  Process multispectral sensor data to forecast air/water quality indices and identify pollution sources with spatial CNN architectures.
+
+#### Remote Sensing
+
+- **Satellite image analysis**  
+  Process high-resolution multispectral imagery for applications ranging from urban planning to precision agriculture using specialized encoder architectures.
+
+- **Land cover classification**  
+  Automate large-scale terrain mapping with attention-based CNNs that handle spectral, spatial and temporal dimensions of data.
+
+- **Disaster monitoring**  
+  Develop change detection systems that compare pre/post-event satellite imagery to assess flood, fire or earthquake damage in near-real-time.
+
+
+#### Medical Imaging
+
+- **Automated diagnosis from X-ray/MRI scans**  
+  Develop assistive diagnostic systems that can detect abnormalities in medical images with pixel-level precision while reducing radiologist workload.
+
+- **Tumor segmentation**  
+  Create 3D convolutional networks for precise volumetric analysis of cancerous growths in CT/MRI scans.
+
+- **Medical time-series analysis**  
+  Process sensor streams to predict patient deterioration through temporal features processing architectures.
+
+#### Industrial Applications
+
+- **Predictive maintenance**  
+  Monitor equipment vibration patterns and thermal signatures to forecast mechanical failures.
+
+- **Quality control in manufacturing**  
+  Implement real-time visual inspection systems that detect defects in production lines.
+
+
+#### Financial Forecasting
+
+- **Time-series prediction**  
+  Build hybrid CNN-LSTM architectures that extract both spatial patterns from market heatmaps and temporal dependencies from price histories.
+
+- **Market trend analysis**  
+  Process alternative data sources like satellite images of parking lots or social media sentiment through CNN architectures.
 
 ### Sources
 
