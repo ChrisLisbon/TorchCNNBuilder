@@ -1,11 +1,45 @@
+
+#################################################################
+#         Following block install additional packages used in this example                           #
+#         If your environment is already set up, install them manually to avoid version conflicts    #
+#################################################################
+
+try:
+    import numpy as np
+except ImportError:
+    print(f'numpy not found, installing')
+    import pip
+    pip.main(["install", "numpy"])
+    import numpy as np
+
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    print(f'matplotlib not found, installing')
+    import pip
+    pip.main(["install", "matplotlib"])
+    import matplotlib.pyplot as plt
+
+try:
+    import pandas as pd
+except ImportError:
+    print(f'matplotlib not found, installing')
+    import pip
+    pip.main(["install", "pandas"])
+    import pandas as pd
+
+try:
+    from pytorch_msssim import ssim
+except ImportError:
+    print(f'pytorch_msssim not found, installing')
+    import pip
+    pip.main(["install", "pytorch_msssim"])
+    from pytorch_msssim import ssim
+
+#################################################################
+
 from tools import synthetic_time_series, save_gif, create_logger, log_print
-
 import os
-
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
@@ -13,7 +47,6 @@ import torch
 
 from torchcnnbuilder.models import ForecasterBase
 from torchcnnbuilder.preprocess import multi_output_tensor, single_output_tensor
-from pytorch_msssim import ssim
 
 import datetime
 import logging
