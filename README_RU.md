@@ -29,6 +29,13 @@
 pip install torchcnnbuilder
 ```
 
+<details><summary>Minimum technical requirements</summary>
+The minimum system requirements for using the library are a Python interpreter version >3.9 
+and access to a computing system running Windows/Linux. 
+The minimum hardware requirements include a processor (CPU) with 8 cores, 
+2GB of RAM, a graphics processor (GPU) with 8GB of VRAM, and 2GB of HDD storage.
+</details>
+
 <details><summary>Доп.пакеты для примеров</summary>
 
 Обратите внимание, что при запуске примеров из папки [examples](examples) для визуализации 
@@ -44,6 +51,9 @@ pip install tqdm
 Они не требуются для работы библиотеки, поэтому их установка не обязательна.
 
 </details>
+
+
+
 
 ### Использование
 

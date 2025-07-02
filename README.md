@@ -33,6 +33,14 @@ The simplest way to install framework is using `pip`:
 pip install torchcnnbuilder
 ```
 
+<details><summary>Минимальные системные требования</summary>
+Минимальными системными требованиями для использования библиотеки является
+наличие интерпретатора Python версии >3.9 и доступ к вычислительной системе 
+под управлением OC Windows/Linux. Минимальные требования к аппаратному обеспечению 
+включают наличие процессора (CPU) с 8 ядрами, оперативной памяти (RAM) 2ГБ, 
+графического процессора (GPU) с 8 ГБ VRAM и хранилища HDD 2 ГБ.
+</details>
+
 <details><summary>Additional packages for examples run</summary>
 
 Please note that when running examples from the [examples](examples) folder, 
