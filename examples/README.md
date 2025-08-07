@@ -1,5 +1,28 @@
 [[Click For Russian version]](README_RU.md)
 
+## Quick Start
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/TorchCNNBuilder.git
+   cd TorchCNNBuilder
+   
+2. Install in development mode (recommended):
+    ```bash
+   pip install -e .
+
+**This will**: install all required dependencies, make the package available system-wide, allow 
+you to modify code and see changes immediately.
+
+3. For just running examples (without development):
+    ```bash
+    pip install numpy torch matplotlib jupyter
+   
+4. ⚠️ Note: The examples use relative paths for data loading. 
+To avoid file not found errors, always launch Jupyter from the repository root directory:
+    ```bash
+    jupyter notebook examples/example_name.ipynb
+
 # Usage examples
 
 Relevant usage examples can be found in this directory. The API examples of each submodule are located in the corresponding `ipynb` file:

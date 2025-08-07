@@ -79,15 +79,15 @@ forecast_len = 30
 batch_size = 50
 epochs = 2_000
 
-# iterations_path = './iterations - batchnorm L1 loss'
-# iterations_path = './iterations - batchnorm SSIM loss'
-# iterations_path = './iterations - batchnorm BCE loss'
+# iterations_path = 'iterations - batchnorm L1 loss'
+# iterations_path = 'iterations - batchnorm SSIM loss'
+# iterations_path = 'iterations - batchnorm BCE loss'
 
-# iterations_path = './iterations - none L1 loss'
-# iterations_path = './iterations - none SSIM loss'
-# iterations_path = './iterations - none BCE loss'
+# iterations_path = 'iterations - none L1 loss'
+# iterations_path = 'iterations - none SSIM loss'
+# iterations_path = 'iterations - none BCE loss'
 
-iterations_path = './iterations - batchnorm SSIM + BCE loss'
+iterations_path = 'iterations - batchnorm SSIM + BCE loss'
 
 model_type = {
     'batchnorm': 'batchnorm',
