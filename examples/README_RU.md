@@ -4,7 +4,7 @@
 
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/yourusername/TorchCNNBuilder.git
+   git clone https://github.com/ChrisLisbon/TorchCNNBuilder.git
    cd TorchCNNBuilder
    
 2. Установка в режиме разработки (рекомендуется):

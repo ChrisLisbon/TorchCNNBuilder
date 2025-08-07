@@ -4,7 +4,7 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/TorchCNNBuilder.git
+   git clone https://github.com/ChrisLisbon/TorchCNNBuilder.git
    cd TorchCNNBuilder
    
 2. Install in development mode (recommended):
