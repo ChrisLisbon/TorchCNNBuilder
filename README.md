@@ -36,7 +36,8 @@ pip install torchcnnbuilder
 The minimum system requirements for using the library are a Python interpreter version >3.9 
 and access to a computing system running Windows/Linux. 
 The minimum hardware requirements include a processor (CPU) with 8 cores, 
-2GB of RAM, a graphics processor (GPU) with 8GB of VRAM, and 2GB of HDD storage.
+2GB of RAM, and 2GB of HDD storage, as well as a graphics processing unit (GPU) with 8 GB of VRAM, 
+supporting CUDA version 7 or higher.
 </details>
 <details><summary>Additional packages for examples run</summary>
 
@@ -72,6 +73,11 @@ To operate separately with encoder and decoder parts they can be called from mod
 encoder = model.encoder
 decoder = model.decoder
 ```
+
+For GPU mode (device="cuda"), only graphics cards supporting CUDA version >=7 can be used.
+Otherwise, only CPU mode is available (you must set device="cpu").
+
+
 
 ### Examples
 
