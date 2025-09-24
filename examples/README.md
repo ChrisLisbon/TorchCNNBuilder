@@ -45,3 +45,21 @@ Examples of models building and training:
 
 
 Step-by-step examples description presented in ipynb cells and code comments.
+
+## Common Issues
+If you encounter the error ModuleNotFoundError: No module named 'torch':
+
+1. Verify that the command pip list | grep torch confirms that torch is installed.
+
+If torch appears in the command's output but the error persists, check that a Python virtual environment (venv) is created and used both for installing dependencies and when running your code.
+You can create a virtual environment as follows:
+
+```
+python -m venv venv
+source venv/bin/activate
+```
+If the error continues, it is necessary to recreate the virtual environment from scratch and repeat the installation of TorchCNNBulder and its dependencies.
+
+2. An error such as *"Minimum and Maximum cuda capability supported by this version of PyTorch is (7.0) - (12.0)"* can be caused by using an unsupported graphics card. TorchCNNBuidler only works with graphics cards that support CUDA versions >=7. In all other cases, operation is only possible in CPU mode.
+
+To run the examples, you need to change the line device="cuda" to device="cpu".
