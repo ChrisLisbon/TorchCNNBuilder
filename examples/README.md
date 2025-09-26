@@ -52,7 +52,7 @@ If you encounter the error ModuleNotFoundError: No module named 'torch':
 1. Verify that the command pip list | grep torch confirms that torch is installed.
 
 If torch appears in the command's output but the error persists, check that a Python virtual environment (venv) is created and used both for installing dependencies and when running your code.
-You can create a virtual environment as follows:
+You can create a virtual environment [as follows](https://docs.python.org/3/library/venv.html#creating-virtual-environments):
 
 ```
 python -m venv venv
