@@ -13,7 +13,7 @@ def get_timespatial_series(sea_name, start_date, stop_date):
         raise FileNotFoundError(
             f"Data path '{datamodule_path}' not found.\n"
             "Please make sure to:\n"
-            "1. Download the data from: https://disk.yandex.ru/d/C8KrnPCr65nqSw\n"
+            "1. Download the data from: https://disk.yandex.ru/d/sdj5K7wh-unXdA\n"
             "2. Extract the .rar archive in 'kara\ '\n"
             "3. Update the 'datamodule_path' in this function with the correct path to EXTRACTED data (where .npy lies)"
         )
