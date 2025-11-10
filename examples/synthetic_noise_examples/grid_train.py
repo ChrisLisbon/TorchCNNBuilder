@@ -1,4 +1,3 @@
-
 #################################################################
 #         Following block install additional packages used in this example                           #
 #         If your environment is already set up, install them manually to avoid version conflicts    #
@@ -9,6 +8,7 @@ try:
 except ImportError:
     print(f'numpy not found, installing')
     import pip
+
     pip.main(["install", "numpy"])
     import numpy as np
 
@@ -17,14 +17,19 @@ try:
 except ImportError:
     print(f'matplotlib not found, installing')
     import pip
+
     pip.main(["install", "matplotlib"])
     import matplotlib.pyplot as plt
+import warnings
+
+warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib.animation")
 
 try:
     import pandas as pd
 except ImportError:
     print(f'pandas not found, installing')
     import pip
+
     pip.main(["install", "pandas"])
     import pandas as pd
 
@@ -91,21 +96,27 @@ epochs = 2_000
      iterations_path = 'iterations - none BCE loss'
 """
 
-iterations_path = 'iterations - batchnorm SSIM + BCE loss'
+iterations_path = 'iterations - batchnorm SSIM + BCE loss'  # name of experiment - depends on normalization and loss function
+if not os.path.exists(iterations_path):
+    os.makedirs(iterations_path, exist_ok=True)
 
+"""
+    Each type of normalization can be tested with keys:         
+        'none': None
+"""
 model_type = {
     'batchnorm': 'batchnorm',
-    # 'none': None
+    #'none': None
 }
-
-loss_type = {
-    """
+"""
     Each type of loss can be tested with keys:
          'L1 loss': nn.L1Loss(),
          'SSIM loss': lambda x, y: 1 - ssim(x, y, data_range=1, size_average=True),
-         'BCE loss': nn.BCELoss(),
-    """
-    'SSIM + BCE loss': lambda x, y: 0.6 * nn.functional.binary_cross_entropy(x, y) + 0.4 * (1 - ssim(x, y, data_range=1, size_average=True)),
+         'BCE loss': lambda x, y: nn.functional.binary_cross_entropy(torch.clamp(x, 0, 1), y),
+"""
+loss_type = {
+    'SSIM + BCE loss': lambda x, y: 0.6 * nn.functional.binary_cross_entropy(torch.clamp(x, 0, 1), y) + 0.4 * (
+                1 - ssim(torch.clamp(x, 0, 1), y, data_range=1, size_average=True)),
 }
 
 noise_type = {'0%': 0,
@@ -187,7 +198,7 @@ for k1, v1 in noise_type.items():
         noised_test = np.clip(test + noised_test, 0, 1)
 
         # saving noise gif
-        save_gif(noised_train, f'./noise examples/noise {k1}')
+        save_gif(noised_train, f'{iterations_path}/noise_example{k1}')
 
         # creating noised datasets
         noised_train_dataset = multi_output_tensor(data=noised_train,
@@ -249,7 +260,7 @@ for k1, v1 in noise_type.items():
                                         'threshold_mode': 'abs',
                                         'min_lr': 1e-7}
                     finish_activation = nn.Sigmoid()
-                    
+
                 elif k3 == 'SSIM + BCE loss':
                     optim_params = {'lr': 1e-3}
                     scheduler_params = {'mode': 'min',
@@ -331,8 +342,8 @@ for k1, v1 in noise_type.items():
                           f"-- epoch : {epoch + 1}/{epochs}, recon loss = {loss}, lr = {scheduler.get_last_lr()[-1]}")
 
                 if epoch in (0, int(epochs // 2 * 0.8), epochs // 2, int(epochs * 0.75)):
-                    save_gif(outputs[0].detach().cpu().numpy(), f'{exp_path}/predict_epoch={epoch}')
-                    save_gif(Y[0].detach().cpu().numpy(), f'{exp_path}/y_epoch={epoch}')
+                    save_gif(outputs[0].detach().cpu().numpy(), f'{exp_path}/predict_epoch_{epoch}')
+                    save_gif(Y[0].detach().cpu().numpy(), f'{exp_path}/y_epoch_{epoch}')
 
             end_time = datetime.datetime.now()
 
@@ -372,7 +383,6 @@ for k1, v1 in noise_type.items():
             plt.xlabel('Epoch')
             plt.ylabel(f'{k3}')
             plt.title('Loss history')
-            plt.legend()
             plt.savefig(f'{exp_path}/loss_history.png')
             plt.close()
 

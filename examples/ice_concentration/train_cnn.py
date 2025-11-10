@@ -1,3 +1,4 @@
+import os.path
 
 #################################################################
 #         Following block install additional packages used in this example                           #
@@ -52,11 +53,14 @@ from data_loader import get_timespatial_series
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f'Calculating on device: {device}')
+reduce_spatial = True  # Set True for time effectiveness while test script or debug
 
 sea_name = 'kara'
 start_date = '19790101'
 end_date = '20200101'
 sea_data, dates = get_timespatial_series(sea_name, start_date, end_date)
+if reduce_spatial:
+    sea_data = sea_data[:, ::2, ::2]
 sea_data = sea_data[::7]
 dates = dates[::7]
 
@@ -109,6 +113,8 @@ for epoch in range(epochs):
 
 end = time.time() - start
 print(f'Runtime seconds: {end}')
+if not os.path.exists('models'):
+    os.makedirs('models')
 torch.save(encoder.state_dict(), f"models/{sea_name}_{pre_history_size}_{forecast_size}_l1({start_date}-{end_date}){epochs}.pt")
 plt.plot(np.arange(len(losses)), losses)
 plt.xlabel('Epoch')
