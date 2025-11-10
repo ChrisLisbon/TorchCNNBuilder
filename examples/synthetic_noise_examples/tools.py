@@ -67,12 +67,15 @@ def save_gif(matrices: np.array,
     :param fps: fps. Default: 30
     :param interval: interval between frames in milliseconds. Default: 10
     """
-    plt.figure()
     fig, ax = plt.subplots()
     frames = list(map(lambda x: (ax.imshow(1-x, cmap='gray'),), matrices))
     ani = animation.ArtistAnimation(fig=fig, artists=frames, interval=interval)
-    ani.save(filename=f'{path}.gif', writer=writer, fps=fps)
-    plt.close()
+    try:
+        ani.save(filename=f'{path}.gif', writer=writer, fps=fps)
+    except Exception as e:
+        print(f"Error saving gif to {path}: {e}")
+    finally:
+        plt.close(fig)
 
 
 def IoU(X: torch.Tensor,
