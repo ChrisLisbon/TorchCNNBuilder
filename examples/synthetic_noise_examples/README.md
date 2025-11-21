@@ -22,3 +22,9 @@ Notebook with results visualization: [``` results.ipynb```](results.ipynb)
 
 For separated training of the best setup excluding grid of experiments  script [```best_train.py```](best_train.py)
 can be used. Part of the output of this script is in [```best model```](best%20model) folder for clarity. 
+
+Python (.py) files can be run with command below or with IDE.
+``` 
+python file_name.py
+```
+
