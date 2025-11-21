@@ -128,7 +128,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 # iterations
 # ------------------------------------
 # logging
-exp_path = 'best model/'
+exp_path = 'best_model/'
 log_print(logger, f'start {exp_path}')
 if not os.path.exists(exp_path):
     os.makedirs(exp_path)
